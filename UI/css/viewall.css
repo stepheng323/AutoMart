@@ -1,0 +1,118 @@
+body {
+  font: 16px/1.5 Arial, Helvetica, sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+* {
+  box-sizing: border-box;
+}
+.container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+header {
+  background: #35424a;
+  color: #fff;
+  min-height: 4.5em;
+}
+header a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+}
+
+header ul {
+  margin: 0px;
+  padding: 0px;
+}
+header li {
+  display: inline;
+}
+header li a:hover {
+  border-bottom: 2px solid #ffffff;
+}
+header .branding {
+  float: left;
+  margin-top: 0.6em;
+}
+header .branding h1 {
+  margin: 0;
+}
+header nav {
+  float: right;
+  margin-top: 1.5em;
+}
+
+.highlight {
+  font-weight: bold;
+  color: red;
+}
+.products h5,
+.products h6 {
+  text-align: start;
+}
+.products h6 {
+  font-weight: bold;
+  font-size: 1em;
+  color: green;
+}
+.products {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 0.3em;
+  margin-bottom: 1em;
+}
+.product-info {
+  text-align: center;
+}
+.product-card {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 0.5em;
+  width: 100%;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.product-card:hover {
+  transform: scale(1.02);
+}
+.product-card a {
+  text-decoration: none;
+  color: black;
+}
+.product-card img {
+  width: 100%;
+  height: 100%;
+}
+
+.fcontainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: #35424a;
+  color: #ffffff;
+  font-size: 13px;
+  padding-left: 4em;
+}
+.fcontainer ul {
+  list-style-type: none;
+}
+.fcontainer ul li a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 0.2em 0.2em 0.2em;
+  color: #ffffff;
+}
+.fcontainer ul li a:hover {
+  text-decoration: underline;
+}
+.fcontainer h3,
+.fcontainer p {
+  margin-top: 1em;
+}
+.fcontainer .pad {
+  margin-left: 6%;
+}
+.social a {
+  color: #ffffff;
+  text-decoration: none;
+}
