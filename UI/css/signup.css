@@ -1,0 +1,160 @@
+body {
+  font: 16px/1.5 Arial, Helvetica, sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+* {
+  box-sizing: border-box;
+}
+.container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+header {
+  background: #35424a;
+  color: #fff;
+  min-height: 4.5em;
+}
+header a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+}
+
+header ul {
+  margin: 0px;
+  padding: 0px;
+}
+header li {
+  display: inline;
+}
+header li a:hover {
+  border-bottom: 2px solid #ffffff;
+}
+header .branding {
+  float: left;
+  margin-top: 0.6em;
+}
+header .branding h1 {
+  margin: 0;
+}
+header nav {
+  float: right;
+  margin-top: 1.5em;
+}
+
+.highlight {
+  font-weight: bold;
+  color: red;
+}
+main {
+  background-color: #f1f1f1;
+}
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 95%;
+  margin: auto;
+  margin-bottom: 2em;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+  padding: 1em;
+  background: #ffffff;
+}
+#register-border {
+  padding: 0.2em 0 0 1.5em;
+  color: #35424a;
+}
+.detail-container {
+  text-align: left;
+  padding: 1em;
+}
+.detail-container h3 {
+  padding: 1em 0 1em 0;
+}
+.detail-container p {
+  padding: 0.5em 0 0.5em 0;
+}
+.mcontainer {
+  color: #35424a;
+  border: 1px solid #ccc;
+  padding: 1em;
+  width: 90%;
+  margin: auto;
+  border-radius: 5px;
+  margin-bottom: 2em;
+}
+.mcontainer h2 {
+  background: #35424a;
+  color: #ffffff;
+  padding: 0.2em;
+}
+.mcontainer p {
+  padding: 0.1em;
+}
+.mcontainer a {
+  text-decoration: none;
+}
+
+input[type='email'],
+input[type='password'] {
+  width: 100%;
+  padding: 1em;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+input[type='email']:focus,
+input[type='password']:focus {
+  outline: none;
+}
+.signupbtn {
+  color: #ffffff;
+  padding: 0.8em 0.8em;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+  background: #35424a;
+  cursor: pointer;
+}
+.signupbtn:hover {
+  background: #242c31;
+}
+.already-user {
+  display: inline-block;
+  margin: 0.7em 11em;
+}
+.already-user a {
+  color: red;
+}
+.fcontainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: #35424a;
+  color: #ffffff;
+  font-size: 13px;
+  padding-left: 4em;
+}
+.fcontainer ul {
+  list-style-type: none;
+}
+.fcontainer ul li a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 0.2em 0.2em 0.2em;
+  color: #ffffff;
+}
+.fcontainer ul li a:hover {
+  text-decoration: underline;
+}
+.fcontainer h3,
+.fcontainer p {
+  margin-top: 1em;
+}
+.fcontainer .pad {
+  margin-left: 6%;
+}
+.social a {
+  color: #ffffff;
+  text-decoration: none;
+}
