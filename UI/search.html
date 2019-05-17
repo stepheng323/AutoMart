@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Post car sale advertisement</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/search.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="branding">
+          <h1>
+            <a href="index.html"><span class="highlight">Auto</span>Mart</a>
+          </h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="postad.html">Sell Car</a></li>
+            <li><a href="search.html">Buy car</a></li>
+            <li>
+              <a href="signin.html"><i class="fas fa-user"></i> Log in</a>
+            </li>
+            <li><a href="signup.html">Join</a></li>
+
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="main">
+      <div class="main-container">
+        <div class="mform">
+          <form>
+            <h2>Lets find your Car</h2>
+            <div>
+              <label>Manufacturer*</label>
+              <select id="manufacturer" class="select-css">
+                <option value="">Please Select</option>
+              </select>
+            </div>
+
+            <div>
+              <label>Model</label>
+              <select id="model" class="select-css">
+                <option value="">Please Select</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="label-year">Year</label>
+              <select id="year" class="select-css year year-min">
+                <option value="" required="required">From</option>
+              </select>
+              <select id="year" class="select-css year year-max">
+                <option value="" required="required">To</option>
+              </select>
+            </div>
+
+            <div>
+              <label>Condition*</label>
+              <select id="condition" class="select-css">
+                <option value="new">Please Select</option>
+                <option value="new">Please Select</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="label-price">Price</label>
+              <input
+                type="number"
+                class="select-css price price-min"
+                placeholder="MIN"
+              />
+              <input
+                type="number"
+                class="select-css price price-max"
+                placeholder="MAX"
+              />
+            </div>
+
+            <input type="submit" class="select-css" value="Search" />
+          </form>
+        </div>
+        <div class="bigtext">
+          <h1>
+            We make finding
+            <div>your next car</div>
+            an easy job
+          </h1>
+        </div>
+      </div>
+    </section>
+    <section id="newsletter">
+      <div class="news-container">
+        <h3>Subscribe To Our Newsletter</h3>
+        <form>
+          <input type="email" placeholder="Enter your email" />
+          <button type="submit" class="news-btn">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="fcontainer">
+      <div class="one">
+        <h3>Help and Support</h3>
+        <p>
+          <i class="far fa-clock fa-1x"></i> Mon-Fri: 8am-5pm <br /><span
+            class="pad"
+            >Sat: 10am-5pm</span
+          >
+        </p>
+        <i class="fas fa-phone fa-1x"></i> +2348162511023<br /><span
+          class="pad"
+        >
+          +2348067892221</span
+        >
+      </div>
+      <div class="two">
+        <ul>
+          <li><a href="index.html">Privacy Statement</a></li>
+          <li><a href="contact.html">Terms & Conditions</a></li>
+          <li><a href="#">Career</a></li>
+          <li><a href="dealer.html">Become a Dealer</a></li>
+        </ul>
+      </div>
+      <div class="three">
+        <ul>
+          <li><a href="index.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="safetips">Safe Buiying Tips</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="social">
+        <h3>Social Media</h3>
+        <p>
+          <a href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
+        </p>
+        <p>
+          <a href="#"><i class="fab fa-twitter-square"></i> Twitter</a>
+        </p>
+        <p>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        </p>
+      </div>
+      <div>
+        <P>2019 &copy; All rights reserved</P>
+      </div>
+    </footer>
+  </body>
+</html>
