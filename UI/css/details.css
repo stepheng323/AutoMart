@@ -1,0 +1,177 @@
+body {
+  font: 16px/1.5 Arial, Helvetica, sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+* {
+  box-sizing: border-box;
+}
+.container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+header {
+  background: #35424a;
+  color: #fff;
+  min-height: 4.5em;
+}
+header a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+}
+
+header ul {
+  margin: 0px;
+  padding: 0px;
+}
+header li {
+  display: inline;
+}
+header li a:hover {
+  border-bottom: 2px solid #ffffff;
+}
+header .branding {
+  float: left;
+  margin-top: 0.6em;
+}
+header .branding h1 {
+  margin: 0;
+}
+header nav {
+  float: right;
+  margin-top: 1.5em;
+}
+
+.highlight {
+  font-weight: bold;
+  color: red;
+}
+.main {
+  background-color: #f1f1f1;
+  overflow: hidden;
+}
+.main-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 1em;
+  width: 80%;
+  margin: auto;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+.main-container .details {
+  background: #ffffff;
+  padding: 1em;
+}
+.main-container .details img {
+  width: 90%;
+  margin: auto;
+  margin: 0.5em;
+}
+.main-container .details .heading {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  border-radius: 4px;
+  margin: 0;
+  padding: 1em;
+  color: #35424a;
+}
+.overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.overview p {
+  font-size: 12px;
+}
+.overview h5 {
+  font-weight: bold;
+  margin: 0;
+}
+.btn-placement {
+  margin-top: 2em;
+}
+.btn {
+  padding: 12px 12px;
+  margin: 0 0.5em;
+  border: 0;
+  background: #35424a;
+  color: #fff;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+}
+.btn:hover {
+  background: #283136;
+}
+.report {
+  background: red;
+}
+.report:hover {
+  background: rgb(143, 13, 13);
+}
+.main-container .contact {
+  background: #ffffff;
+  padding: 0.5em;
+}
+input[type='email'],
+input[type='text'],
+input[type='tel'],
+input[type='number'] {
+  width: 100%;
+  padding: 1em;
+  margin: 8px 0 22px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+input[type='email']:focus,
+input[type='password']:focus {
+  outline: none;
+}
+.signinbtn {
+  color: #ffffff;
+  padding: 0.8em 0.8em;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+  background: #35424a;
+  cursor: pointer;
+  margin-top: 1em;
+  transition-duration: 0.4s;
+}
+.signinbtn:hover {
+  background: #283136;
+}
+
+.fcontainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: #35424a;
+  color: #ffffff;
+  font-size: 13px;
+  padding-left: 4em;
+}
+.fcontainer ul {
+  list-style-type: none;
+}
+.fcontainer ul li a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 0.2em 0.2em 0.2em;
+  color: #ffffff;
+}
+.fcontainer ul li a:hover {
+  text-decoration: underline;
+}
+.fcontainer h3,
+.fcontainer p {
+  margin-top: 1em;
+}
+.fcontainer .pad {
+  margin-left: 6%;
+}
+.social a {
+  color: #ffffff;
+  text-decoration: none;
+}
