@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"scripts": {
 		"start": "sudo node_modules/.bin/nodemon app.js --exec babel-node --",
-		"test": "mocha --exit --require @babel/register"
+		"test": " nyc mocha --exit --require @babel/register",
+		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"keywords": [
 		"API",
@@ -25,10 +26,12 @@
 		"@babel/register": "^7.4.4",
 		"chai": "^4.2.0",
 		"chai-http": "^4.3.0",
+		"coveralls": "^3.0.3",
 		"eslint": "^5.16.0",
 		"eslint-config-airbnb-base": "^13.1.0",
 		"eslint-plugin-import": "^2.17.3",
 		"mocha": "^6.1.4",
-		"nodemon": "^1.19.0"
+		"nodemon": "^1.19.0",
+		"nyc": "^14.1.1"
 	}
 }
