@@ -1,12 +1,12 @@
-const chai = require('chai');
-// eslint-disable-next-line prefer-destructuring
-const expect = require('chai').expect;
+/* eslint-disable no-undef */
+import chai from 'chai';
+import 'chai/register-expect';
+import chaihttp from 'chai-http';
+import app from '../app';
 
-chai.use(require('chai-http'));
+chai.use(chaihttp);
 
-const app = require('../app');
-
-describe('Signup', () => {
+describe('Auth', () => {
   const mock = {
     email: 'stepheng323@gmail.com',
     first_name: 'abioduon',
