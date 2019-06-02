@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
-const Joi = require('joi');
-const users = require('../db/users');
+import Joi from 'joi';
+import users from '../db/users';
 
 const schema = {
   id: Joi.number(),
@@ -51,4 +50,4 @@ class Controller {
 }
 
 const controller = new Controller();
-module.exports = controller;
+export default controller;
