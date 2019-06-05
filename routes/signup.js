@@ -5,6 +5,6 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
-router.post('/api/v1/auth/signup', controller.postUser);
+router.post('/api/v1/auth/signup', controller.createUser);
 
 export default router;
