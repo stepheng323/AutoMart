@@ -8,7 +8,7 @@ chai.use(chaihttp);
 
 describe('Auth', () => {
   const mock = {
-    email: 'stepheng323@gmail.com',
+    email: 'stepheng1323@gmail.com',
     first_name: 'abioduon',
     last_name: 'oyebanji',
     password: 'olaTUNDE',
