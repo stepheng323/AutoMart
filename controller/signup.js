@@ -12,7 +12,7 @@ const schema = {
   is_admin: Joi.boolean().required(),
 };
 
-class Controller {
+class Signup {
   postUser(req, res) {
     const result = Joi.validate(req.body, schema);
 
@@ -36,8 +36,8 @@ class Controller {
 
     users.push(user);
 
-    res.status(200).send({
-      status: 200,
+    res.status(201).send({
+      status: 2001,
       data: {
         token: '45erkjherht45495783',
         id: user.id,
@@ -49,5 +49,5 @@ class Controller {
   }
 }
 
-const controller = new Controller();
-export default controller;
+const signup = new Signup();
+export default signup;
