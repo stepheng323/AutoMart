@@ -21,7 +21,7 @@ describe('Auth', () => {
       .post('/api/v1/auth/signup')
       .send(mock)
       .end((err, res) => {
-        expect(res.body).to.have.status(200);
+        expect(res.body).to.have.status(201);
         expect(res.body).to.be.a('object');
         expect(res.body.data).to.have.a.property('id');
         expect(res.body.data)
