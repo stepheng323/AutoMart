@@ -37,7 +37,7 @@ class Signup {
     users.push(user);
 
     res.status(201).send({
-      status: 2001,
+      status: 201,
       data: {
         token: '45erkjherht45495783',
         id: user.id,
