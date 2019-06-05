@@ -1,5 +1,5 @@
 {
-	"name": "signup",
+	"name": "Automart",
 	"version": "1.0.0",
 	"description": "API endpoints to power front end pages",
 	"main": "app.js",
