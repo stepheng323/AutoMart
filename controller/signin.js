@@ -36,7 +36,7 @@ class Signin {
               email: found.email,
               id: found.id,
             },
-            'thefellowship',
+            process.env.TOKEN_SECRET,
             { expiresIn: '1hr' },
           );
           return res.status(200).json({
