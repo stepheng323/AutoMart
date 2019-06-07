@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const users = [
   {
     id: 1,
