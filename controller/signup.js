@@ -56,7 +56,7 @@ class Signup {
           email: user.email,
           id: user.id,
         },
-        'thefellowship',
+        process.env.TOKEN_SECRET,
         { expiresIn: '1hr' },
       );
       return res.status(201).json({
