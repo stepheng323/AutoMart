@@ -27,8 +27,8 @@ class UpdateOrders {
     }
     if (order.status === 'pending') {
       order.new_price_offered = req.body.new_price_offered;
-      res.status(200).json({
-        status: 200,
+      res.status(201).json({
+        status: 201,
         data: {
           id: order.id,
           car_id: order.car_id,
@@ -38,8 +38,8 @@ class UpdateOrders {
         },
       });
     } else {
-      res.status(333).json({
-        status: 333,
+      res.status(403).json({
+        status: 403,
         error: 'Order can only be updated when your status is pending',
       });
     }
