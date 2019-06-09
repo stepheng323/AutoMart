@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import uuidv4 from 'uuid/v4';
 import { orders, orderSchema } from '../db/orders';
 import { cars } from '../db/cars';
 
@@ -19,7 +18,7 @@ class CreateOrders {
     const decoded = req.userData;
 
     const order = {
-      id: uuidv4(),
+      id: orders.length + 1,
       buyer: decoded.id,
       car_id: req.body.car_id,
       amount: req.body.amount,
