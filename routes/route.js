@@ -15,6 +15,6 @@ router.post('/api/v1/auth/signup', signup.createUser);
 router.post('/api/v1/auth/signin', signin.signIn);
 router.post('/api/v1/car', checkAuth, carscreate.createCar);
 router.post('/api/v1/order', checkAuth, orders.createOrder);
-router.patch('/api/v1/order/:id/price', ordersUpdate.updateOrders);
+router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
 
 export default router;
