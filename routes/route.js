@@ -6,6 +6,7 @@ import carscreate from '../controller/createCar';
 import orders from '../controller/postOrder';
 import checkAuth from '../middleware/checkAuth';
 import ordersUpdate from '../controller/updateOrder';
+import updatePrice from '../controller/updatePrice';
 
 const router = express.Router();
 router.use(express.json());
@@ -16,5 +17,6 @@ router.post('/api/v1/auth/signin', signin.signIn);
 router.post('/api/v1/car', checkAuth, carscreate.createCar);
 router.post('/api/v1/order', checkAuth, orders.createOrder);
 router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
+router.patch('/api/v1/car/:id/price', updatePrice.priceUpdate);
 
 export default router;

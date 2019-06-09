@@ -39,7 +39,7 @@ class UpdateOrders {
       });
     } else {
       res.status(403).json({
-        status: 404,
+        status: 403,
         error: 'Order can only be updated when your status is pending',
       });
     }
