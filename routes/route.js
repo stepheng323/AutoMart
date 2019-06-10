@@ -7,6 +7,7 @@ import orders from '../controller/postOrder';
 import checkAuth from '../middleware/checkAuth';
 import ordersUpdate from '../controller/updateOrder';
 import updatePrice from '../controller/updatePrice';
+import view from '../controller/view';
 
 const router = express.Router();
 router.use(express.json());
@@ -18,6 +19,7 @@ router.post('/api/v1/car', checkAuth, carscreate.createCar);
 router.post('/api/v1/order', checkAuth, orders.createOrder);
 router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
 router.patch('/api/v1/car/:id/price', checkAuth, updatePrice.priceUpdate);
-router.patch('/api/v1/car/:id/status', updatePrice.sold);
+router.patch('/api/v1/car/:id/status', checkAuth, updatePrice.sold);
+router.get('/api/v1/car/:id', view.specific);
 
 export default router;
