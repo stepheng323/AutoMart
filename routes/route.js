@@ -22,5 +22,6 @@ router.patch('/api/v1/car/:id/price', checkAuth, updatePrice.priceUpdate);
 router.patch('/api/v1/car/:id/status', checkAuth, updatePrice.sold);
 router.get('/api/v1/car/:id', view.specific);
 router.get('/api/v1/car', view.unsold);
+router.get('/api/v1/car', view.priceRange);
 
 export default router;
