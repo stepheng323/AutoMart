@@ -14,9 +14,11 @@ class UpdatePrice {
       });
       return;
     }
-    const owner = users.find(u => u.id === car.owner);
+    // checking to see if the user is the car owner
+    const decoded = req.userData;
+    const user = users.find(u => u.id === decoded.id);
 
-    if (!owner) {
+    if (user.id !== car.owner) {
       res.status(404).json({
         status: 404,
         error: 'you can only update cars you posted',
@@ -41,7 +43,7 @@ class UpdatePrice {
         status: 200,
         data: {
           id: car.id,
-          email: owner.email,
+          email: user.email,
           created_on: car.created_on,
           manufacturer: car.manufacturer,
           model: car.model,
@@ -69,9 +71,10 @@ class UpdatePrice {
       });
       return;
     }
-    const owner = users.find(u => u.id === car.owner);
+    const decoded = req.userData;
+    const user = users.find(u => u.id === decoded.id);
 
-    if (!owner) {
+    if (user.id !== car.owner) {
       res.status(404).json({
         status: 404,
         error: 'you can only update cars you posted',
@@ -96,7 +99,7 @@ class UpdatePrice {
         status: 201,
         data: {
           id: car.id,
-          email: owner.email,
+          email: user.email,
           created_on: car.created_on,
           manufacturer: car.manufacturer,
           model: car.model,
