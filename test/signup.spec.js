@@ -20,8 +20,35 @@ describe('Auth', () => {
         is_admin: 'false',
       })
       .end((err, res) => {
-        expect(res.body).to.have.status(201);
+        expect(res.body)
+          .to.have.status(201)
+          .and.to.be.a('number');
         expect(res.body).to.be.a('object');
+        expect(res.body.data).to.have.a.property('id');
+        expect(res.body.data)
+          .to.have.a.property('first_name')
+          .and.to.be.a('string');
+        expect(res.body.data)
+          .to.have.a.property('last_name')
+          .and.to.be.a('string');
+        expect(res.body.data)
+          .to.have.a.property('email')
+          .and.to.be.a('string');
+      });
+  });
+  it('sign a user in', () => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'steiipheng323@gmail.com',
+        password: 'olaTUNDE',
+      })
+      .end((err, res) => {
+        expect(res.body).to.be.a('object');
+        expect(res.body.data)
+          .to.have.a.property('token')
+          .and.to.be.a('string');
         expect(res.body.data).to.have.a.property('id');
         expect(res.body.data)
           .to.have.a.property('first_name')

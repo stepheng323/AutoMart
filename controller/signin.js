@@ -51,14 +51,16 @@ class Signin {
           });
         }
         return res.status(401).json({
+          status: 401,
           message: 'auth failed',
         });
       });
-    } else {
+    } /* else {
       res.status(401).json({
+        status: 401,
         message: 'auth failed',
       });
-    }
+    } */
   }
 }
 

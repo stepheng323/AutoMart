@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { orders } from '../db/orders';
+import users from '../db/users';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
@@ -9,6 +10,16 @@ class UpdateOrders {
       res.status(404).json({
         status: 404,
         error: 'order not found',
+      });
+      return;
+    }
+    const decoded = req.userData;
+    const user = users.find(u => u.id === decoded.id);
+
+    if (user.id !== order.buyer) {
+      res.status(404).json({
+        status: 404,
+        error: 'you can only update orders you posted',
       });
       return;
     }
@@ -40,7 +51,7 @@ class UpdateOrders {
     } else {
       res.status(403).json({
         status: 403,
-        error: 'Order can only be updated when your status is pending',
+        error: 'Order can only be updated when the status is pending',
       });
     }
   }
