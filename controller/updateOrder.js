@@ -1,6 +1,5 @@
 import Joi from 'joi';
 import { orders } from '../db/orders';
-import users from '../db/users';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
@@ -14,9 +13,8 @@ class UpdateOrders {
       return;
     }
     const decoded = req.userData;
-    const user = users.find(u => u.id === decoded.id);
 
-    if (user.id !== order.buyer) {
+    if (decoded.id !== order.buyer) {
       res.status(404).json({
         status: 404,
         error: 'you can only update orders you posted',
