@@ -16,9 +16,8 @@ class UpdatePrice {
     }
     // checking to see if the user is the car owner
     const decoded = req.userData;
-    const user = users.find(u => u.id === decoded.id);
 
-    if (user.id !== car.owner) {
+    if (decoded.id !== car.owner) {
       res.status(404).json({
         status: 404,
         error: 'you can only update cars you posted',
@@ -43,7 +42,7 @@ class UpdatePrice {
         status: 200,
         data: {
           id: car.id,
-          email: user.email,
+          email: decoded.email,
           created_on: car.created_on,
           manufacturer: car.manufacturer,
           model: car.model,
