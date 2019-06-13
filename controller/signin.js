@@ -55,12 +55,7 @@ class Signin {
           message: 'auth failed',
         });
       });
-    } /* else {
-      res.status(401).json({
-        status: 401,
-        message: 'auth failed',
-      });
-    } */
+    }
   }
 }
 
