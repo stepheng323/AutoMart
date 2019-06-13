@@ -23,7 +23,7 @@ class CarsCreate {
       owner: decoded.id,
       created_on: new Date(),
       state: req.body.state,
-      status: 'available',
+      status: req.body.status,
       price: req.body.price,
       manufacturer: req.body.manufacturer,
       model: req.body.model,
