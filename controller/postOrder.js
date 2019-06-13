@@ -26,6 +26,12 @@ class CreateOrders {
     };
     orders.push(order);
     const found = cars.find(c => c.id === order.car_id);
+    if (!found) {
+      res.status(404).json({
+        status: 404,
+        error: 'car not found',
+      });
+    }
 
     res.status(201).json({
       status: 201,
