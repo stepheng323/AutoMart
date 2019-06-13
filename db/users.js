@@ -6,7 +6,7 @@ const users = [
     last_name: 'oyebanji',
     password: 'olaTUNDE',
     address: '13 omolola close',
-    isAdmin: true,
+    is_admin: true,
   },
 ];
 
