@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
-
+import cloudinary from 'cloudinary';
 import { cars, carSchema } from '../db/cars';
 
 dotenv.config();
@@ -17,32 +17,49 @@ class CarsCreate {
       });
       return;
     }
-    const decoded = req.userData;
-    const car = {
-      id: cars.length + 1,
-      owner: decoded.id,
-      created_on: new Date(),
-      state: req.body.state,
-      status: req.body.status,
-      price: req.body.price,
-      manufacturer: req.body.manufacturer,
-      model: req.body.model,
-      body_type: req.body.body_type,
-    };
-    cars.push(car);
-
-    res.status(201).json({
-      status: 201,
-      data: {
-        id: car.id,
-        email: decoded.email,
-        created_on: car.created_on,
-        manufacturer: car.manufacturer,
-        model: car.model,
-        price: car.price,
-        state: car.state,
-        status: car.status,
-      },
+    if (!req.file) {
+      res.status(400).json({
+        status: 400,
+        error: 'upload atleast on car image',
+      });
+      return;
+    }
+    cloudinary.uploader.upload(req.file.path, (results) => {
+      if (results.secure_url !== undefined) {
+        const decoded = req.userData;
+        const car = {
+          id: cars.length + 1,
+          owner: decoded.id,
+          created_on: new Date(),
+          state: req.body.state,
+          status: req.body.status,
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          model: req.body.model,
+          body_type: req.body.body_type,
+          product_image: results.secure_url,
+        };
+        cars.push(car);
+        res.status(201).json({
+          status: 201,
+          data: {
+            id: car.id,
+            email: decoded.email,
+            created_on: car.created_on,
+            manufacturer: car.manufacturer,
+            model: car.model,
+            price: car.price,
+            state: car.state,
+            status: car.status,
+            product_image: car.product_image,
+          },
+        });
+      } else {
+        res.status(500).json({
+          status: 500,
+          error: 'oops! upload fails, try again',
+        });
+      }
     });
   }
 }
