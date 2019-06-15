@@ -9,7 +9,8 @@ const carSchema = {
   price: joi.number().required(),
   manufacturer: joi.string().required(),
   model: joi.string(),
-  body_type: joi.string().required(),
+  body_type: joi.string(),
+  product_image: joi.string(),
 };
 
 const cars = [
