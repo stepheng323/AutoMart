@@ -2,7 +2,7 @@ import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import users from '../db/users';
+import users from '../model/users';
 
 class Signin {
   // eslint-disable-next-line class-methods-use-this

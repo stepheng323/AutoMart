@@ -1,6 +1,6 @@
 import joi from 'joi';
-import { cars } from '../db/cars';
-import users from '../db/users';
+import { cars } from '../model/cars';
+import users from '../model/users';
 
 class UpdatePrice {
   // eslint-disable-next-line class-methods-use-this

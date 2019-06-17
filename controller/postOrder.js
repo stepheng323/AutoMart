@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { orders, orderSchema } from '../db/orders';
-import { cars } from '../db/cars';
+import { orders, orderSchema } from '../model/orders';
+import { cars } from '../model/cars';
 
 class CreateOrders {
   // eslint-disable-next-line class-methods-use-this

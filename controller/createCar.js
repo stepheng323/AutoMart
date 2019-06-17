@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
-import { cars, carSchema } from '../db/cars';
+import { cars, carSchema } from '../model/cars';
 
 dotenv.config();
 

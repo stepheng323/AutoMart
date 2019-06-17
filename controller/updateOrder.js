@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { orders } from '../db/orders';
+import { orders } from '../model/orders';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
