@@ -1,5 +1,5 @@
-import { cars } from '../db/cars';
-import users from '../db/users';
+import { cars } from '../model/cars';
+import users from '../model/users';
 
 class View {
   // eslint-disable-next-line class-methods-use-this
