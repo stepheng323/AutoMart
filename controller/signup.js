@@ -1,20 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import Joi from 'joi';
+import pg from 'pg';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import users from '../db/users';
+import dotenv from 'dotenv';
+import { userSchema } from '../model/users';
+
+dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    const userSchema = {
-      id: Joi.number(),
-      first_name: Joi.string().required(),
-      last_name: Joi.string().required(),
-      email: Joi.string().required(),
-      password: Joi.string().required(),
-      address: Joi.string().required(),
-      is_admin: Joi.boolean().required(),
-    };
     const result = Joi.validate(req.body, userSchema);
 
     if (result.error) {
@@ -24,50 +19,84 @@ class Signup {
       });
       return;
     }
-    const found = users.find(e => e.email === req.body.email);
+    const config = {
+      user: 'abiodun',
+      database: process.env.DATABASE,
+      password: process.env.PASSWORD,
+      port: process.env.DB_PORT,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    };
 
-    if (found) {
-      res.status(409).json({
-        status: 409,
-        message: 'email has been used ',
-      });
-      return;
-    }
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+    const pool = new pg.Pool(config);
+
+    pool.on('connect', () => {
+      // eslint-disable-next-line no-console
+      console.log('connected to the Database');
+    });
+
+    pool.connect((err, client, done) => {
       if (err) {
-        return res.status(500).json({
-          error: err,
+        res.status(400).json({
+          status: 400,
+          error: 'could not connect to the database',
         });
+        return;
       }
+      bcrypt.hash(req.body.password, 10, (unhash, hash) => {
+        if (unhash) {
+          res.status(500).json({
+            error: unhash,
+          });
+          return;
+        }
 
-      const user = {
-        id: users.length + 1,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        password: hash,
-        address: req.body.address,
-        is_admin: req.body.is_admin,
-      };
+        const user = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: hash,
+          address: req.body.address,
+          is_admin: req.body.is_admin,
+        };
+        const query = 'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const value = [
+          user.first_name,
+          user.last_name,
+          user.email,
+          user.password,
+          user.address,
+          user.is_admin,
+        ];
 
-      users.push(user);
-      const token = jwt.sign(
-        {
-          email: user.email,
-          id: user.id,
-        },
-        process.env.TOKEN_SECRET,
-        { expiresIn: '1hr' },
-      );
-      return res.status(201).json({
-        status: 201,
-        data: {
-          token,
-          id: user.id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-        },
+        client.query(query, value, (queryErr, queryResult) => {
+          done();
+          if (queryErr) {
+            return res.status(400).json({
+              status: 400,
+              error: queryErr.detail,
+            });
+          }
+
+          const token = jwt.sign(
+            {
+              email: queryResult.rows[0].email,
+              id: queryResult.rows[0].id,
+            },
+            process.env.TOKEN_SECRET,
+            { expiresIn: '1hr' },
+          );
+          return res.status(201).json({
+            status: 201,
+            data: {
+              token,
+              id: queryResult.rows[0].id,
+              first_name: queryResult.rows[0].first_name,
+              last_name: queryResult.rows[0].last_name,
+              email: queryResult.rows[0].email,
+            },
+          });
+        });
       });
     });
   }
