@@ -1,8 +1,7 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
-import pg from 'pg';
-import { carSchema } from '../model/cars';
+import { cars, carSchema } from '../model/cars';
 
 dotenv.config();
 
@@ -21,91 +20,46 @@ class CarsCreate {
     if (!req.file) {
       res.status(400).json({
         status: 400,
-        error: 'upload atleast one tess car image',
+        error: 'upload atleast on car image',
       });
       return;
     }
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
-    pool.connect((err, client, done) => {
-      if (err) {
-        // eslint-disable-next-line no-console
-        console.log('unable to connect to pool');
-        return;
+    cloudinary.uploader.upload(req.file.path, (results) => {
+      if (results.secure_url !== undefined) {
+        const decoded = req.userData;
+        const car = {
+          id: cars.length + 1,
+          owner: decoded.id,
+          created_on: new Date(),
+          state: req.body.state,
+          status: req.body.status,
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          model: req.body.model,
+          body_type: req.body.body_type,
+          product_image: results.secure_url,
+        };
+        cars.push(car);
+        res.status(201).json({
+          status: 201,
+          data: {
+            id: car.id,
+            email: decoded.email,
+            created_on: car.created_on,
+            manufacturer: car.manufacturer,
+            model: car.model,
+            price: car.price,
+            state: car.state,
+            status: car.status,
+            product_image: car.product_image,
+          },
+        });
+      } else {
+        res.status(500).json({
+          status: 500,
+          error: 'oops! upload fails, try again',
+        });
       }
-      cloudinary.uploader.upload(req.file.path, (results) => {
-        if (results.secure_url !== undefined) {
-          const decoded = req.userData;
-          const car = {
-            owner: decoded.id,
-            created_on: new Date(),
-            state: req.body.state,
-            status: 'available',
-            price: req.body.price,
-            manufacturer: req.body.manufacturer,
-            model: req.body.model,
-            body_type: req.body.body_type,
-            car_image: results.secure_url,
-          };
-          const query = 'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
-          const values = [
-            car.owner,
-            car.created_on,
-            car.state,
-            car.status,
-            car.price,
-            car.manufacturer,
-            car.model,
-            car.body_type,
-            car.car_image,
-          ];
-          client.query(query, values, (queryError, queryResult) => {
-            done();
-            if (queryError) {
-              res.status(400).json({
-                status: 400,
-                state: console.log(queryError),
-              });
-              return;
-            }
-
-            const dbResult = queryResult.rows[0];
-
-            res.status(201).json({
-              status: 201,
-              data: {
-                id: dbResult.id,
-                email: decoded.email,
-                created_on: dbResult.created_on,
-                manufacturer: dbResult.manufacturer,
-                model: dbResult.model,
-                price: dbResult.price,
-                state: dbResult.state,
-                status: dbResult.status,
-                car_image: dbResult.car_image,
-              },
-            });
-          });
-        } else {
-          res.status(500).json({
-            status: 500,
-            error: 'oops! upload failed, try again',
-          });
-        }
-      });
     });
   }
 }
