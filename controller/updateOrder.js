@@ -46,7 +46,6 @@ class UpdateOrders {
       const value = [req.params.id];
 
       client.query(query, value, (queryError, results) => {
-        done();
         if (queryError) {
           res.status(500).json({
             status: 500,
@@ -77,7 +76,6 @@ class UpdateOrders {
           const value2 = [req.body.new_price_offered, req.params.id];
 
           client.query(query2, value2, (queryError2, queryResult2) => {
-            done();
             const order2 = queryResult2.rows[0];
             if (queryError2) {
               res.status(500).json({
@@ -103,6 +101,7 @@ class UpdateOrders {
             error: 'you can only update pending order',
           });
         }
+        done();
       });
     });
   }
