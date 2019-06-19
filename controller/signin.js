@@ -52,8 +52,14 @@ class Signin {
           });
           return;
         }
+        const user = queryResult.rows[0];
+        if (!user) {
+          res.status(400).json({
+            status: 400,
+            error: 'invalid email or address',
+          });
+        }
         if (queryResult.rows[0]) {
-          const user = queryResult.rows[0];
           bcrypt.compare(req.body.password, user.password, (bcryptErr, correct) => {
             if (bcryptErr) {
               res.status(401).json({
