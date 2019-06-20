@@ -22,9 +22,9 @@ router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
 router.patch('/api/v1/car/:id/price', checkAuth, updatePrice.priceUpdate);
 router.patch('/api/v1/car/:id/status', checkAuth, updatePrice.sold);
 router.get('/api/v1/car/:id', view.specific);
-router.get('/api/v1/car', checkAuth, view.soldOrAvailable);
-router.get('/api/v1/car', view.unsold);
-router.get('/api/v1/car', view.priceRange);
-router.delete('/api/v1/car/:car_id', checkAuth, view.deleteCar);
+// router.get('/api/v1/car', checkAuth, view.soldOrAvailable);
+// router.get('/api/v1/car', view.unsold);
+// router.get('/api/v1/car', view.priceRange);
+// router.delete('/api/v1/car/:car_id', checkAuth, view.deleteCar);
 
 export default router;
