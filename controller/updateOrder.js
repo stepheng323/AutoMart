@@ -47,16 +47,16 @@ class UpdateOrders {
 
       client.query(query, value, (queryError, results) => {
         if (queryError) {
-          res.status(500).json({
-            status: 500,
-            error: 'server error',
+          res.status(400).json({
+            status: 400,
+            error: `${queryError}`,
           });
           return;
         }
         const decoded = req.userData;
         const order = results.rows[0];
 
-        if (!order.id) {
+        if (!order) {
           res.status(404).json({
             status: 404,
             error: 'order not found',
@@ -78,8 +78,8 @@ class UpdateOrders {
           client.query(query2, value2, (queryError2, queryResult2) => {
             const order2 = queryResult2.rows[0];
             if (queryError2) {
-              res.status(500).json({
-                status: 500,
+              res.status(400).json({
+                status: 400,
                 error: `${queryError2}`,
               });
               return;
