@@ -138,14 +138,14 @@ class UpdatePrice {
 
     pool.on('connect', () => {
       // eslint-disable-next-line no-console
-      console.log('connected to the Database');
+      console.log('Connected to the Database');
     });
 
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
           status: 400,
-          error: 'could not connect to the database',
+          error: 'Could not connect to the database',
         });
         return;
       }
@@ -154,9 +154,9 @@ class UpdatePrice {
 
       client.query(query, value, (queryError, results) => {
         if (queryError) {
-          res.status(500).json({
-            status: 500,
-            error: 'server error',
+          res.status(400).json({
+            status: 400,
+            error: `${queryError}`,
           });
           return;
         }
