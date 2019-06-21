@@ -197,22 +197,53 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   priceRange(req, res) {
-    const available = cars.filter(a => a.status === req.query.status);
-    const filtered = available.filter(
-      f => f.price <= req.query.max_price && f.price >= req.query.min_price,
-    );
-    if (!filtered) {
-      res.status(404).json({
-        status: 404,
-        error: 'no cars found',
+    const config = {
+      user: 'abiodun',
+      database: process.env.DATABASE,
+      password: process.env.PASSWORD,
+      port: process.env.DB_PORT,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    };
+
+    const pool = new pg.Pool(config);
+
+    pool.on('connect', () => {
+      // eslint-disable-next-line no-console
+      console.log('connected to the database');
+    });
+    pool.connect((err, client, done) => {
+      if (err) {
+        res.status(500).json({
+          status: 500,
+          error: 'could not connect to the pool',
+        });
+        return;
+      }
+      const query4 = 'SELECT * FROM cars WHERE status = $1 OR price IN($2, $3)';
+      const value4 = [req.query.status, req.query.min_price, req.query.max_price];
+      client.query(query4, value4, (error, results) => {
+        done();
+        if (error) {
+          res.status(400).json({
+            status: 400,
+            error: `${error}`,
+          });
+          return;
+        }
+        const filtered = results.rows;
+        if (!filtered) {
+          res.status(404).json({
+            status: 404,
+            error: 'no cars found',
+          });
+          return;
+        }
+        res.status(200).json({
+          status: 200,
+          filtered,
+        });
       });
-      return;
-    }
-    res.status(200).json({
-      status: 200,
-      data: {
-        filtered,
-      },
     });
   }
 
