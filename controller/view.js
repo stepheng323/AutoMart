@@ -1,6 +1,4 @@
 import pg from 'pg';
-import users from '../model/users';
-import cars from '../model/cars';
 
 class View {
   // eslint-disable-next-line class-methods-use-this
@@ -249,32 +247,76 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   deleteCar(req, res) {
-    const decoded = req.userData;
-    const user = users.find(u => u.id === decoded.id);
+    const config = {
+      user: 'abiodun',
+      database: process.env.DATABASE,
+      password: process.env.PASSWORD,
+      port: process.env.DB_PORT,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    };
 
-    if (user.is_admin) {
-      const car = cars.find(c => c.id === parseInt(req.params.car_id, 10));
-      if (!car) {
-        res.status(404).json({
-          status: 404,
-          error: 'car not found',
+    const pool = new pg.Pool(config);
+
+    pool.on('connect', () => {
+      // eslint-disable-next-line no-console
+      console.log('connected to the database');
+    });
+    pool.connect((err, client, done) => {
+      if (err) {
+        res.status(500).json({
+          status: 500,
+          error: 'could not connect to the pool',
         });
         return;
       }
+      const decoded = req.userData;
+      const query5 = 'SELECT is_admin FROM users WHERE id = $1';
+      const value5 = [decoded.id];
 
-      const index = cars.indexOf(car);
-      cars.splice(index, 1);
+      client.query(query5, value5, (error, results) => {
+        if (error) {
+          res.status(500).json({
+            status: 500,
+            error: `${error}`,
+          });
+          return;
+        }
+        const user = results.rows[0];
+        if (user.is_admin) {
+          const query = 'DELETE FROM cars WHERE id = $1 RETURNING *';
+          const value = [req.params.car_id];
 
-      res.status(200).json({
-        status: 200,
-        data: 'Car Ad succefully deleted',
+          client.query(query, value, (queryError, queryResults) => {
+            done();
+            if (queryError) {
+              res.status(500).json({
+                status: 500,
+                error: `${queryError}`,
+              });
+              return;
+            }
+            if (!queryResults.rows[0]) {
+              res.status(400).json({
+                status: 400,
+                error: 'car not found',
+              });
+              return;
+            }
+
+            res.status(200).json({
+              status: 200,
+              data: 'Car ad succefully deleted',
+            });
+          });
+        } else {
+          res.status(403).json({
+            status: 403,
+            data: 'Only an admin can delete cars ad',
+          });
+        }
       });
-    } else {
-      res.status(403).json({
-        status: 403,
-        error: 'Only admin can delete a car',
-      });
-    }
+    });
   }
 }
 const view = new View();
