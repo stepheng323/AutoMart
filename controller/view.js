@@ -61,34 +61,81 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   soldOrAvailable(req, res, next) {
-    const decoded = req.userData;
-    const user = users.find(u => u.id === decoded.id);
-    if (!user) {
-      res.status(403).json({
-        status: 403,
-        error: 'you must be logged in',
-      });
-      return;
-    }
+    const config = {
+      user: 'abiodun',
+      database: process.env.DATABASE,
+      password: process.env.PASSWORD,
+      port: process.env.DB_PORT,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    };
 
-    if (user.is_admin) {
-      const availableOrSold = cars.filter(a => a.status === 'available' || 'sold');
-      if (!availableOrSold) {
-        res.status(404).json({
-          status: 404,
-          error: 'no cars found',
+    const pool = new pg.Pool(config);
+
+    pool.on('connect', () => {
+      // eslint-disable-next-line no-console
+      console.log('connected to the database');
+    });
+    pool.connect((err, client, done) => {
+      if (err) {
+        res.status(500).json({
+          status: 500,
+          error: 'could not connect to the pool',
         });
         return;
       }
-      res.status(200).json({
-        status: 200,
-        data: {
-          availableOrSold,
-        },
+      const decoded = req.userData;
+      const query = 'SELECT * FROM users WHERE id = $1';
+      const value = [decoded.id];
+
+      client.query(query, value, (error, results) => {
+        if (error) {
+          res.status(400).json({
+            status: 400,
+            error: `${error}`,
+          });
+          return;
+        }
+        const user = results.rows[0];
+
+        if (!user) {
+          res.status(403).json({
+            status: 403,
+            error: 'you must be logged in',
+          });
+          return;
+        }
+        const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
+        const value2 = ['available', 'sold'];
+
+        if (user.is_admin) {
+          client.query(query2, value2, (queryError2, results2) => {
+            done();
+            if (queryError2) {
+              res.status(400).json({
+                status: 400,
+                error: `${error}`,
+              });
+              return;
+            }
+            const availableOrSold = results2.rows;
+            if (!availableOrSold) {
+              res.status(404).json({
+                status: 404,
+                error: 'no cars found',
+              });
+              return;
+            }
+            res.status(200).json({
+              status: 200,
+              availableOrSold,
+            });
+          });
+        } else {
+          next();
+        }
       });
-    } else {
-      next();
-    }
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
