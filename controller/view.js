@@ -108,32 +108,32 @@ class View {
         const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
         const value2 = ['available', 'sold'];
 
-        if (user.is_admin) {
-          client.query(query2, value2, (queryError2, results2) => {
-            done();
-            if (queryError2) {
-              res.status(400).json({
-                status: 400,
-                error: `${error}`,
-              });
-              return;
-            }
-            const availableOrSold = results2.rows;
-            if (!availableOrSold) {
-              res.status(404).json({
-                status: 404,
-                error: 'no cars found',
-              });
-              return;
-            }
-            res.status(200).json({
-              status: 200,
-              availableOrSold,
-            });
-          });
-        } else {
+        if (!user.is_admin) {
           next();
+          return;
         }
+        client.query(query2, value2, (queryError2, results2) => {
+          done();
+          if (queryError2) {
+            res.status(400).json({
+              status: 400,
+              error: `${error}`,
+            });
+            return;
+          }
+          const availableOrSold = results2.rows;
+          if (!availableOrSold) {
+            res.status(404).json({
+              status: 404,
+              error: 'no cars found',
+            });
+            return;
+          }
+          res.status(200).json({
+            status: 200,
+            availableOrSold,
+          });
+        });
       });
     });
   }
@@ -144,20 +144,54 @@ class View {
       next();
       return;
     }
+    const config = {
+      user: 'abiodun',
+      database: process.env.DATABASE,
+      password: process.env.PASSWORD,
+      port: process.env.DB_PORT,
+      max: 10,
+      idleTimeoutMillis: 30000,
+    };
 
-    const available = cars.filter(a => a.status === req.query.status);
-    if (!available) {
-      res.status(404).json({
-        status: 404,
-        error: 'no cars found',
+    const pool = new pg.Pool(config);
+
+    pool.on('connect', () => {
+      // eslint-disable-next-line no-console
+      console.log('connected to the database');
+    });
+    pool.connect((err, client, done) => {
+      if (err) {
+        res.status(500).json({
+          status: 500,
+          error: 'could not connect to the pool',
+        });
+        return;
+      }
+      const query3 = 'SELECT * FROM cars WHERE status = $1';
+      const value3 = [req.query.status];
+
+      client.query(query3, value3, (error, results) => {
+        done();
+        if (error) {
+          res.status(400).json({
+            status: 400,
+            error: `${error}`,
+          });
+          return;
+        }
+        const available = results.rows;
+        if (!available) {
+          res.status(404).json({
+            status: 404,
+            error: 'no cars found',
+          });
+          return;
+        }
+        res.status(200).json({
+          status: 200,
+          available,
+        });
       });
-      return;
-    }
-    res.status(200).json({
-      status: 200,
-      data: {
-        available,
-      },
     });
   }
 
