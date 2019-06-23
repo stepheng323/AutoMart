@@ -4,7 +4,10 @@
 	"description": "API endpoints to power front end pages",
 	"main": "app.js",
 	"scripts": {
-		"start": "sudo node_modules/.bin/nodemon app.js --exec babel-node --",
+		"start": "sudo nodemon app.js --exec babel-node --",
+		"serve": "node ./build/app.js",
+		"build": "npm run clean && babel . --ignore node_modules --out-dir ./build",
+		"clean": "rm -rf build && mkdir build",
 		"test": " nyc mocha --exit --require @babel/register",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
