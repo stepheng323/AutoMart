@@ -18,14 +18,13 @@ class Signin {
       return;
     }
     const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
+      user: 'abiodun' || 'owxxiojqpvmffq',
+      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
+      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
     };
-
     const pool = new pg.Pool(config);
 
     pool.on('connect', () => {
@@ -35,8 +34,8 @@ class Signin {
 
     pool.connect((err, client, done) => {
       if (err) {
-        res.status(400).json({
-          status: 400,
+        res.status(500).json({
+          status: 500,
           error: 'could not connect to the pool',
         });
         return;

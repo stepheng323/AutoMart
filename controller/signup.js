@@ -20,9 +20,9 @@ class Signup {
       return;
     }
     const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
+      user: 'abiodun' || 'owxxiojqpvmffq',
+      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
+      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
