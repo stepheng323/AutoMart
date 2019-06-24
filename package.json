@@ -3,18 +3,12 @@
 	"version": "1.0.0",
 	"description": "API endpoints to power front end pages",
 	"main": "app.js",
-	
 	"engines": {
 		"node": "10.16.0",
 		"npm": "6.9.0"
 	},
 	"scripts": {
-		"dev": "sudo nodemon app.js --exec babel-node --",
-		"start": "node ./build/app.js",
-		"build": "npm run clean && babel . --ignore node_modules --out-dir ./build",
-		"clean": "rm -rf build && mkdir build",
-		"test": " nyc mocha --exit --require @babel/register",
-		"coverage": "nyc report --reporter=text-lcov | coveralls"
+		"start": "node ./build/app.js"
 	},
 	"keywords": [
 		"API",
