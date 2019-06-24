@@ -7,7 +7,8 @@ class View {
     const config = {
       user: 'abiodun' || 'owxxiojqpvmffq',
       database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
+      password:
+				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
@@ -62,7 +63,8 @@ class View {
     const config = {
       user: 'abiodun' || 'owxxiojqpvmffq',
       database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
+      password:
+				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
@@ -145,7 +147,8 @@ class View {
     const config = {
       user: 'abiodun' || 'owxxiojqpvmffq',
       database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
+      password:
+				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
@@ -198,7 +201,8 @@ class View {
     const config = {
       user: 'abiodun' || 'owxxiojqpvmffq',
       database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
+      password:
+				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
@@ -218,13 +222,13 @@ class View {
         });
         return;
       }
-      const query4 = 'SELECT * FROM cars WHERE status = $1 OR price IN($2, $3)';
+      const query4 = 'SELECT * FROM cars WHERE status = $1 AND price >= $2 AND price <= $3';
       const value4 = [req.query.status, req.query.min_price, req.query.max_price];
       client.query(query4, value4, (error, results) => {
         done();
         if (error) {
-          res.status(400).json({
-            status: 400,
+          res.status(500).json({
+            status: 500,
             error: `${error}`,
           });
           return;
@@ -250,7 +254,8 @@ class View {
     const config = {
       user: 'abiodun' || 'owxxiojqpvmffq',
       database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
+      password:
+				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
       port: process.env.DB_PORT,
       max: 10,
       idleTimeoutMillis: 30000,
