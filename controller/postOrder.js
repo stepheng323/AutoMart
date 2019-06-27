@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
-import pg from 'pg';
 import { orderSchema } from '../model/orders';
+import pool from '../config';
 
 dotenv.config();
 
@@ -17,22 +17,6 @@ class CreateOrders {
       });
       return;
     }
-
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         // eslint-disable-next-line no-console
@@ -51,7 +35,6 @@ class CreateOrders {
       const value = [order.buyer, order.car_id, order.amount, order.status];
 
       client.query(query, value, (queryError, queryResult) => {
-        done();
         if (queryError) {
           res.status(400).json({
             status: 500,

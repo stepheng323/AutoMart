@@ -13,8 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 var app = (0, _express["default"])();
 app.use(_route["default"]);
-var port = process.env.PORT || 3000; // eslint-disable-next-line no-console
-
+var port = process.env.PORT || 3000;
 app.listen(port, function () {
   return console.log("Server running on port ".concat(port, "..."));
 });

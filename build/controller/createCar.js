@@ -11,9 +11,9 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _cloudinary = _interopRequireDefault(require("cloudinary"));
 
-var _pg = _interopRequireDefault(require("pg"));
-
 var _cars = require("../model/cars");
+
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -49,25 +49,12 @@ function () {
       if (!req.file) {
         res.status(400).json({
           status: 400,
-          error: 'upload atleast one tess car image'
+          error: 'upload atleast one car image'
         });
         return;
       }
 
-      var config = {
-        user: 'abiodun',
-        database: process.env.DATABASE,
-        password: process.env.PASSWORD,
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           // eslint-disable-next-line no-console
           console.log('unable to connect to pool');

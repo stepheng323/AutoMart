@@ -11,7 +11,7 @@ var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _pg = _interopRequireDefault(require("pg"));
+var _config = _interopRequireDefault(require("../config"));
 
 var _users = require("../model/users");
 
@@ -43,20 +43,7 @@ function () {
         return;
       }
 
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the Database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,
@@ -68,8 +55,6 @@ function () {
         var query = 'SELECT * FROM users WHERE email = $1';
         var value = [req.body.email];
         client.query(query, value, function (queryError, queryResult) {
-          done();
-
           if (queryError) {
             res.status(400).json({
               status: 400,
@@ -86,6 +71,8 @@ function () {
               error: 'invalid email or address'
             });
           }
+
+          done();
 
           if (queryResult.rows[0]) {
             _bcrypt["default"].compare(req.body.password, user.password, function (bcryptErr, correct) {

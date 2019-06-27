@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _pg = _interopRequireDefault(require("pg"));
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -26,25 +26,11 @@ function () {
     key: "specific",
     // eslint-disable-next-line class-methods-use-this
     value: function specific(req, res, next) {
-      // ready Database for query
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,
-            error: 'could not connect to the pool'
+            error: "could not connect ".concat(err)
           });
           return;
         }
@@ -52,8 +38,6 @@ function () {
         var query = 'SELECT * FROM cars WHERE id = $1';
         var value = [req.params.id];
         client.query(query, value, function (error, results) {
-          done();
-
           if (error) {
             res.status(400).json({
               status: 400,
@@ -62,6 +46,7 @@ function () {
             return;
           }
 
+          done();
           var data = results.rows[0];
 
           if (!data) {
@@ -84,24 +69,11 @@ function () {
   }, {
     key: "soldOrAvailable",
     value: function soldOrAvailable(req, res, next) {
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,
-            error: 'could not connect to the pool'
+            error: "could not connect ".concat(err)
           });
           return;
         }
@@ -174,20 +146,7 @@ function () {
         return;
       }
 
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,
@@ -199,8 +158,6 @@ function () {
         var query3 = 'SELECT * FROM cars WHERE status = $1';
         var value3 = [req.query.status];
         client.query(query3, value3, function (error, results) {
-          done();
-
           if (error) {
             res.status(400).json({
               status: 400,
@@ -209,6 +166,7 @@ function () {
             return;
           }
 
+          done();
           var available = results.rows;
 
           if (!available) {
@@ -230,20 +188,7 @@ function () {
   }, {
     key: "priceRange",
     value: function priceRange(req, res) {
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,
@@ -252,14 +197,14 @@ function () {
           return;
         }
 
-        var query4 = 'SELECT * FROM cars WHERE status = $1 OR price IN($2, $3)';
+        var query4 = 'SELECT * FROM cars WHERE status = $1 AND price >= $2 AND price <= $3';
         var value4 = [req.query.status, req.query.min_price, req.query.max_price];
         client.query(query4, value4, function (error, results) {
           done();
 
           if (error) {
-            res.status(400).json({
-              status: 400,
+            res.status(500).json({
+              status: 500,
               error: "".concat(error)
             });
             return;
@@ -286,20 +231,7 @@ function () {
   }, {
     key: "deleteCar",
     value: function deleteCar(req, res) {
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(500).json({
             status: 500,

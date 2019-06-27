@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
-var _pg = _interopRequireDefault(require("pg"));
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -42,20 +42,7 @@ function () {
         return;
       }
 
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the Database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(400).json({
             status: 400,
@@ -99,8 +86,6 @@ function () {
             var query2 = 'UPDATE cars SET price =$1 WHERE id = $2 RETURNING *';
             var value2 = [req.body.price, req.params.id];
             client.query(query2, value2, function (queryError2, result2) {
-              done();
-
               if (queryError2) {
                 res.status(500).json({
                   status: 500,
@@ -109,6 +94,7 @@ function () {
                 return;
               }
 
+              done();
               var car2 = result2.rows[0];
               res.status(200).json({
                 status: 200,
@@ -151,20 +137,7 @@ function () {
         return;
       }
 
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('Connected to the Database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(400).json({
             status: 400,
@@ -208,6 +181,14 @@ function () {
             var query2 = 'UPDATE cars SET status =$1 WHERE id = $2 RETURNING *';
             var value2 = [req.body.status, req.params.id];
             client.query(query2, value2, function (queryError2, result2) {
+              if (queryError2) {
+                res.status(400).json({
+                  status: 400,
+                  error: "".concat(queryError)
+                });
+                return;
+              }
+
               done();
               var car2 = result2.rows[0];
               res.status(201).json({

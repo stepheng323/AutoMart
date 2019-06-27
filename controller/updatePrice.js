@@ -1,5 +1,5 @@
 import joi from 'joi';
-import pg from 'pg';
+import pool from '../config';
 
 class UpdatePrice {
   // eslint-disable-next-line class-methods-use-this
@@ -16,22 +16,6 @@ class UpdatePrice {
       });
       return;
     }
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the Database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
@@ -40,6 +24,7 @@ class UpdatePrice {
         });
         return;
       }
+
       const query = 'SELECT * FROM cars WHERE id = $1';
       const value = [req.params.id];
 
@@ -53,6 +38,7 @@ class UpdatePrice {
         }
         const decoded = req.userData;
         const car = results.rows[0];
+
         if (!car) {
           res.status(404).json({
             status: 404,
@@ -74,7 +60,6 @@ class UpdatePrice {
           const value2 = [req.body.price, req.params.id];
 
           client.query(query2, value2, (queryError2, result2) => {
-            done();
             if (queryError2) {
               res.status(500).json({
                 status: 500,
@@ -82,6 +67,7 @@ class UpdatePrice {
               });
               return;
             }
+            done();
             const car2 = result2.rows[0];
 
             res.status(200).json({
@@ -122,23 +108,6 @@ class UpdatePrice {
       });
       return;
     }
-
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('Connected to the Database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
@@ -182,6 +151,13 @@ class UpdatePrice {
           const value2 = [req.body.status, req.params.id];
 
           client.query(query2, value2, (queryError2, result2) => {
+            if (queryError2) {
+              res.status(400).json({
+                status: 400,
+                error: `${queryError}`,
+              });
+              return;
+            }
             done();
             const car2 = result2.rows[0];
 

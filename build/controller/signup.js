@@ -7,8 +7,6 @@ exports["default"] = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
-var _pg = _interopRequireDefault(require("pg"));
-
 var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
@@ -16,6 +14,8 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _users = require("../model/users");
+
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -47,24 +47,11 @@ function () {
         return;
       }
 
-      var config = {
-        user: 'abiodun' || 'owxxiojqpvmffq',
-        database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-        password: process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-        port: process.env.DB_PORT,
-        max: 10,
-        idleTimeoutMillis: 30000
-      };
-      var pool = new _pg["default"].Pool(config);
-      pool.on('connect', function () {
-        // eslint-disable-next-line no-console
-        console.log('connected to the Database');
-      });
-      pool.connect(function (err, client, done) {
+      _config["default"].connect(function (err, client, done) {
         if (err) {
           res.status(400).json({
             status: 400,
-            error: 'could not connect to the database'
+            error: "could not connect to the database ".concat(err)
           });
           return;
         }

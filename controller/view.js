@@ -1,31 +1,13 @@
-import pg from 'pg';
+import pool from '../config';
 
 class View {
   // eslint-disable-next-line class-methods-use-this
   specific(req, res, next) {
-    // ready Database for query
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password:
-				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: `could not connect ${err}`,
         });
         return;
       }
@@ -33,7 +15,6 @@ class View {
       const value = [req.params.id];
 
       client.query(query, value, (error, results) => {
-        done();
         if (error) {
           res.status(400).json({
             status: 400,
@@ -41,6 +22,7 @@ class View {
           });
           return;
         }
+        done();
         const data = results.rows[0];
         if (!data) {
           res.status(404).json({
@@ -60,27 +42,11 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   soldOrAvailable(req, res, next) {
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password:
-				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: `could not connect ${err}`,
         });
         return;
       }
@@ -144,22 +110,6 @@ class View {
       next();
       return;
     }
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password:
-				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
@@ -172,7 +122,6 @@ class View {
       const value3 = [req.query.status];
 
       client.query(query3, value3, (error, results) => {
-        done();
         if (error) {
           res.status(400).json({
             status: 400,
@@ -180,7 +129,9 @@ class View {
           });
           return;
         }
+        done();
         const available = results.rows;
+
         if (!available) {
           res.status(404).json({
             status: 404,
@@ -198,22 +149,6 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   priceRange(req, res) {
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password:
-				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
@@ -251,22 +186,6 @@ class View {
 
   // eslint-disable-next-line class-methods-use-this
   deleteCar(req, res) {
-    const config = {
-      user: 'abiodun' || 'owxxiojqpvmffq',
-      database: process.env.DATABASE || 'd7k5b8u2k7s9rp',
-      password:
-				process.env.PASSWORD || '849b56cbbb20121dc14ee194301797bbfec60cfbbe16e20dd5a028ed6e90c667',
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
