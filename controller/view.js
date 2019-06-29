@@ -78,6 +78,10 @@ class View {
           next();
           return;
         }
+        if (req.query.min_price && req.query.max_price) {
+          next();
+          return;
+        }
         client.query(query2, value2, (queryError2, results2) => {
           done();
           if (queryError2) {
