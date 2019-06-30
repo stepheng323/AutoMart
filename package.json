@@ -9,8 +9,8 @@
 	},
 	"scripts": {
 		"start": "node ./build/app.js",
-		"dev": "sudo nodemon app.js --exec babel-node --",
-		"build": "npm run clean && babel . --ignore node_modules --out-dir ./build",
+		"dev": "sudo nodemon src/app.js --exec babel-node --",
+		"build": "npm run clean && babel src --out-dir build",
 		"clean": "rm -rf build && mkdir build"
 	},
 	"keywords": [

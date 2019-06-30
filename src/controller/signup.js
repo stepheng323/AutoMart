@@ -43,7 +43,7 @@ class Signup {
           address: req.body.address,
           is_admin: req.body.is_admin,
         };
-        const query = 'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const query =					'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const value = [
           user.first_name,
           user.last_name,

@@ -31,7 +31,7 @@ class CreateOrders {
         status: 'pending',
       };
 
-      const query = 'INSERT INTO orders(buyer, car_id, amount, status) VALUES ($1, $2, $3, $4) RETURNING *';
+      const query =				'INSERT INTO orders(buyer, car_id, amount, status) VALUES ($1, $2, $3, $4) RETURNING *';
       const value = [order.buyer, order.car_id, order.amount, order.status];
 
       client.query(query, value, (queryError, queryResult) => {

@@ -83,6 +83,7 @@ function () {
               if (queryError) {
                 res.status(400).json({
                   status: 400,
+                  // eslint-disable-next-line no-console
                   state: console.log(queryError)
                 });
                 return;

@@ -45,7 +45,7 @@ class CarsCreate {
             body_type: req.body.body_type,
             car_image: results.secure_url,
           };
-          const query = 'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
+          const query =						'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
           const values = [
             car.owner,
             car.created_on,
