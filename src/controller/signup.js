@@ -1,10 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import Joi from 'joi';
-import pg from 'pg';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { userSchema } from '../model/users';
+import pool from '../config';
 
 dotenv.config();
 
@@ -19,27 +19,11 @@ class Signup {
       });
       return;
     }
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the Database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
           status: 400,
-          error: 'could not connect to the database',
+          error: `could not connect to the database ${err}`,
         });
         return;
       }
@@ -59,7 +43,7 @@ class Signup {
           address: req.body.address,
           is_admin: req.body.is_admin,
         };
-        const query = 'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const query =					'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const value = [
           user.first_name,
           user.last_name,

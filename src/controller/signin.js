@@ -2,8 +2,7 @@
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import pg from 'pg';
-
+import pool from '../config';
 import { signinSchema } from '../model/users';
 
 class Signin {
@@ -17,26 +16,10 @@ class Signin {
       });
       return;
     }
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the Database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
-        res.status(400).json({
-          status: 400,
+        res.status(500).json({
+          status: 500,
           error: 'could not connect to the pool',
         });
         return;
@@ -44,7 +27,6 @@ class Signin {
       const query = 'SELECT * FROM users WHERE email = $1';
       const value = [req.body.email];
       client.query(query, value, (queryError, queryResult) => {
-        done();
         if (queryError) {
           res.status(400).json({
             status: 400,
@@ -59,6 +41,7 @@ class Signin {
             error: 'invalid email or address',
           });
         }
+        done();
         if (queryResult.rows[0]) {
           bcrypt.compare(req.body.password, user.password, (bcryptErr, correct) => {
             if (bcryptErr) {

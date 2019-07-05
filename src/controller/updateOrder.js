@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import pg from 'pg';
+import pool from '../config';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
@@ -17,28 +17,11 @@ class UpdateOrders {
       });
       return;
     }
-    // ready Database for query
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
-
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
           status: 400,
-          error: 'could not connect to the database',
+          error: 'could not connect to the pool',
         });
         return;
       }
@@ -84,6 +67,7 @@ class UpdateOrders {
               });
               return;
             }
+            done();
             res.status(201).json({
               status: 201,
               data: {
@@ -101,7 +85,6 @@ class UpdateOrders {
             error: 'you can only update pending order',
           });
         }
-        done();
       });
     });
   }

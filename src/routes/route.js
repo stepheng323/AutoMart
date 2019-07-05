@@ -14,6 +14,12 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
+router.get('/', (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: 'Welcome to my app',
+  });
+});
 router.post('/api/v1/auth/signup', signup.createUser);
 router.post('/api/v1/auth/signin', signin.signIn);
 router.post('/api/v1/car', checkAuth, upload.single('product_image'), carscreate.createCar);

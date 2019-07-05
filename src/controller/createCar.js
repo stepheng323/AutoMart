@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
-import pg from 'pg';
 import { carSchema } from '../model/cars';
+import pool from '../config';
 
 dotenv.config();
 
@@ -21,25 +21,10 @@ class CarsCreate {
     if (!req.file) {
       res.status(400).json({
         status: 400,
-        error: 'upload atleast one tess car image',
+        error: 'upload atleast one car image',
       });
       return;
     }
-    const config = {
-      user: 'abiodun',
-      database: process.env.DATABASE,
-      password: process.env.PASSWORD,
-      port: process.env.DB_PORT,
-      max: 10,
-      idleTimeoutMillis: 30000,
-    };
-
-    const pool = new pg.Pool(config);
-
-    pool.on('connect', () => {
-      // eslint-disable-next-line no-console
-      console.log('connected to the database');
-    });
     pool.connect((err, client, done) => {
       if (err) {
         // eslint-disable-next-line no-console
@@ -60,7 +45,7 @@ class CarsCreate {
             body_type: req.body.body_type,
             car_image: results.secure_url,
           };
-          const query = 'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
+          const query =						'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
           const values = [
             car.owner,
             car.created_on,
@@ -77,6 +62,7 @@ class CarsCreate {
             if (queryError) {
               res.status(400).json({
                 status: 400,
+                // eslint-disable-next-line no-console
                 state: console.log(queryError),
               });
               return;
