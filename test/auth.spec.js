@@ -2,7 +2,7 @@
 import chai from 'chai';
 import 'chai/register-expect';
 import chaihttp from 'chai-http';
-import app from '../app';
+import app from '../src/app';
 
 chai.use(chaihttp);
 
