@@ -1,4 +1,6 @@
 import express from 'express';
+import cors from 'cors';
+
 
 import signin from '../controller/signin';
 import signup from '../controller/signup';
@@ -13,6 +15,7 @@ import { upload } from '../middleware/cloudinary';
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
+router.use(cors());
 
 router.get('/', (req, res) => {
   res.status(200).json({
