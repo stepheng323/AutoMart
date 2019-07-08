@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
+var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
+
 var _signin = _interopRequireDefault(require("../controller/signin"));
 
 var _signup = _interopRequireDefault(require("../controller/signup"));
@@ -25,6 +27,8 @@ var _view = _interopRequireDefault(require("../controller/view"));
 
 var _cloudinary = require("../middleware/cloudinary");
 
+var _swagger = _interopRequireDefault(require("../../docs/swagger.json"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var router = _express["default"].Router();
@@ -33,6 +37,14 @@ router.use(_express["default"].json());
 router.use(_express["default"].urlencoded({
   extended: false
 }));
+router.use('/api/v1/docs', _swaggerUiExpress["default"].serve);
+router.get('/api/v1/docs', _swaggerUiExpress["default"].setup(_swagger["default"]));
+router.get('/', function (req, res) {
+  res.status(200).json({
+    status: 200,
+    message: 'Welcome to my app'
+  });
+});
 router.post('/api/v1/auth/signup', _signup["default"].createUser);
 router.post('/api/v1/auth/signin', _signin["default"].signIn);
 router.post('/api/v1/car', _checkAuth["default"], _cloudinary.upload.single('product_image'), _createCar["default"].createCar);
