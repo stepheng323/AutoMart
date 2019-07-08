@@ -1,4 +1,5 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
 
 import signin from '../controller/signin';
 import signup from '../controller/signup';
@@ -9,10 +10,14 @@ import ordersUpdate from '../controller/updateOrder';
 import updatePrice from '../controller/updatePrice';
 import view from '../controller/view';
 import { upload } from '../middleware/cloudinary';
+import swaggerDocument from '../../docs/swagger.json';
 
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
+router.use('/api/v1/docs', swaggerUi.serve);
+router.get('/api/v1/docs', swaggerUi.setup(swaggerDocument));
+
 
 router.get('/', (req, res) => {
   res.status(200).json({
