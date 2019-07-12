@@ -78,6 +78,10 @@ class View {
           next();
           return;
         }
+        if (req.query.status === 'available') {
+          next();
+          return;
+        }
         if (req.query.min_price && req.query.max_price) {
           next();
           return;
@@ -101,7 +105,7 @@ class View {
           }
           res.status(200).json({
             status: 200,
-            availableOrSold,
+            data: availableOrSold,
           });
         });
       });
@@ -145,7 +149,7 @@ class View {
         }
         res.status(200).json({
           status: 200,
-          available,
+          data: available,
         });
       });
     });
@@ -182,7 +186,7 @@ class View {
         }
         res.status(200).json({
           status: 200,
-          filtered,
+          data: filtered,
         });
       });
     });
