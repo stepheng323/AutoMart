@@ -12,7 +12,7 @@
 		"dev": "sudo nodemon src/app.js --exec babel-node --",
 		"build": "npm run clean && babel src --out-dir build",
 		"clean": "rm -rf build && mkdir build",
-		"test": "nyc mocha --require @babel/register --exit"
+		"test": "nyc mocha --require @babel/register --exit || true"
 	},
 	"keywords": [
 		"API",
