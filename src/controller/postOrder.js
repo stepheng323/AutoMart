@@ -37,8 +37,8 @@ class CreateOrders {
       client.query(query, value, (queryError, queryResult) => {
         if (queryError) {
           res.status(400).json({
-            status: 500,
-            errorr: 'server error',
+            status: 400,
+            errorr: queryError.detail,
           });
           return;
         }
@@ -51,8 +51,8 @@ class CreateOrders {
           done();
           if (queryError2) {
             res.status(400).json({
-              status: 500,
-              error: 'server error',
+              status: 400,
+              error: queryError2.detail,
             });
             return;
           }
