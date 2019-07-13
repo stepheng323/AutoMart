@@ -14,13 +14,12 @@ services:
 
 env:
   - NODE_ENV = test
-  - TRAVIS_HOST = 127.0.0.1
   - USER = abiodun
   - DATABASE = travis_ci_test
   - PASSWORD = olaTUNDELA234
   - DB_PORT = 5432
 
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database automart;' -U postgres
   - psql -c "create user abiodun with password 'olaTUNDELA234';" -U postgres
-  - psql -U abiodun travis_ci_test < test/travisdata.sql
+  - psql -U abiodun automart < test/travisdata.sql
