@@ -17,7 +17,7 @@ env:
   - USER=abiodun
   - DATABASE=travis_ci_test
   - PASSWORD=olaTUNDELA234
-  - PORT=5432
+  - DB_PORT=5432
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
