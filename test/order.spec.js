@@ -27,7 +27,7 @@ describe('Order', () => {
           .post('/api/v1/order')
           .set('Authorization', bearerToken)
           .send({
-            car_id: 9,
+            car_id: 12,
             amount: 50000,
           })
           .end((err2, res2) => {
@@ -63,7 +63,7 @@ describe('Order', () => {
         const bearerToken = `Bearer ${token}`;
         chai
           .request(app)
-          .patch('/api/v1/order/40/price')
+          .patch('/api/v1/order/25/price')
           .set('Authorization', bearerToken)
           .send({
             new_price_offered: 70000,
