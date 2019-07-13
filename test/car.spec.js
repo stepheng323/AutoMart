@@ -136,33 +136,49 @@ describe('car ads', () => {
   it('should view car by id', (done) => {
     chai
       .request(app)
-      .get('/api/v1/car/10')
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'temi@gmail.com',
+        password: 'biodun',
+      })
       .end((err, res) => {
         if (err) {
           console.log(err.message);
+          return;
         }
-        expect(res.body).to.have.status(200);
-        expect(res.body.data).have.a.property('id');
-        expect(res.body.data).have.a.property('owner');
-        expect(res.body.data).have.a.property('created_on');
-        expect(res.body.data)
-          .have.a.property('state')
-          .and.to.be.a('string');
-        expect(res.body.data)
-          .have.a.property('status')
-          .and.to.be.a('string');
-        expect(res.body.data).have.a.property('price');
-        expect(res.body.data)
-          .have.a.property('manufacturer')
-          .and.to.be.a('string');
-        expect(res.body.data)
-          .have.a.property('model')
-          .and.to.be.a('string');
-        expect(res.body.data)
-          .have.a.property('body_type')
-          .and.to.be.a('string');
-        expect(res.body.data).have.a.property('car_image');
-        done();
+        const { token } = res.body.data;
+        const bearerToken = `Bearer ${token}`;
+        chai
+          .request(app)
+          .get('/api/v1/car/10')
+          .set('Authorization', bearerToken)
+          .end((err2, res2) => {
+            if (err2) {
+              console.log(err.message);
+            }
+            expect(res2.body).to.have.status(200);
+            expect(res2.body.data).have.a.property('id');
+            expect(res2.body.data).have.a.property('owner');
+            expect(res2.body.data).have.a.property('created_on');
+            expect(res2.body.data)
+              .have.a.property('state')
+              .and.to.be.a('string');
+            expect(res2.body.data)
+              .have.a.property('status')
+              .and.to.be.a('string');
+            expect(res2.body.data).have.a.property('price');
+            expect(res2.body.data)
+              .have.a.property('manufacturer')
+              .and.to.be.a('string');
+            expect(res2.body.data)
+              .have.a.property('model')
+              .and.to.be.a('string');
+            expect(res2.body.data)
+              .have.a.property('body_type')
+              .and.to.be.a('string');
+            expect(res2.body.data).have.a.property('car_image');
+            done();
+          });
       });
   });
   it('should get all available cars', (done) => {
