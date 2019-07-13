@@ -21,20 +21,20 @@ const development = {
   max: 20,
   idleTimeoutMillis: 30000,
 };
-const travis = {
-  host: process.env.TRAVIS_HOST,
-  user: process.env.USER,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  port: process.env.DB_PORT,
-  max: 20,
-  idleTimeoutMillis: 30000,
-};
+// const travis = {
+//   host: process.env.TRAVIS_HOST,
+//   user: process.env.USER,
+//   database: process.env.DATABASE,
+//   password: process.env.PASSWORD,
+//   port: process.env.DB_PORT,
+//   max: 20,
+//   idleTimeoutMillis: 30000,
+// };
 
 if (process.env.NODE_ENV === 'production') {
   config = production;
 } else if (process.env.NODE_ENV === 'test') {
-  config = travis;
+  config = 'postgres://abiodun:olaTUNDELA234@127.0.0.1:5432/travis_ci_test';
 } else {
   config = development;
 }
