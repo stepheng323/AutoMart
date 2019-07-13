@@ -12,7 +12,8 @@
 		"dev": "sudo nodemon src/app.js --exec babel-node --",
 		"build": "npm run clean && babel src --out-dir build",
 		"clean": "rm -rf build && mkdir build",
-		"test": "NODE_ENV=test nyc mocha --require @babel/register --exit || true"
+		"test": "NODE_ENV=test nyc mocha --require @babel/register --exit || true",
+		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
 	"keywords": [
 		"API",
