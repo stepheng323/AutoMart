@@ -14,6 +14,7 @@ services:
 
 env:
   - NODE_ENV = test
+  - TRAVIS_HOST = 127.0.0.1
   - USER = abiodun
   - DATABASE = travis_ci_test
   - PASSWORD = olaTUNDELA234
