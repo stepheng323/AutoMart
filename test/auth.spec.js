@@ -12,11 +12,11 @@ describe('Auth', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'steheng758@gmail.com',
-        first_name: 'abioduon',
-        last_name: 'oyebanji',
-        password: 'olaTUNDE',
-        address: '13',
+        email: 'henyhart@getMaxListeners.com',
+        first_name: 'henry',
+        last_name: 'hart',
+        password: 'captainman',
+        address: '2345 avenue mancave swellview',
         is_admin: false,
       })
       .end((err, res) => {

@@ -291,7 +291,7 @@ describe('car ads', () => {
         const bearerToken = `Bearer ${token}`;
         chai
           .request(app)
-          .delete('/api/v1/car/11')
+          .delete('/api/v1/car/10')
           .set('Authorization', bearerToken)
           .end((err2, res2) => {
             if (err2) {
