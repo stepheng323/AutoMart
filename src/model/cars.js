@@ -10,7 +10,6 @@ const carSchema = {
   manufacturer: joi.string().required(),
   model: joi.string(),
   body_type: joi.string(),
-  product_image: joi.string(),
 };
 
 const cars = [

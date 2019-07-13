@@ -18,8 +18,7 @@ var carSchema = {
   price: _joi["default"].number().required(),
   manufacturer: _joi["default"].string().required(),
   model: _joi["default"].string(),
-  body_type: _joi["default"].string(),
-  product_image: _joi["default"].string()
+  body_type: _joi["default"].string()
 };
 exports.carSchema = carSchema;
 var cars = [{
