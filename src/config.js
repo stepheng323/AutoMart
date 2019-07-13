@@ -22,7 +22,7 @@ const development = {
   idleTimeoutMillis: 30000,
 };
 const travis = {
-  user: process.env.DB_USER,
+  user: process.env.USER,
   database: process.env.DATABASE,
   password: process.env.PASSWORD,
   port: process.env.PORT,
