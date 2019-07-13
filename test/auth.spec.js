@@ -5,14 +5,13 @@ import chaihttp from 'chai-http';
 import app from '../src/app';
 
 chai.use(chaihttp);
-
 describe('Auth', () => {
   it('signup should create a user', (done) => {
     chai
       .request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'henyhart@getMaxListeners.com',
+        email: 'henyhart29@swellview.com',
         first_name: 'henry',
         last_name: 'hart',
         password: 'captainman',
