@@ -108,6 +108,11 @@ function () {
             return;
           }
 
+          if (req.query.status === 'available') {
+            next();
+            return;
+          }
+
           if (req.query.min_price && req.query.max_price) {
             next();
             return;
@@ -136,7 +141,7 @@ function () {
 
             res.status(200).json({
               status: 200,
-              availableOrSold: availableOrSold
+              data: availableOrSold
             });
           });
         });
@@ -184,7 +189,7 @@ function () {
 
           res.status(200).json({
             status: 200,
-            available: available
+            data: available
           });
         });
       });
@@ -227,7 +232,7 @@ function () {
 
           res.status(200).json({
             status: 200,
-            filtered: filtered
+            data: filtered
           });
         });
       });

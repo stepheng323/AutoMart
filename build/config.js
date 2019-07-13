@@ -32,9 +32,19 @@ var development = {
   max: 20,
   idleTimeoutMillis: 30000
 };
+var travisLocal = {
+  user: process.env.DB_USER,
+  database: process.env.DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  max: 20,
+  idleTimeoutMillis: 30000
+};
 
 if (process.env.NODE_ENV === 'production') {
   config = production;
+} else if (process.env.NODE_ENV === 'test') {
+  config = travisLocal;
 } else {
   config = development;
 }
@@ -42,7 +52,7 @@ if (process.env.NODE_ENV === 'production') {
 var pool = new _pg["default"].Pool(config);
 pool.on('connect', function () {
   // eslint-disable-next-line no-console
-  console.log('connected to the database');
+  console.log("connected to the database ".concat(config.database));
 });
 var _default = pool;
 exports["default"] = _default;

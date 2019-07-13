@@ -9,6 +9,8 @@ var _express = _interopRequireDefault(require("express"));
 
 var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
 
+var _cors = _interopRequireDefault(require("cors"));
+
 var _signin = _interopRequireDefault(require("../controller/signin"));
 
 var _signup = _interopRequireDefault(require("../controller/signup"));
@@ -39,6 +41,7 @@ router.use(_express["default"].urlencoded({
 }));
 router.use('/api/v1/docs', _swaggerUiExpress["default"].serve);
 router.get('/api/v1/docs', _swaggerUiExpress["default"].setup(_swagger["default"]));
+router.use((0, _cors["default"])());
 router.get('/', function (req, res) {
   res.status(200).json({
     status: 200,
@@ -47,12 +50,12 @@ router.get('/', function (req, res) {
 });
 router.post('/api/v1/auth/signup', _signup["default"].createUser);
 router.post('/api/v1/auth/signin', _signin["default"].signIn);
-router.post('/api/v1/car', _checkAuth["default"], _cloudinary.upload.single('product_image'), _createCar["default"].createCar);
+router.post('/api/v1/car', _checkAuth["default"], _cloudinary.upload.single('car_image'), _createCar["default"].createCar);
 router.post('/api/v1/order', _checkAuth["default"], _postOrder["default"].createOrder);
 router.patch('/api/v1/order/:id/price', _checkAuth["default"], _updateOrder["default"].updateOrders);
 router.patch('/api/v1/car/:id/price', _checkAuth["default"], _updatePrice["default"].priceUpdate);
 router.patch('/api/v1/car/:id/status', _checkAuth["default"], _updatePrice["default"].sold);
-router.get('/api/v1/car/:id', _view["default"].specific);
+router.get('/api/v1/car/:id', _checkAuth["default"], _view["default"].specific);
 router.get('/api/v1/car', _checkAuth["default"], _view["default"].soldOrAvailable);
 router.get('/api/v1/car', _view["default"].unsold);
 router.get('/api/v1/car', _view["default"].priceRange);
