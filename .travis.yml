@@ -13,9 +13,13 @@ services:
   - postgresql
 
 env:
-- NODE_ENV=test
+  - NODE_ENV=test
+  - USER=abiodun
+  - DATABASE=travis_ci_test
+  - PASSWORD=olaTUNDELA234
+  - PORT=5432
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
-  - psql -c 'CREATE USER root WITH PASSWORD 'olaTUNDELA234';" -U postgres
-  - psql -U root travis_ci_test < test/testdata.sql
+  - psql -c 'CREATE USER abiodun WITH PASSWORD 'olaTUNDELA234';" -U postgres
+  - psql -U abiodun travis_ci_test < test/testdata.sql
