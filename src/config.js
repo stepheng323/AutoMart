@@ -42,6 +42,6 @@ const pool = new pg.Pool(config);
 
 pool.on('connect', () => {
   // eslint-disable-next-line no-console
-  console.log(`connected to the database ${config.database}`);
+  console.log('connected to the database');
 });
 export default pool;
