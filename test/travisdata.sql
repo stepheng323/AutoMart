@@ -5,7 +5,7 @@
 -- Dumped from database version 10.8 (Ubuntu 10.8-1.pgdg18.04+1)
 -- Dumped by pg_dump version 11.3 (Ubuntu 11.3-1.pgdg18.04+1)
 
--- Started on 2019-07-12 17:17:19 GMT
+-- Started on 2019-07-13 09:25:21 GMT
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -59,7 +59,7 @@ CREATE SEQUENCE public.cars_id_seq
 ALTER TABLE public.cars_id_seq OWNER TO abiodun;
 
 --
--- TOC entry 2946 (class 0 OID 0)
+-- TOC entry 2948 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: cars_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: abiodun
 --
@@ -99,7 +99,7 @@ CREATE SEQUENCE public.orders_id_seq
 ALTER TABLE public.orders_id_seq OWNER TO abiodun;
 
 --
--- TOC entry 2947 (class 0 OID 0)
+-- TOC entry 2949 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: abiodun
 --
@@ -141,7 +141,7 @@ CREATE SEQUENCE public.users_id_seq
 ALTER TABLE public.users_id_seq OWNER TO abiodun;
 
 --
--- TOC entry 2948 (class 0 OID 0)
+-- TOC entry 2950 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: abiodun
 --
@@ -174,101 +174,42 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 2938 (class 0 OID 16442)
+-- TOC entry 2940 (class 0 OID 16442)
 -- Dependencies: 199
 -- Data for Name: cars; Type: TABLE DATA; Schema: public; Owner: abiodun
 --
 
 COPY public.cars (id, owner, created_on, state, status, price, model, body_type, car_image, manufacturer) FROM stdin;
-9	1	2019-06-21 00:00:00+00	new	available	90000.00	camry	car	https://res.cloudinary.com/stepheng323/image/upload/v1561109138/xpl5p43ahg5ahahnpogw.jpg	toyota
-10	7	2019-06-21 00:00:00+00	new	available	70000.00	wrangler	car	https://res.cloudinary.com/stepheng323/image/upload/v1561114507/lej5gecia2jz1lznifuo.jpg	jeep
+12	6	2019-07-13 01:15:10.419+00	new	available	120000	crosstour	car	https://res.cloudinary.com/stepheng323/image/upload/v1562976964/yz1iomzgzl67auoqcivi.jpg	honda
+10	7	2019-06-21 00:00:00+00	new	available	70000	wrangler	car	https://res.cloudinary.com/stepheng323/image/upload/v1561114507/lej5gecia2jz1lznifuo.jpg	jeep
 \.
 
 
 --
--- TOC entry 2940 (class 0 OID 16494)
+-- TOC entry 2942 (class 0 OID 16494)
 -- Dependencies: 201
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: abiodun
 --
 
 COPY public.orders (id, buyer, car_id, amount, status) FROM stdin;
-29	7	9	50000.00	pending
-34	7	9	50000.00	pending
-35	7	9	50000.00	pending
-36	7	9	50000.00	pending
-37	7	9	50000.00	pending
-38	7	9	50000.00	pending
-39	7	9	50000.00	pending
-41	7	9	50000.00	pending
-42	7	9	50000.00	pending
-43	7	9	50000.00	pending
-58	7	9	50000.00	pending
-62	7	9	50000.00	pending
-63	7	9	50000.00	pending
-64	7	9	50000.00	pending
-65	7	9	50000.00	pending
-66	7	9	50000.00	pending
-67	7	9	50000.00	pending
-68	7	9	50000.00	pending
-69	7	9	50000.00	pending
-70	7	9	50000.00	pending
-71	7	9	50000.00	pending
-72	7	9	50000.00	pending
-73	7	9	50000.00	pending
-74	7	9	50000.00	pending
-75	7	9	50000.00	pending
-76	7	9	50000.00	pending
-77	7	9	50000.00	pending
-78	7	9	50000.00	pending
-79	7	9	50000.00	pending
-80	7	9	50000.00	pending
-81	7	9	50000.00	pending
-82	7	9	50000.00	pending
-83	7	9	50000.00	pending
-84	7	9	50000.00	pending
-85	7	9	50000.00	pending
-86	7	9	50000.00	pending
-87	7	9	50000.00	pending
-88	7	9	50000.00	pending
-89	7	9	50000.00	pending
-90	7	9	50000.00	pending
-91	7	9	50000.00	pending
-92	7	9	50000.00	pending
-93	7	9	50000.00	pending
-94	7	9	50000.00	pending
-95	7	9	50000.00	pending
-96	7	9	50000.00	pending
-97	7	9	50000.00	pending
-98	7	9	50000.00	pending
-99	7	9	50000.00	pending
-100	7	9	50000.00	pending
-101	7	9	50000.00	pending
-102	7	9	50000.00	pending
-103	7	9	50000.00	pending
-105	7	9	50000.00	pending
-106	7	9	50000.00	pending
-40	7	9	70000.00	pending
-107	7	9	7000	pending
-112	6	9	75000	pending
 22	6	10	10000.00	pending
 23	7	10	12000.00	pending
 24	7	10	12000.00	pending
 25	7	10	12000.00	pending
-104	7	9	50000.00	pending
 \.
 
 
 --
--- TOC entry 2936 (class 0 OID 16429)
+-- TOC entry 2938 (class 0 OID 16429)
 -- Dependencies: 197
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: abiodun
 --
 
 COPY public.users (id, email, first_name, last_name, password, address, is_admin) FROM stdin;
-1	seller@gmail.com	abija	olebanji	$2b$10$zfYKG.royHsev0XgqV6X1ehw/ygIVA5orqGwwZvDqdGTlb2eOqdxS	16 omolola close	f
-4	seller1@gmail.com	abija	olebanji	$2b$10$4jf4TLuR1BUNeoFYBEdmTezGeDztGEYKT/tEskOGbYTnf8h9DbN2a	16 omolola close	f
+1	seller@gmail.com	kate	oyebanji	$2b$10$zfYKG.royHsev0XgqV6X1ehw/ygIVA5orqGwwZvDqdGTlb2eOqdxS	16 omolola close	f
+4	seller1@gmail.com	steve	oyebanji	$2b$10$4jf4TLuR1BUNeoFYBEdmTezGeDztGEYKT/tEskOGbYTnf8h9DbN2a	16 omolola close	f
 6	shalom@gmail.com	shalom	adewumi	$2b$10$9fcx6JcP8tjeL0PK3CTAquLgYAMAiDHVo6lGwUthD0q6kf.b7SB1u	18 danbata street	f
-86	steheng58@gmail.com	abioduon	oyebanji	$2b$10$0FevTicheghUcYxFl866GOF.LT4xcJfd1Cw5160Ei80aCVz1ZDzSW	13	f
+86	steheng58@gmail.com	henry	oyebanji	$2b$10$0FevTicheghUcYxFl866GOF.LT4xcJfd1Cw5160Ei80aCVz1ZDzSW	13	f
 7	temi@gmail.com	temitope	oyebanji	$2b$10$lxqGItKbkQWPZxuGmCCCbeAR.jvxeYYDtWLLWkXm1aoVbgESP1NBG	18 lekki street	t
 14	notadmin@gmail.com	abiodun	olebanji	$2b$10$AsnsL9djZvVt6DeLVcanneuDB2GyXn0iVbtfq000FZFWhXNBr62C6	16 omolola close	f
 15	steiipheng323@gmail.com	abioduon	oyebanji	$2b$10$EfiY2TJIJ9/w5oQiY5cxxO2v1IzORZk6RLUBmH3Ad81lMzaFRxl06	13	f
@@ -283,34 +224,35 @@ COPY public.users (id, email, first_name, last_name, password, address, is_admin
 69	steheng585@gmail.com	abioduon	oyebanji	$2b$10$Fz10iwCZe3nTGEX/fagz1e71uIYf.apUHf0.TzKxTkGFHxCvrm.cC	13	f
 70	steheng59058@gmail.com	abioduon	oyebanji	$2b$10$3Hlu1hcpKJKFHC.GDKBSHex26cBvuaufrMICd12SHGD0iO4Sqd6cW	13	f
 129	steheng758@gmail.com	abioduon	oyebanji	$2b$10$5EI1ohab/KPaN.1IzbEyf.5poqz7JL625554KmuJA2zm235ozhAma	13	f
+298	henyhart@swellview.com	henry	hart	$2b$10$76wKxoK23i7j6fCHv/xmweW4uHCfKs/1WASEVqB3v3BbJ1wnQMn0.	2345 avenue mancave swellview	f
 \.
 
 
 --
--- TOC entry 2949 (class 0 OID 0)
+-- TOC entry 2951 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: cars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abiodun
 --
 
-SELECT pg_catalog.setval('public.cars_id_seq', 11, true);
+SELECT pg_catalog.setval('public.cars_id_seq', 12, true);
 
 
 --
--- TOC entry 2950 (class 0 OID 0)
+-- TOC entry 2952 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abiodun
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 112, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 116, true);
 
 
 --
--- TOC entry 2951 (class 0 OID 0)
+-- TOC entry 2953 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: abiodun
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 294, true);
+SELECT pg_catalog.setval('public.users_id_seq', 298, true);
 
 
 --
@@ -323,7 +265,7 @@ ALTER TABLE ONLY public.cars
 
 
 --
--- TOC entry 2810 (class 2606 OID 16554)
+-- TOC entry 2812 (class 2606 OID 16554)
 -- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: abiodun
 --
 
@@ -350,7 +292,15 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 2808 (class 1259 OID 16628)
+-- TOC entry 2809 (class 1259 OID 16640)
+-- Name: fki_orders_buyer_fkey; Type: INDEX; Schema: public; Owner: abiodun
+--
+
+CREATE INDEX fki_orders_buyer_fkey ON public.orders USING btree (buyer);
+
+
+--
+-- TOC entry 2810 (class 1259 OID 16628)
 -- Name: fki_orders_car_id_fkey; Type: INDEX; Schema: public; Owner: abiodun
 --
 
@@ -358,33 +308,41 @@ CREATE INDEX fki_orders_car_id_fkey ON public.orders USING btree (car_id);
 
 
 --
--- TOC entry 2811 (class 2606 OID 16586)
--- Name: cars cars_owner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: abiodun
+-- TOC entry 2808 (class 1259 OID 16634)
+-- Name: fki_owner_fk; Type: INDEX; Schema: public; Owner: abiodun
 --
 
-ALTER TABLE ONLY public.cars
-    ADD CONSTRAINT cars_owner_fkey FOREIGN KEY (owner) REFERENCES public.users(id);
+CREATE INDEX fki_owner_fk ON public.cars USING btree (owner);
 
 
 --
--- TOC entry 2812 (class 2606 OID 16591)
+-- TOC entry 2814 (class 2606 OID 16635)
 -- Name: orders orders_buyer_fkey; Type: FK CONSTRAINT; Schema: public; Owner: abiodun
 --
 
 ALTER TABLE ONLY public.orders
-    ADD CONSTRAINT orders_buyer_fkey FOREIGN KEY (buyer) REFERENCES public.users(id);
+    ADD CONSTRAINT orders_buyer_fkey FOREIGN KEY (buyer) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 2813 (class 2606 OID 16623)
+-- TOC entry 2815 (class 2606 OID 16641)
 -- Name: orders orders_car_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: abiodun
 --
 
 ALTER TABLE ONLY public.orders
-    ADD CONSTRAINT orders_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id);
+    ADD CONSTRAINT orders_car_id_fkey FOREIGN KEY (car_id) REFERENCES public.cars(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2019-07-12 17:17:20 GMT
+--
+-- TOC entry 2813 (class 2606 OID 16629)
+-- Name: cars owner_fk; Type: FK CONSTRAINT; Schema: public; Owner: abiodun
+--
+
+ALTER TABLE ONLY public.cars
+    ADD CONSTRAINT owner_fk FOREIGN KEY (owner) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+-- Completed on 2019-07-13 09:25:22 GMT
 
 --
 -- PostgreSQL database dump complete
