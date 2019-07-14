@@ -56,10 +56,9 @@ class UpdateOrders {
         }
         if (order.status === 'pending') {
           const query2 = 'UPDATE orders SET amount = $1 WHERE id = $2 RETURNING *';
-          const value2 = [req.body.new_price_offered, req.params.id];
+          const value2 = [req.body.price, req.params.id];
 
           client.query(query2, value2, (queryError2, queryResult2) => {
-            const order2 = queryResult2.rows[0];
             if (queryError2) {
               res.status(400).json({
                 status: 400,
@@ -67,6 +66,7 @@ class UpdateOrders {
               });
               return;
             }
+            const order2 = queryResult2.rows[0];
             done();
             res.status(200).json({
               status: 200,
@@ -75,7 +75,7 @@ class UpdateOrders {
                 car_id: order.car_id,
                 status: order.status,
                 old_price_offered: order.amount,
-                new_price_offered: order2.amount,
+                price: order2.amount,
               },
             });
           });
