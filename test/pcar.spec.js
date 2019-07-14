@@ -6,8 +6,10 @@ import fs from 'fs';
 import app from '../src/app';
 
 chai.use(chaihttp);
-
-describe('car ads', () => {
+/* eslint-disable func-names */
+// eslint-disable-next-line prefer-arrow-callback
+describe('car ads', function () {
+  this.timeout(5000);
   const validUser = {
     email: 'temi@gmail.com',
     password: 'biodun',
@@ -42,15 +44,15 @@ describe('car ads', () => {
               return;
             }
             expect(res1.body).to.have.a.status(201);
-            expect(data).to.have.a.property('state');
-            expect(data)
-              .to.have.a.property('status')
-              .and.to.be.eql('available');
-            expect(data).to.have.a.property('price');
-            expect(data).to.have.a.property('manufacturer');
-            expect(data).to.have.a.property('model');
-            expect(data).to.have.a.property('body_type');
-            expect(data).to.have.a.property('created_on');
+            expect(res1.body.data).to.have.a.property('id');
+            expect(res1.body.data).to.have.a.property('email');
+            expect(res1.body.data).to.have.a.property('created_on');
+            expect(res1.body.data).to.have.a.property('manufacturer');
+            expect(res1.body.data).to.have.a.property('model');
+            expect(res1.body.data).to.have.a.property('price');
+            expect(res1.body.data).to.have.a.property('state');
+            expect(res1.body.data).to.have.a.property('status');
+            expect(res1.body.data).to.have.a.property('car_image');
             done();
           });
       });
