@@ -10,7 +10,7 @@ dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    // req.headers.append.Content-Type = application/json;
+    req.headers['Content-Type'] = 'application/json';
 
     const result = Joi.validate(req.body, userSchema);
 
