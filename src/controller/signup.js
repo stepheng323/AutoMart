@@ -10,17 +10,17 @@ dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    //res.set('Content-Type', 'application/json');
+    req.headers.append('Content-Type', 'application/json');
 
-    // const result = Joi.validate(req.body, userSchema);
+    const result = Joi.validate(req.body, userSchema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
