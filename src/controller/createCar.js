@@ -9,7 +9,7 @@ dotenv.config();
 class CarsCreate {
   // eslint-disable-next-line class-methods-use-this
   createCar(req, res) {
-    const result = Joi.validate(req.body, carSchema);
+    // const result = Joi.validate(req.body, carSchema);
 
     // if (result.error) {
     //   res.status(400).json({
@@ -43,9 +43,9 @@ class CarsCreate {
             manufacturer: req.body.manufacturer,
             model: req.body.model,
             body_type: req.body.body_type,
-            car_image: results.secure_url,
+            image_url: results.secure_url,
           };
-          const query =						'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
+          const query =						'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, image_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
           const values = [
             car.owner,
             car.created_on,
@@ -55,15 +55,14 @@ class CarsCreate {
             car.manufacturer,
             car.model,
             car.body_type,
-            car.car_image,
+            car.image_url,
           ];
           client.query(query, values, (queryError, queryResult) => {
             done();
             if (queryError) {
               res.status(400).json({
                 status: 400,
-                // eslint-disable-next-line no-console
-                state: console.log(queryError),
+                error: console.log(queryError),
               });
               return;
             }
@@ -81,7 +80,7 @@ class CarsCreate {
                 price: dbResult.price,
                 state: dbResult.state,
                 status: dbResult.status,
-                car_image: dbResult.car_image,
+                image_url: dbResult.image_url,
               },
             });
           });

@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 });
 router.post('/api/v1/auth/signup', signup.createUser);
 router.post('/api/v1/auth/signin', signin.signIn);
-router.post('/api/v1/car', checkAuth, upload.single('car_image'), carscreate.createCar);
+router.post('/api/v1/car', checkAuth, upload.single('image_url'), carscreate.createCar);
 router.post('/api/v1/order', checkAuth, orders.createOrder);
 router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
 router.patch('/api/v1/car/:id/price', checkAuth, updatePrice.priceUpdate);
