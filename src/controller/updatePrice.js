@@ -4,6 +4,7 @@ import pool from '../config';
 class UpdatePrice {
   // eslint-disable-next-line class-methods-use-this
   priceUpdate(req, res) {
+    console.log(req.body);
     // const schema = {
     //   price: joi.number().required(),
     // };

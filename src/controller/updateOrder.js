@@ -4,6 +4,7 @@ import pool from '../config';
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
   updateOrders(req, res) {
+    console.log(req.body);
     // validate users input
     // const schema = {
     //   new_price_offered: Joi.number().required(),
