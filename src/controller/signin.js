@@ -7,15 +7,15 @@ import { signinSchema } from '../model/users';
 
 class Signin {
   signIn(req, res) {
-    const result = Joi.validate(req.body, signinSchema);
+    // const result = Joi.validate(req.body, signinSchema);
 
-    if (result.error) {
-      res.status(400).json({
-        status: 400,
-        error: result.error.details[0].message,
-      });
-      return;
-    }
+    // if (result.error) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: result.error.details[0].message,
+    //   });
+    //   return;
+    // }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({

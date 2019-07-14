@@ -5,18 +5,18 @@ class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
   updateOrders(req, res) {
     // validate users input
-    const schema = {
-      new_price_offered: Joi.number().required(),
-    };
-    const result = Joi.validate(req.body, schema);
+    // const schema = {
+    //   new_price_offered: Joi.number().required(),
+    // };
+    // const result = Joi.validate(req.body, schema);
 
-    if (result.error) {
-      res.status(400).json({
-        status: 400,
-        error: result.error.details[0].message,
-      });
-      return;
-    }
+    // if (result.error) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: result.error.details[0].message,
+    //   });
+    //   return;
+    // }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({

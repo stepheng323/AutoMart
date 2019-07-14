@@ -11,20 +11,20 @@ class CarsCreate {
   createCar(req, res) {
     const result = Joi.validate(req.body, carSchema);
 
-    if (result.error) {
-      res.status(400).json({
-        status: 400,
-        error: result.error.details[0].message,
-      });
-      return;
-    }
-    if (!req.file) {
-      res.status(400).json({
-        status: 400,
-        error: 'upload atleast one car image',
-      });
-      return;
-    }
+    // if (result.error) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: result.error.details[0].message,
+    //   });
+    //   return;
+    // }
+    // if (!req.file) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: 'upload atleast one car image',
+    //   });
+    //   return;
+    // }
     pool.connect((err, client, done) => {
       if (err) {
         // eslint-disable-next-line no-console

@@ -8,15 +8,15 @@ dotenv.config();
 class CreateOrders {
   // eslint-disable-next-line class-methods-use-this
   createOrder(req, res) {
-    const result = Joi.validate(req.body, orderSchema);
+    // const result = Joi.validate(req.body, orderSchema);
 
-    if (result.error) {
-      res.status(400).json({
-        status: 400,
-        error: result.error.details[0].message,
-      });
-      return;
-    }
+    // if (result.error) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: result.error.details[0].message,
+    //   });
+    //   return;
+    // }
     pool.connect((err, client, done) => {
       if (err) {
         // eslint-disable-next-line no-console
