@@ -4,18 +4,18 @@ import pool from '../config';
 class UpdatePrice {
   // eslint-disable-next-line class-methods-use-this
   priceUpdate(req, res) {
-    // const schema = {
-    //   price: joi.number().required(),
-    // };
-    // const result = joi.validate(req.body, schema);
+    const schema = {
+      price: joi.number().required(),
+    };
+    const result = joi.validate(req.body, schema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
@@ -96,18 +96,18 @@ class UpdatePrice {
 
   // eslint-disable-next-line class-methods-use-this
   sold(req, res) {
-    // const schema = {
-    //   status: joi.string().required(),
-    // };
-    // const result = joi.validate(req.body, schema);
+    const schema = {
+      status: joi.string().required(),
+    };
+    const result = joi.validate(req.body, schema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
