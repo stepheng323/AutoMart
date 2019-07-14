@@ -55,41 +55,41 @@ class UpdatePrice {
           });
           return;
         }
-        if (car.status !== 'sold') {
-          const query2 = 'UPDATE cars SET price =$1 WHERE id = $2 RETURNING *';
-          const value2 = [req.body.price, req.params.id];
+        // if (car.status !== 'sold') {
+        const query2 = 'UPDATE cars SET price =$1 WHERE id = $2 RETURNING *';
+        const value2 = [req.body.price, req.params.id];
 
-          client.query(query2, value2, (queryError2, result2) => {
-            if (queryError2) {
-              res.status(500).json({
-                status: 500,
-                error: `${queryError2}`,
-              });
-              return;
-            }
-            done();
-            const car2 = result2.rows[0];
-
-            res.status(200).json({
-              status: 200,
-              data: {
-                id: car2.id,
-                email: decoded.email,
-                created_on: car2.created_on,
-                manufacturer: car2.manufacturer,
-                model: car2.model,
-                price: car2.price,
-                state: car2.state,
-                status: car2.status,
-              },
+        client.query(query2, value2, (queryError2, result2) => {
+          if (queryError2) {
+            res.status(500).json({
+              status: 500,
+              error: `${queryError2}`,
             });
+            return;
+          }
+          done();
+          const car2 = result2.rows[0];
+
+          res.status(200).json({
+            status: 200,
+            data: {
+              id: car2.id,
+              email: decoded.email,
+              created_on: car2.created_on,
+              manufacturer: car2.manufacturer,
+              model: car2.model,
+              price: car2.price,
+              state: car2.state,
+              status: car2.status,
+            },
           });
-        } else {
-          res.status(404).json({
-            status: 404,
-            error: 'car can only be updated when status is available',
-          });
-        }
+        });
+        // } else {
+        //   res.status(404).json({
+        //     status: 404,
+        //     error: 'car can only be updated when status is available',
+        //   });
+        // }
       });
     });
   }
