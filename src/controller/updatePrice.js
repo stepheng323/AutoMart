@@ -61,7 +61,7 @@ class UpdatePrice {
 
         client.query(query2, value2, (queryError2, result2) => {
           if (queryError2) {
-            res.status(500).json({
+            res.status(600).json({
               status: 500,
               error: `${queryError2}`,
             });
