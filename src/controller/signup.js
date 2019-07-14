@@ -10,7 +10,7 @@ dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    req.headers.append('Content-Type', 'application/json');
+    // req.headers.append.Content-Type = application/json;
 
     const result = Joi.validate(req.body, userSchema);
 
@@ -43,7 +43,7 @@ class Signup {
           email: req.body.email,
           password: hash,
           address: req.body.address,
-          is_admin: req.body.is_admin,
+          is_admin: false,
         };
         const query =					'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const value = [
