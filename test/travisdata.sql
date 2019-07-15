@@ -36,7 +36,7 @@ CREATE TABLE public.cars (
     price numeric NOT NULL,
     model character varying(50),
     body_type character varying(50),
-    car_image character varying(200) NOT NULL,
+    image_url character varying(200) NOT NULL,
     manufacturer character varying(50) NOT NULL
 );
 
@@ -179,7 +179,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: cars; Type: TABLE DATA; Schema: public; Owner: abiodun
 --
 
-COPY public.cars (id, owner, created_on, state, status, price, model, body_type, car_image, manufacturer) FROM stdin;
+COPY public.cars (id, owner, created_on, state, status, price, model, body_type, image_url, manufacturer) FROM stdin;
 12	6	2019-07-13 01:15:10.419+00	new	available	120000	crosstour	car	https://res.cloudinary.com/stepheng323/image/upload/v1562976964/yz1iomzgzl67auoqcivi.jpg	honda
 10	7	2019-06-21 00:00:00+00	new	available	70000	wrangler	car	https://res.cloudinary.com/stepheng323/image/upload/v1561114507/lej5gecia2jz1lznifuo.jpg	jeep
 \.
