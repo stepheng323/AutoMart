@@ -2,7 +2,8 @@
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv'; import { userSchema } from '../model/users';
+import dotenv from 'dotenv';
+import { userSchema } from '../model/users';
 import pool from '../config';
 
 dotenv.config();
