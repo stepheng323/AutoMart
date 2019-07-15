@@ -58,7 +58,7 @@ class UpdatePrice {
         }
         // if (car.status !== 'sold') {
         const query2 = 'UPDATE cars SET price =$1 WHERE id = $2 RETURNING *';
-        const value2 = [req.body.price, req.params.id];
+        const value2 = ['price', req.params.id];
 
         client.query(query2, value2, (queryError2, result2) => {
           if (queryError2) {
