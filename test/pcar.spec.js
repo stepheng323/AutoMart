@@ -21,8 +21,7 @@ describe('car ads', function () {
       .send(validUser)
       .end((err, res) => {
         if (err) {
-          console.log(err.message);
-          return;
+          throw (err.message);
         }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
@@ -40,8 +39,7 @@ describe('car ads', function () {
           .attach('car_image', fs.readFileSync('./image/new.jpg'), 'new.jpg')
           .end((err1, res1) => {
             if (err1) {
-              console.log(err1.message);
-              return;
+              throw (err1.message);
             }
             expect(res1.body).to.have.a.status(201);
             expect(res1.body.data).to.have.a.property('id');
@@ -67,8 +65,7 @@ describe('car ads', function () {
       })
       .end((err, res) => {
         if (err) {
-          console.log(err.message);
-          return;
+          throw (err.message);
         }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
@@ -81,8 +78,7 @@ describe('car ads', function () {
           })
           .end((err2, res2) => {
             if (err2) {
-              console.log(err);
-              return;
+              throw (err);
             }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');
