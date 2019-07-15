@@ -110,7 +110,7 @@ describe('car ads', function () {
           .patch('/api/v1/car/10/status')
           .set('Authorization', bearerToken)
           .send({
-            statuts: 'sold',
+            status: 'sold',
           })
           .end((err2, res2) => {
             if (err2) {
