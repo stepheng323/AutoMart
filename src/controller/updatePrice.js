@@ -4,7 +4,6 @@ import pool from '../config';
 class UpdatePrice {
   // eslint-disable-next-line class-methods-use-this
   priceUpdate(req, res) {
-    console.log(req.body);
     // const schema = {
     //   price: joi.number().required(),
     // };
@@ -62,7 +61,6 @@ class UpdatePrice {
 
         client.query(query2, value2, (queryError2, result2) => {
           if (queryError2) {
-            console.log(queryError2);
             res.status(500).json({
               status: 500,
               error: `${queryError2}`,
@@ -142,8 +140,8 @@ class UpdatePrice {
         const decoded = req.userData;
 
         if (decoded.id !== car.owner) {
-          res.status(404).json({
-            status: 404,
+          res.status(403).json({
+            status: 403,
             error: 'you can only update cars you posted',
           });
           return;

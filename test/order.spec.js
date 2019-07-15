@@ -17,8 +17,7 @@ describe('Order', () => {
       })
       .end((err, res) => {
         if (err) {
-          console.log(err.message);
-          return;
+          throw err.message;
         }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
@@ -32,8 +31,7 @@ describe('Order', () => {
           })
           .end((err2, res2) => {
             if (err2) {
-              console.log(err2.message);
-              return;
+              throw err2.message;
             }
             const { data } = res2.body;
             expect(res2.body).to.have.status(201);
@@ -56,8 +54,7 @@ describe('Order', () => {
       })
       .end((err, res) => {
         if (err) {
-          console.log(err.message);
-          return;
+          throw err.message;
         }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
@@ -70,8 +67,7 @@ describe('Order', () => {
           })
           .end((err2, res2) => {
             if (err2) {
-              console.log(err);
-              return;
+              throw err2.message;
             }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');

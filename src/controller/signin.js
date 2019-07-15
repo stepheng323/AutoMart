@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
-import Joi from 'joi';
+// import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import pool from '../config';
-import { signinSchema } from '../model/users';
+// import { signinSchema } from '../model/users';
 
 class Signin {
   signIn(req, res) {

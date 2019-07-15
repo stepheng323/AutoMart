@@ -77,7 +77,6 @@ class CarsCreate {
     } else {
       pool.connect((err, client, done) => {
         if (err) {
-          // eslint-disable-next-line no-console
           console.log('unable to connect to pool');
           return;
         }

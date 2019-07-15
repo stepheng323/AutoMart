@@ -1,24 +1,24 @@
 /* eslint-disable class-methods-use-this */
-import Joi from 'joi';
+// import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { userSchema } from '../model/users';
+// import { userSchema } from '../model/users';
 import pool from '../config';
 
 dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    // const result = Joi.validate(req.body, userSchema);
+   // const result = Joi.validate(req.body, userSchema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+   // if (result.error) {
+   // res.status(400).json({
+   // status: 400,
+   // error: result.error.details[0].message,
+   // });
+   // return;
+   // }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
@@ -56,8 +56,8 @@ class Signup {
         client.query(query, value, (queryErr, queryResult) => {
           done();
           if (queryErr) {
-            return res.status(400).json({
-              status: 400,
+            return res.status(409).json({
+              status: 409,
               error: queryErr.detail,
             });
           }
@@ -68,7 +68,7 @@ class Signup {
               id: queryResult.rows[0].id,
             },
             process.env.TOKEN_SECRET,
-            { expiresIn: '1hr' },
+            { expiresIn: '7hr' },
           );
           return res.status(201).json({
             status: 201,
