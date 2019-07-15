@@ -11,7 +11,7 @@ describe('Auth', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'henyhart29@swellview.com',
+        email: 'henyhart52@swellview.com',
         first_name: 'henry',
         last_name: 'hart',
         password: 'captainman',
