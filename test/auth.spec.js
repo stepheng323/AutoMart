@@ -35,8 +35,8 @@ it('sign a user in and return token', (done) => {
     .request(app)
     .post('/api/v1/auth/signin')
     .send({
-      email: 'steipheng323@gmail.com',
-      password: 'olaTUNDE',
+      email: 'temi@gmail.com',
+      password: 'biodun',
     })
     .end((err, res) => {
       expect(res.body).to.have.status(200);
