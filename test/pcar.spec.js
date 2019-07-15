@@ -267,31 +267,31 @@ describe('car ads', function () {
           });
       });
   });
-  // it('admin delete car by id', (done) => {
-  //   chai
-  //     .request(app)
-  //     .post('/api/v1/auth/signin')
-  //     .send({
-  //       email: 'temi@gmail.com',
-  //       password: 'biodun',
-  //     })
-  //     .end((err, res) => {
-  //       if (err) {
-  //         throw err;
-  //       }
-  //       const { token } = res.body.data;
-  //       const bearerToken = `Bearer ${token}`;
-  //       chai
-  //         .request(app)
-  //         .delete('/api/v1/car/10')
-  //         .set('Authorization', bearerToken)
-  //         .end((err2, res2) => {
-  //           if (err2) {
-  //             console.log(err2.message);
-  //           }
-  //           expect(res2.body).to.have.status(200);
-  //           done();
-  //         });
-  //     });
-  // });
+  it('admin delete car by id', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'temi@gmail.com',
+        password: 'biodun',
+      })
+      .end((err, res) => {
+        if (err) {
+          throw err;
+        }
+        const { token } = res.body.data;
+        const bearerToken = `Bearer ${token}`;
+        chai
+          .request(app)
+          .delete('/api/v1/car/10')
+          .set('Authorization', bearerToken)
+          .end((err2, res2) => {
+            if (err2) {
+              throw err2.message;
+            }
+            expect(res2.body).to.have.status(200);
+            done();
+          });
+      });
+  });
 });
