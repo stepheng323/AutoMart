@@ -5,7 +5,6 @@ const carSchema = {
   owner: joi.number(),
   created_on: joi.date(),
   state: joi.string().required(),
-  status: joi.string().required(),
   price: joi.number().required(),
   manufacturer: joi.string().required(),
   model: joi.string(),

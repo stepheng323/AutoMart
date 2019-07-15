@@ -10,15 +10,15 @@ dotenv.config();
 
 class Signup {
   createUser(req, res) {
-    const result = Joi.validate(req.body, userSchema);
+    // const result = Joi.validate(req.body, userSchema);
 
-    if (result.error) {
-      res.status(400).json({
-        status: 400,
-        error: result.error.details[0].message,
-      });
-      return;
-    }
+    // if (result.error) {
+    //   res.status(400).json({
+    //     status: 400,
+    //     error: result.error.details[0].message,
+    //   });
+    //   return;
+    // }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(400).json({
@@ -41,7 +41,7 @@ class Signup {
           email: req.body.email,
           password: hash,
           address: req.body.address,
-          is_admin: req.body.is_admin,
+          is_admin: false,
         };
         const query =					'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const value = [

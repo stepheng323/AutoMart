@@ -19,7 +19,6 @@ const userSchema = {
   email: Joi.string().required(),
   password: Joi.string().required(),
   address: Joi.string().required(),
-  is_admin: Joi.boolean().required(),
 };
 
 const signinSchema = {

@@ -71,9 +71,6 @@ class View {
           });
           return;
         }
-        const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
-        const value2 = ['available', 'sold'];
-
         if (!user.is_admin) {
           next();
           return;
@@ -86,6 +83,10 @@ class View {
           next();
           return;
         }
+
+        const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
+        const value2 = ['available', 'sold'];
+
         client.query(query2, value2, (queryError2, results2) => {
           done();
           if (queryError2) {
@@ -126,8 +127,9 @@ class View {
         });
         return;
       }
+      // if (req.query.status === 'available') {
       const query3 = 'SELECT * FROM cars WHERE status = $1';
-      const value3 = [req.query.status];
+      const value3 = ['available'];
 
       client.query(query3, value3, (error, results) => {
         if (error) {
@@ -139,7 +141,6 @@ class View {
         }
         done();
         const available = results.rows;
-
         if (!available) {
           res.status(404).json({
             status: 404,
@@ -152,6 +153,7 @@ class View {
           data: available,
         });
       });
+      // }
     });
   }
 
