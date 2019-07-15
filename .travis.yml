@@ -15,7 +15,6 @@ services:
 env:
   - NODE_ENV = test
   - USER = abiodun
-  - DATABASE = travis_ci_test
   - PASSWORD = olaTUNDELA234
   - DB_PORT = 5432
 
