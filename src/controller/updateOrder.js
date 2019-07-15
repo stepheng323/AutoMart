@@ -1,10 +1,9 @@
-import Joi from 'joi';
+// import Joi from 'joi';
 import pool from '../config';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
   updateOrders(req, res) {
-    console.log(req.body);
     // validate users input
     // const schema = {
     //   new_price_offered: Joi.number().required(),
@@ -57,7 +56,7 @@ class UpdateOrders {
         }
         // if (order.status === 'pending') {
         const query2 = 'UPDATE orders SET amount = $1 WHERE id = $2 RETURNING *';
-        const value2 = [req.body.new_price_offered, req.params.id];
+        const value2 = [req.body.price, req.params.id];
 
         client.query(query2, value2, (queryError2, queryResult2) => {
           done();

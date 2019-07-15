@@ -11,7 +11,7 @@ import ordersUpdate from '../controller/updateOrder';
 import updatePrice from '../controller/updatePrice';
 import view from '../controller/view';
 import { upload } from '../middleware/cloudinary';
-import swaggerDocument from '../../docs/swagger.json';
+import swaggerDocument from '../../api/docs/swagger.json';
 
 const router = express.Router();
 router.use(express.json());
