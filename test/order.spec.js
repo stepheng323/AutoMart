@@ -63,7 +63,7 @@ describe('Order', () => {
           .patch('/api/v1/order/25/price')
           .set('Authorization', bearerToken)
           .send({
-            new_price_offered: 70000,
+            price: 70000,
           })
           .end((err2, res2) => {
             if (err2) {
