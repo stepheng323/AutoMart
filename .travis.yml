@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - 'stable'
+cache:
+  directories:
+    - 'node_modules'
+after_success: npm run coverage
+
+notifications:
+  email: false
+
+services:
+  - postgresql
+
+env:
+  - NODE_ENV = test
+  - USER = abiodun
+  - PASSWORD = olaTUNDELA234
+  - DB_PORT = 5432
+
+before_script:
+  - psql -c 'create database automart;' -U postgres
+  - psql -c "create user abiodun with password 'olaTUNDELA234';" -U postgres
+  - psql -U abiodun automart < test/travisdata.sql
