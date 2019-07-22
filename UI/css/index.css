@@ -3,7 +3,6 @@ body {
 	padding: 0px;
 	margin: 0px;
 	font-family: 'Open Sans', sans-serif;
-	background: #35424a;
 }
 
 * {
@@ -83,19 +82,19 @@ header nav {
 	background-color: #35424a;
 }
 #boxes {
-	background: #fff;
+	background: #f1f1f1;
 	overflow: hidden;
 	padding-top: 1em;
-	background: #f2f2f2;
 }
 .featured p {
 	text-align: center;
 	font-size: 1.2em;
 	font-weight: bold;
 	color: #fff;
-	/* display:inline; */
 	text-align: center;
 	margin: 0px;
+	background: #35424a;
+	padding: 0.5em;
 }
 .boxes-container {
 	box-sizing: border-box;
@@ -122,7 +121,7 @@ header nav {
 }
 .view-btn a {
 	display: block;
-	width: 40%;
+	width: 35%;
 	padding: 8px 12px;
 	border-radius: 4px;
 	background: #35424a;
@@ -147,21 +146,20 @@ header nav {
 .boxes-container .product-card {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 6px 0 rgba(0, 0, 0, 0.19);
 	overflow: hidden;
-	transition: transform 0.5s ease;
 	margin: auto;
-	height: 60vh;
+	height: 58vh;
 	border-radius: 4px;
 	background: #fff;
 	width: 99%;
+	border: 1px solid transparent;
 }
 .boxes-container .product-card img {
 	width: 100%;
-	height: 35vh;
+	height: 30vh;
 	object-fit: contain;
 }
 .boxes-container .product-card:hover {
-	transform: scale(1.01);
-	/* border: 0.7px solid orange; */
+	border: 1px solid orange;
 }
 .more {
 	display: grid;
@@ -184,12 +182,15 @@ header nav {
 	color: orange;
 }
 .explain {
+	width: 94%;
+	margin: auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	background: #fff;
+	min-height: 20em;
 }
 .explain_image {
-	min-height: 20em;
+	width: 100%;
 	background: url('../img/explaincar.png') no-repeat;
 }
 .explain_text {
@@ -205,11 +206,11 @@ header nav {
 }
 .explain_text p {
 	text-align: center;
-	width: 80%;
+	width: 85%;
 	margin: auto;
-	padding-right: 2em;
 	line-height: 2em;
 	color: #455c69;
+	font-size: 1.1em;
 }
 .explain_text a {
 	background: #35424a;
@@ -229,36 +230,10 @@ header nav {
 	background-color: #fff;
 	color: orange;
 }
-#how {
-	/* overflow: hidden; */
-	margin: auto;
-	background: #f1f1f1;
-	min-height: 300px;
-	padding-top: 2.2em;
-}
-#how h2 {
-	text-align: center;
-	color: #35424a;
-	padding: 1.2em, 0, 1.2em, 0;
-	font-weight: bold;
-}
-.how-container {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	justify-items: center;
-}
-.how-container h3 {
-	margin-top: 10px;
-	color: #35424a;
-}
-.how-container img {
-	width: 120px;
-	margin-top: 1.5em;
-}
+
 #newsletter {
-	background-color: #455c69;
-	color: #fff;
-	padding: 10px;
+	background-color: #2c363b;
+	color: #ccc;
 }
 .news-container {
 	display: grid;
@@ -270,68 +245,79 @@ header nav {
 }
 #newsletter form {
 	margin: 1em;
+	border: 0;
 }
-
 #newsletter input[type='email'] {
-	width: 40%;
-	height: 40px;
+	width: 55%;
+	height: 46px;
 	padding: 4px;
+	border: 0px;
+	border-radius: 4px;
 	outline: 0;
-	border-radius: 3px;
 }
 .news-btn {
-	padding: 12px 30px;
-	background-color: #35424a;
+	display: inline-block;
+	padding: 15.5px 20px;
+	background-color: orange;
 	color: #ffffff;
 	transition-duration: 0.7s;
 	cursor: pointer;
-	border-radius: 4px;
-	border: 0;
+	border-radius: 0 4px 4px 0;
+	border: 0px;
+	margin-left: -0.5em;
+	outline: 0px;
+	margin-top: 5px;
 }
 .news-btn:hover {
-	background-color: #fff;
-	color: orange;
-	border: 1px solid #000;
+	background-color: #455c69;
+	color: #f1f1f1;
 }
 .fcontainer {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	background-color: #2c363b;
-	color: #ffffff;
+	grid-template-columns: repeat(5, 1fr);
+	background-color: #1f272c;
+	color: #ccc;
 	font-size: 13px;
 	justify-items: center;
+	padding-left: 3.5em;
 }
 .fcontainer ul {
 	list-style-type: none;
+	padding: 0px;
 }
 .fcontainer ul li a {
 	text-decoration: none;
 	display: inline-block;
-	padding: 1em 0.2em 0.2em 0.2em;
-	color: #ffffff;
+	padding: 0.4em 0.1em 0.1em 0.1em;
+	color: #ccc;
 	overflow: hidden;
-}
-.fcontainer ul li a:hover {
-	text-decoration: underline;
 }
 .fcontainer h3,
 .fcontainer p {
 	margin-top: 1.3em;
 }
+.one h3,
+.two h3,
+.three h3,
+.social h3 {
+	font-size: 1.2em;
+}
 .fcontainer .pad {
 	margin-left: 6%;
 }
 .social a {
-	color: #ffffff;
+	color: #ccc;
 	text-decoration: none;
 }
 .copy {
 	margin: 0;
-	background: #2c363b;
+	background: #1f272c;
 	color: #fff;
 	font-size: 14px;
-	padding: 1em 6%;
+	padding: 0.8em 6em;
 }
+
+/************** MEDIA QUERY ******************/
 
 @media (max-width: 768px) {
 	header .branding {
@@ -348,7 +334,7 @@ header nav {
 		text-align: center;
 	}
 	#showcase h1 {
-		font-size: 55px;
+		font-size: 40px;
 		margin-top: 50px;
 		margin-bottom: 10px;
 	}
@@ -358,28 +344,35 @@ header nav {
 		margin: auto;
 		margin-bottom: 5px;
 	}
-
 	.boxes-container {
 		display: grid;
 		grid-template-columns: 1fr;
 		width: 90%;
 		margin: auto;
-		transition: none;
+	}
+	.boxes-container .product-card {
+		height: 45vh;
+	}
+	.boxes-container .product-card img {
+		width: 100%;
+		height: 23vh;
+		object-fit: contain;
 	}
 	.boxes-container .product-card:hover {
-		transform: none;
-		border: 0.7px solid orange;
+		border: 1px solid orange;
 	}
 	.explain {
 		display: grid;
 		grid-template-columns: 1fr;
-		/* margin: auto; */
+		margin: auto;
 		padding-bottom: 2.5em;
 	}
 	.explain_image {
-		background: url('../img/explaincar.png') no-repeat;
-
-		object-fit: fill;
+		width: 100%;
+		margin: auto;
+		background: url('../img/explaincar.png') no-repeat -5.5em;
+		object-fit: cover;
+		justify-items: center;
 	}
 	.explain_text {
 		margin: auto;
@@ -388,14 +381,6 @@ header nav {
 	}
 	.explain_text a {
 		padding: 8px 8px;
-	}
-	.how-container {
-		display: grid;
-		grid-template-columns: 1fr;
-	}
-	.how-box {
-		align-items: center;
-		margin-bottom: 0.5em;
 	}
 	.news-container {
 		display: grid;
