@@ -11,110 +11,48 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="stylesheet" href="./css/signin.css" />
-		<title>Create an Account</title>
+		<title>Login</title>
 	</head>
 	<body>
-		<header>
-			<div class="container">
-				<div class="branding">
-					<h1>
-						<a href="index.html"><span class="highlight">Auto</span>Mart</a>
-					</h1>
-				</div>
-				<nav>
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="postad.html">Sell Car</a></li>
-						<li><a href="search.html">Buy car</a></li>
-						<li>
-							<a href="signin.html"><i class="fas fa-user"></i> Log in</a>
-						</li>
-						<li><a href="signup.html">Join</a></li>
-						<li><a href="contact.html">Contact Us</a></li>
-					</ul>
-				</nav>
-			</div>
-		</header>
+		<div class="top-logo">
+			<h1>
+				<a href="index.html"><span class="highlight">Auto</span>Mart</a>
+			</h1>
+		</div>
+
 		<main>
-			<div class="main-container">
-				<div class="mcontainer">
-					<h2>Sign In</h2>
-					<form>
-						<div class="input">
-							<label> <b>Email</b></label>
-							<input type="email" placeholder="Enter your Email" required />
-						</div>
+			<div class="heading">
+				<h1>Login</h1>
+			</div>
 
-						<div class="input">
-							<label> <b>Password</b></label>
-							<input
-								type="password"
-								placeholder="Enter your Password"
-								required
-							/>
-						</div>
-						<div class="remember">
-							<input type="checkbox" />
-							<p class="left ">Remember me</p>
-							<p class="right red"><a href="#">Forgot Password?</a></p>
-						</div>
+			<div class="mcontainer">
+				<form>
+					<div class="input">
+						<label> <p>Email</p></label>
+						<input type="email" placeholder="Enter your Email" required />
+					</div>
 
-						<button class="signinbtn">Sign In</button>
-						<div class="new-user">
-							<p>
-								New user? <a class="red" href="./signup.html">Sign up here</a>
-							</p>
-						</div>
-					</form>
-				</div>
+					<div class="input">
+						<label><p>Password</p></label>
+						<a href="#">Forgot Password?</a>
+						<input type="password" placeholder="Enter your Password" required />
+					</div>
+					<button class="signinbtn">Login</button>
+
+					<!-- <div class="login-params"><br>
+						<input type="checkbox" />
+						<p class="left ">Remember me</p>
+						
+					</div> -->
+
+					<div class="new-user">
+						<p>
+							Don't have an account?
+							<a class="signup-btn" href="./signup.html">Create an Account</a>
+						</p>
+					</div>
+				</form>
 			</div>
 		</main>
-		<footer class="footer">
-			<div class="fcontainer">
-				<div class="one">
-					<h3>Help and Support</h3>
-					<p>
-						<i class="far fa-clock fa-1x"></i> Mon-Fri: 8am-5pm <br /><span
-							class="pad"
-							>Sat: 10am-5pm</span
-						>
-					</p>
-					<i class="fas fa-phone fa-1x"></i> +2348162511023<br /><span
-						class="pad"
-					>
-						+2348067892221</span
-					>
-				</div>
-				<div class="two">
-					<ul>
-						<li><a href="index.html">Privacy Statement</a></li>
-						<li><a href="contact.html">Terms & Conditions</a></li>
-						<li><a href="#">Career</a></li>
-						<li><a href="dealer.html">Become a Dealer</a></li>
-					</ul>
-				</div>
-				<div class="three">
-					<ul>
-						<li><a href="index.html">About Us</a></li>
-						<li><a href="contact.html">Contact Us</a></li>
-						<li><a href="safetips">Safe Buiying Tips</a></li>
-						<li><a href="#">Blog</a></li>
-					</ul>
-				</div>
-				<div class="social">
-					<h3>Social Media</h3>
-					<p>
-						<a href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
-					</p>
-					<p>
-						<a href="#"><i class="fab fa-twitter-square"></i> Twitter</a>
-					</p>
-					<p>
-						<a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-					</p>
-				</div>
-			</div>
-			<P class="copy">2019 &copy; All rights reserved</P>
-		</footer>
 	</body>
 </html>

@@ -30,7 +30,7 @@ header li {
 	display: inline;
 }
 header li a:hover {
-	border-bottom: 2px solid #ffffff;
+	border-bottom: 2px solid #fff;
 }
 header .branding {
 	float: left;
@@ -38,6 +38,7 @@ header .branding {
 }
 header .branding h1 {
 	margin: 0;
+	font-family: 'Ubuntu', sans-serif;
 }
 header nav {
 	float: right;
@@ -46,7 +47,7 @@ header nav {
 
 .highlight {
 	font-weight: bold;
-	color: red;
+	color: orange;
 }
 .main {
 	background-color: #f1f1f1;
@@ -55,8 +56,7 @@ header nav {
 .main-container {
 	display: grid;
 	grid-template-columns: 2fr 1fr;
-	grid-gap: 1em;
-	width: 80%;
+	width: 85%;
 	margin: auto;
 	margin-top: 3em;
 	margin-bottom: 3em;
@@ -64,6 +64,7 @@ header nav {
 .main-container .details {
 	background: #ffffff;
 	padding: 1em;
+	border-radius: 8px 0 0 8px;
 }
 .main-container .details img {
 	width: 90%;
@@ -112,7 +113,13 @@ header nav {
 }
 .main-container .contact {
 	background: #ffffff;
-	padding: 0.5em;
+	padding: 2em;
+	border-radius: 0 8px 7px 0;
+}
+.main-container .contact p {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 500;
 }
 input[type='email'],
 input[type='text'],
@@ -124,6 +131,7 @@ input[type='number'] {
 	display: inline-block;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+	outline: 0;
 }
 input[type='email']:focus,
 input[type='password']:focus {
@@ -139,49 +147,105 @@ input[type='password']:focus {
 	cursor: pointer;
 	margin-top: 1em;
 	transition-duration: 0.4s;
+	border-radius: 4px;
+	border: 0;
+	font-weight: bold;
 }
 .signinbtn:hover {
-	background: #283136;
+	background: #fff;
+	color: orange;
+	border:1px solid #1f272c;
+}
+#newsletter {
+	background-color: #2c363b;
+	color: #ccc;
+}
+.news-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+#newsletter h3 {
+	margin: 0;
+	margin-top: 1.3em;
+	margin-left: 5em;
+}
+#newsletter form {
+	margin: 0.8em;
+	margin-bottom: 1.1em;
+	border: 0;
+}
+
+#newsletter input[type='email'] {
+	width: 55%;
+	margin: auto;
+	height: 46px;
+	padding: 4px;
+	border: 0;
+	border-radius: 4px;
+	outline: 0;
+}
+.news-btn {
+	display: inline-block;
+	padding: 15.5px 20px;
+	background-color: orange;
+	color: #ffffff;
+	transition-duration: 0.7s;
+	cursor: pointer;
+	border-radius: 0 4px 4px 0;
+	border: 0px;
+	margin-left: -0.5em;
+	outline: 0px;
+	margin-top: 5px;
+}
+.news-btn:hover {
+	background-color: #455c69;
+	color: #f1f1f1;
 }
 
 .fcontainer {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	background-color: #2c363b;
-	color: #ffffff;
+	grid-template-columns: repeat(5, 1fr);
+	background-color: #1f272c;
+	color: #ccc;
 	font-size: 13px;
 	justify-items: center;
+	padding-left: 3.5em;
 }
+
 .fcontainer ul {
 	list-style-type: none;
+	padding: 0px;
 }
 .fcontainer ul li a {
 	text-decoration: none;
 	display: inline-block;
-	padding: 1em 0.2em 0.2em 0.2em;
-	color: #ffffff;
+	padding: 0.4em 0.1em 0.1em 0.1em;
+	color: #ccc;
 	overflow: hidden;
-}
-.fcontainer ul li a:hover {
-	text-decoration: underline;
 }
 .fcontainer h3,
 .fcontainer p {
 	margin-top: 1.3em;
 }
+.one h3,
+.two h3,
+.three h3,
+.social h3 {
+	font-size: 1.2em;
+}
 .fcontainer .pad {
 	margin-left: 6%;
 }
 .social a {
-	color: #ffffff;
+	color: #ccc;
 	text-decoration: none;
 }
 .copy {
 	margin: 0;
-	background: #2c363b;
+	background: #1f272c;
 	color: #fff;
 	font-size: 14px;
-	padding: 1em 6%;
+	padding: 0.8em 6em;
 }
 
 @media (max-width: 768px) {
