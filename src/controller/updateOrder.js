@@ -1,38 +1,36 @@
-// import Joi from 'joi';
+import Joi from 'joi';
 import pool from '../config';
+import { checkOrder, updateOrder } from '../helpers/query';
 
 class UpdateOrders {
   // eslint-disable-next-line class-methods-use-this
   updateOrders(req, res) {
     // validate users input
-    // const schema = {
-    //   new_price_offered: Joi.number().required(),
-    // };
-    // const result = Joi.validate(req.body, schema);
+    const schema = {
+      price: Joi.number().required(),
+    };
+    const result = Joi.validate(req.body, schema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     pool.connect((err, client, done) => {
       if (err) {
-        res.status(400).json({
-          status: 400,
-          error: 'could not connect to the pool',
+        res.status(500).json({
+          status: 500,
+          error: 'Internal server error',
         });
         return;
       }
-      const query = 'SELECT * FROM orders WHERE id = $1';
-      const value = [req.params.id];
-
-      client.query(query, value, (queryError, results) => {
+      client.query(checkOrder, [req.params.id], (queryError, results) => {
         if (queryError) {
-          res.status(400).json({
-            status: 400,
-            error: `${queryError}`,
+          res.status(500).json({
+            status: 500,
+            error: 'Internal server error',
           });
           return;
         }
@@ -54,37 +52,35 @@ class UpdateOrders {
           });
           return;
         }
-        // if (order.status === 'pending') {
-        const query2 = 'UPDATE orders SET amount = $1 WHERE id = $2 RETURNING *';
-        const value2 = [req.body.price, req.params.id];
-
-        client.query(query2, value2, (queryError2, queryResult2) => {
-          done();
-          if (queryError2) {
-            res.status(400).json({
-              status: 400,
-              error: `${queryError2}`,
+        if (order.status === 'pending') {
+          const value2 = [req.body.price, req.params.id];
+          client.query(updateOrder, value2, (queryError2, queryResult2) => {
+            done();
+            if (queryError2) {
+              res.status(500).json({
+                status: 500,
+                error: 'Internal server error',
+              });
+              return;
+            }
+            const order2 = queryResult2.rows[0];
+            res.status(200).json({
+              status: 200,
+              data: {
+                id: order.id,
+                car_id: order.car_id,
+                status: order.status,
+                old_price_offered: order.amount,
+                new_price_offered: order2.amount,
+              },
             });
-            return;
-          }
-          const order2 = queryResult2.rows[0];
-          res.status(200).json({
-            status: 200,
-            data: {
-              id: order.id,
-              car_id: order.car_id,
-              status: order.status,
-              old_price_offered: order.amount,
-              new_price_offered: order2.amount,
-            },
           });
-        });
-        // } else {
-        //   res.status(403).json({
-        //     status: 403,
-        //     error: 'you can only update pending order',
-        //   });
-        // }
+        } else {
+          res.status(409).json({
+            status: 409,
+            error: 'you can only update pending order',
+          });
+        }
       });
     });
   }

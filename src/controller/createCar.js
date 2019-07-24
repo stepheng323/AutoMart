@@ -3,21 +3,22 @@ import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import { carSchema } from '../model/cars';
 import pool from '../config';
+import { newCar, newCarWithImage } from '../helpers/query';
 
 dotenv.config();
 
 class CarsCreate {
   // eslint-disable-next-line class-methods-use-this
   createCar(req, res) {
-    // const result = Joi.validate(req.body, carSchema);
+    const result = Joi.validate(req.body, carSchema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     if (!req.file) {
       const decoded = req.userData;
       const car = {
@@ -30,7 +31,7 @@ class CarsCreate {
         model: req.body.model,
         body_type: req.body.body_type,
       };
-      const query =				'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *';
+
       const values = [
         car.owner,
         car.created_on,
@@ -43,16 +44,18 @@ class CarsCreate {
       ];
       pool.connect((err, client, done) => {
         if (err) {
-          // eslint-disable-next-line no-console
-          console.log('unable to connect to pool');
+          res.status(500).json({
+            status: 500,
+            error: 'internal server error',
+          });
           return;
         }
-        client.query(query, values, (queryError, queryResult) => {
+        client.query(newCar, values, (queryError, queryResult) => {
           done();
           if (queryError) {
-            res.status(400).json({
-              status: 400,
-              error: console.log(queryError),
+            res.status(500).json({
+              status: 500,
+              error: 'internal server error',
             });
             return;
           }
@@ -77,13 +80,9 @@ class CarsCreate {
     } else {
       pool.connect((err, client, done) => {
         if (err) {
-          console.log('unable to connect to pool');
-          return;
-        }
-        if (!req.file) {
-          res.status(400).json({
-            status: 400,
-            error: 'upload atleast one car image',
+          res.status(500).json({
+            status: 500,
+            error: 'internal server error',
           });
           return;
         }
@@ -101,7 +100,6 @@ class CarsCreate {
               body_type: req.body.body_type,
               image_url: results.secure_url,
             };
-            const query =							'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, image_url) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
             const values = [
               car.owner,
               car.created_on,
@@ -113,12 +111,12 @@ class CarsCreate {
               car.body_type,
               car.image_url,
             ];
-            client.query(query, values, (queryError, queryResult) => {
+            client.query(newCarWithImage, values, (queryError, queryResult) => {
               done();
               if (queryError) {
-                res.status(400).json({
-                  status: 400,
-                  error: console.log(queryError),
+                res.status(500).json({
+                  status: 500,
+                  error: 'internal server error',
                 });
                 return;
               }

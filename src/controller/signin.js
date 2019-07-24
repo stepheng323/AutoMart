@@ -1,36 +1,35 @@
 /* eslint-disable class-methods-use-this */
-// import Joi from 'joi';
+import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import pool from '../config';
-// import { signinSchema } from '../model/users';
+import { signinSchema } from '../model/users';
+import { checkMail } from '../helpers/query';
 
 class Signin {
   signIn(req, res) {
-    // const result = Joi.validate(req.body, signinSchema);
+    const result = Joi.validate(req.body, signinSchema);
 
-    // if (result.error) {
-    //   res.status(400).json({
-    //     status: 400,
-    //     error: result.error.details[0].message,
-    //   });
-    //   return;
-    // }
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: 'Internal Server Error',
         });
         return;
       }
-      const query = 'SELECT * FROM users WHERE email = $1';
-      const value = [req.body.email];
-      client.query(query, value, (queryError, queryResult) => {
+      client.query(checkMail, [req.body.email], (queryError, queryResult) => {
         if (queryError) {
-          res.status(400).json({
-            status: 400,
-            error: queryError,
+          res.status(500).json({
+            status: 500,
+            error: 'Internal Server Error',
           });
           return;
         }
@@ -38,16 +37,16 @@ class Signin {
         if (!user) {
           res.status(400).json({
             status: 400,
-            error: 'invalid email or address',
+            error: 'Invalid Email and Address Combination',
           });
         }
         done();
-        if (queryResult.rows[0]) {
+        if (user) {
           bcrypt.compare(req.body.password, user.password, (bcryptErr, correct) => {
             if (bcryptErr) {
-              res.status(401).json({
-                status: 401,
-                message: 'invalid email or password',
+              res.status(501).json({
+                status: 501,
+                message: 'Internal server error',
               });
               return;
             }
@@ -73,7 +72,7 @@ class Signin {
             } else {
               res.status(400).json({
                 status: 400,
-                error: 'please, login with a valid email',
+                error: 'Invalid Email and Address Combination',
               });
             }
           });

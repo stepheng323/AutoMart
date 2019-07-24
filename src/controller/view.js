@@ -1,24 +1,31 @@
+/* eslint-disable class-methods-use-this */
 import pool from '../config';
+import {
+  checkCar,
+  checkUser,
+  checkCarStatus,
+  checkCarStatus2,
+  checkPriceRange,
+  checkAdmin,
+  deleteCar,
+} from '../helpers/query';
 
 class View {
-  // eslint-disable-next-line class-methods-use-this
   specific(req, res, next) {
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: `could not connect ${err}`,
+          error: 'internal server error',
         });
         return;
       }
-      const query = 'SELECT * FROM cars WHERE id = $1';
-      const value = [req.params.id];
 
-      client.query(query, value, (error, results) => {
+      client.query(checkCar, [req.params.id], (error, results) => {
         if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
+          res.status(500).json({
+            status: 500,
+            error: 'internal server error',
           });
           return;
         }
@@ -40,37 +47,26 @@ class View {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   soldOrAvailable(req, res, next) {
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: `could not connect ${err}`,
+          error: 'internal server error',
         });
         return;
       }
       const decoded = req.userData;
-      const query = 'SELECT * FROM users WHERE id = $1';
-      const value = [decoded.id];
 
-      client.query(query, value, (error, results) => {
+      client.query(checkUser, [decoded.id], (error, results) => {
         if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
+          res.status(500).json({
+            status: 500,
+            error: 'internal server error',
           });
           return;
         }
         const user = results.rows[0];
-
-        if (!user) {
-          res.status(403).json({
-            status: 403,
-            error: 'you must be logged in',
-          });
-          return;
-        }
         if (!user.is_admin) {
           next();
           return;
@@ -84,15 +80,12 @@ class View {
           return;
         }
 
-        const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
-        const value2 = ['available', 'sold'];
-
-        client.query(query2, value2, (queryError2, results2) => {
+        client.query(checkCarStatus2, ['available', 'sold'], (queryError2, results2) => {
           done();
           if (queryError2) {
-            res.status(400).json({
-              status: 400,
-              error: `${error}`,
+            res.status(500).json({
+              status: 500,
+              error: 'internal server error',
             });
             return;
           }
@@ -100,7 +93,7 @@ class View {
           if (!availableOrSold) {
             res.status(404).json({
               status: 404,
-              error: 'no cars found',
+              error: 'no car found',
             });
             return;
           }
@@ -113,7 +106,7 @@ class View {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  
   unsold(req, res, next) {
     if (req.query.min_price && req.query.max_price) {
       next();
@@ -123,19 +116,16 @@ class View {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: 'internal server error',
         });
         return;
       }
-      // if (req.query.status === 'available') {
-      const query3 = 'SELECT * FROM cars WHERE status = $1';
-      const value3 = ['available'];
 
-      client.query(query3, value3, (error, results) => {
+      client.query(checkCarStatus, [req.query.status], (error, results) => {
         if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
+          res.status(500).json({
+            status: 500,
+            error: 'Internal Server Error',
           });
           return;
         }
@@ -153,28 +143,25 @@ class View {
           data: available,
         });
       });
-      // }
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   priceRange(req, res) {
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: 'internal server error',
         });
         return;
       }
-      const query4 = 'SELECT * FROM cars WHERE status = $1 AND price >= $2 AND price <= $3';
       const value4 = [req.query.status, req.query.min_price, req.query.max_price];
-      client.query(query4, value4, (error, results) => {
+      client.query(checkPriceRange, value4, (error, results) => {
         done();
         if (error) {
           res.status(500).json({
             status: 500,
-            error: `${error}`,
+            error: 'internal server error',
           });
           return;
         }
@@ -194,59 +181,51 @@ class View {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   deleteCar(req, res) {
     pool.connect((err, client, done) => {
       if (err) {
         res.status(500).json({
           status: 500,
-          error: 'could not connect to the pool',
+          error: 'internal server error',
         });
         return;
       }
       const decoded = req.userData;
-      const query5 = 'SELECT is_admin FROM users WHERE id = $1';
-      const value5 = [decoded.id];
-
-      client.query(query5, value5, (error, results) => {
+      client.query(checkAdmin, [decoded.id], (error, results) => {
         if (error) {
           res.status(500).json({
             status: 500,
-            error: `${error}`,
+            error: 'Internal Server Error',
           });
           return;
         }
         const user = results.rows[0];
         if (user.is_admin) {
-          const query = 'DELETE FROM cars WHERE id = $1 RETURNING *';
-          const value = [req.params.car_id];
-
-          client.query(query, value, (queryError, queryResults) => {
+          client.query(deleteCar, [req.params.car_id], (queryError, queryResults) => {
             done();
             if (queryError) {
               res.status(500).json({
                 status: 500,
-                error: `${queryError}`,
+                error: 'Internal Server Error',
               });
               return;
             }
             if (!queryResults.rows[0]) {
-              res.status(400).json({
-                status: 400,
-                error: 'car not found',
+              res.status(404).json({
+                status: 404,
+                error: 'no car found',
               });
               return;
             }
-
             res.status(200).json({
               status: 200,
-              data: 'Car ad succefully deleted',
+              data: 'car ad successfully deleted',
             });
           });
         } else {
           res.status(403).json({
             status: 403,
-            data: 'Only an admin can delete cars ad',
+            error: 'Only admin can delete a car',
           });
         }
       });
