@@ -1,30 +1,24 @@
 import jwt from 'jsonwebtoken';
 
 const auth = (req, res, next) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({
-        status: 401,
-        error: 'Access Denied',
-      });
-    }
-    try {
-      const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-      req.userData = decoded;
-      next();
-    } catch (error) {
-      res.status(400).json({
-        status: 400,
-        error: 'Invalid Token',
-      });
-    }
-  } else {
+  const bearer = req.headers.authorization;
+  if (!bearer) {
     return res.status(401).json({
       status: 401,
       error: 'Access Denied',
     });
   }
+  const token = bearer.split(' ')[1];
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, data) => {
+    if (err) {
+      return res.status(400).json({
+        status: 400,
+        error: 'Invalid Token',
+      });
+    }
+    req.userData = data;
+    next();
+  });
 };
 
 export default auth;
