@@ -14,6 +14,6 @@ app.use('/api/v1/docs', swaggerUi.serve);
 app.get('/api/v1/docs', swaggerUi.setup(swaggerDocument));
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}...`));
+app.listen(port, () => console.info(`Server running on port ${port}...`));
 
 export default app;
