@@ -1,13 +1,13 @@
 import express from 'express';
 
-import signin from '../controller/signin';
-import signup from '../controller/signup';
-import carscreate from '../controller/createCar';
-import orders from '../controller/postOrder';
-import checkAuth from '../middleware/checkAuth';
-import ordersUpdate from '../controller/updateOrder';
-import updatePrice from '../controller/updatePrice';
-import view from '../controller/view';
+import Signin from '../controller/signin';
+import Signup from '../controller/signup';
+import Carscreate from '../controller/createCar';
+import Orders from '../controller/postOrder';
+import CheckAuth from '../middleware/checkAuth';
+import OrdersUpdate from '../controller/updateOrder';
+import UpdatePrice from '../controller/updatePrice';
+import View from '../controller/view';
 import { upload } from '../middleware/cloudinary';
 
 const router = express.Router();
@@ -18,17 +18,17 @@ router.get('/', (req, res) => {
     message: 'Welcome to my app',
   });
 });
-router.post('/api/v1/auth/signup', signup.createUser);
-router.post('/api/v1/auth/signin', signin.signIn);
-router.post('/api/v1/car', checkAuth, upload.single('image_url'), carscreate.createCar);
-router.post('/api/v1/order', checkAuth, orders.createOrder);
-router.patch('/api/v1/order/:id/price', checkAuth, ordersUpdate.updateOrders);
-router.patch('/api/v1/car/:id/price', checkAuth, updatePrice.priceUpdate);
-router.patch('/api/v1/car/:id/status', checkAuth, updatePrice.sold);
-router.get('/api/v1/car/:id', checkAuth, view.specific);
-router.get('/api/v1/car', checkAuth, view.soldOrAvailable);
-router.get('/api/v1/car', view.unsold);
-router.get('/api/v1/car', view.priceRange);
-router.delete('/api/v1/car/:car_id', checkAuth, view.deleteCar);
+router.post('/api/v1/auth/signup', Signup.createUser);
+router.post('/api/v1/auth/signin', Signin.signIn);
+router.post('/api/v1/car', CheckAuth, upload.single('image_url'), Carscreate.createCar);
+router.post('/api/v1/order', CheckAuth, Orders.createOrder);
+router.patch('/api/v1/order/:id/price', CheckAuth, OrdersUpdate.updateOrders);
+router.patch('/api/v1/car/:id/price', CheckAuth, UpdatePrice.priceUpdate);
+router.patch('/api/v1/car/:id/status', CheckAuth, UpdatePrice.sold);
+router.get('/api/v1/car/:id', CheckAuth, View.specific);
+router.get('/api/v1/car', CheckAuth, View.soldOrAvailable);
+router.get('/api/v1/car', View.unsold);
+router.get('/api/v1/car', View.priceRange);
+router.delete('/api/v1/car/:car_id', CheckAuth, View.deleteCar);
 
 export default router;
