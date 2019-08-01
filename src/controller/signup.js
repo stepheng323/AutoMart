@@ -20,86 +20,61 @@ class Signup {
       });
       return;
     }
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'internal server error',
+
+    (async () => {
+      const queryResult = await pool.query(checkMail, [req.body.email]);
+      if (queryResult.rows[0]) {
+        res.status(409).json({
+          status: 409,
+          error: 'Email Already Exist',
         });
         return;
       }
+      const hash = await bcrypt.hash(req.body.password, 10);
 
-      client.query(checkMail, [req.body.email], (error, results) => {
-        done();
-        if (error) {
-          res.status(500).json({
-            status: 500,
-            error: 'internal server error',
-          });
-          return;
-        }
-        if (results.rows[0]) {
-          res.status(409).json({
-            status: 409,
-            error: 'email already exist',
-          });
-          return;
-        }
-        bcrypt.hash(req.body.password, 10, (unhash, hash) => {
-          if (unhash) {
-            res.status(500).json({
-              status: 500,
-              error: 'internal server error',
-            });
-            return;
-          }
+      if (hash) {
+        const user = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: hash,
+          address: req.body.address,
+          is_admin: false,
+        };
 
-          const user = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: hash,
-            address: req.body.address,
-            is_admin: false,
-          };
+        const value2 = [
+          user.first_name,
+          user.last_name,
+          user.email,
+          user.password,
+          user.address,
+          user.is_admin,
+        ];
 
-          const value2 = [
-            user.first_name,
-            user.last_name,
-            user.email,
-            user.password,
-            user.address,
-            user.is_admin,
-          ];
-          client.query(newUser, value2, (queryErr, queryResult) => {
-            done();
-            if (queryErr) {
-              return res.status(500).json({
-                status: 500,
-                error: 'Internal server error',
-              });
-            }
-
-            const token = jwt.sign(
-              {
-                email: queryResult.rows[0].email,
-                id: queryResult.rows[0].id,
-              },
-              process.env.TOKEN_SECRET,
-              { expiresIn: '1hr' },
-            );
-            return res.status(201).json({
-              status: 201,
-              data: {
-                token,
-                id: queryResult.rows[0].id,
-                first_name: queryResult.rows[0].first_name,
-                last_name: queryResult.rows[0].last_name,
-                email: queryResult.rows[0].email,
-              },
-            });
-          });
+        const queryResult2 = await pool.query(newUser, value2);
+        const token = jwt.sign(
+          {
+            email: queryResult2.rows[0].email,
+            id: queryResult2.rows[0].id,
+          },
+          process.env.TOKEN_SECRET,
+          { expiresIn: '1hr' },
+        );
+        res.status(201).json({
+          status: 201,
+          data: {
+            token,
+            id: queryResult2.rows[0].id,
+            first_name: queryResult2.rows[0].first_name,
+            last_name: queryResult2.rows[0].last_name,
+            email: queryResult2.rows[0].email,
+          },
         });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error',
       });
     });
   }

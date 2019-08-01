@@ -1,11 +1,9 @@
+/* eslint-disable class-methods-use-this */
 import joi from 'joi';
 import pool from '../config';
-import {
-  updateCarPrice, checkCar, updateCarStatus,
-} from '../helpers/query';
+import { updateCarPrice, checkCar, updateCarStatus } from '../helpers/query';
 
 class UpdatePrice {
-  // eslint-disable-next-line class-methods-use-this
   priceUpdate(req, res) {
     const schema = {
       price: joi.number().required(),
@@ -19,80 +17,59 @@ class UpdatePrice {
       });
       return;
     }
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'Internal server error',
+    (async () => {
+      const { rows } = await pool.query(checkCar, [req.params.id]);
+      const decoded = req.userData;
+      const car = rows[0];
+      if (!car) {
+        res.status(404).json({
+          status: 404,
+          error: 'car not found',
         });
         return;
       }
-      client.query(checkCar, [req.params.id], (queryError, results) => {
-        if (queryError) {
-          res.status(500).json({
-            status: 500,
-            error: 'Internal server error',
-          });
-          return;
-        }
-        const decoded = req.userData;
-        const car = results.rows[0];
+      // check to see if the user is the car owner
+      if (decoded.id !== car.owner) {
+        res.status(403).json({
+          status: 403,
+          error: 'you can only update cars you posted',
+        });
+        return;
+      }
+      // you dont want to update a sold car right?
+      if (car.status !== 'sold') {
+        const value2 = [req.body.price, req.params.id];
 
-        if (!car) {
-          res.status(404).json({
-            status: 404,
-            error: 'car not found',
-          });
-          return;
-        }
+        const priceQuery = await pool.query(updateCarPrice, value2);
+        const car2 = priceQuery.rows[0];
 
-        // check to see if the user is the car owner
-        if (decoded.id !== car.owner) {
-          res.status(403).json({
-            status: 403,
-            error: 'you can only update cars you posted',
-          });
-          return;
-        }
-        if (car.status !== 'sold') {
-          const value2 = [req.body.price, req.params.id];
-
-          client.query(updateCarPrice, value2, (queryError2, result2) => {
-            if (queryError2) {
-              res.status(500).json({
-                status: 500,
-                error: 'Internal server error',
-              });
-              return;
-            }
-            done();
-            const car2 = result2.rows[0];
-
-            res.status(200).json({
-              status: 200,
-              data: {
-                id: car2.id,
-                email: decoded.email,
-                created_on: car2.created_on,
-                manufacturer: car2.manufacturer,
-                model: car2.model,
-                price: car2.price,
-                state: car2.state,
-                status: car2.status,
-              },
-            });
-          });
-        } else {
-          res.status(400).json({
-            status: 400,
-            error: 'car can only be updated when status is available',
-          });
-        }
+        res.status(200).json({
+          status: 200,
+          data: {
+            id: car2.id,
+            email: decoded.email,
+            created_on: car2.created_on,
+            manufacturer: car2.manufacturer,
+            model: car2.model,
+            price: car2.price,
+            state: car2.state,
+            status: car2.status,
+          },
+        });
+      } else {
+        res.status(400).json({
+          status: 400,
+          error: 'A Car can only be updated when status is available',
+        });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'Internal server error',
       });
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   sold(req, res) {
     const schema = {
       status: joi.string().required(),
@@ -106,76 +83,53 @@ class UpdatePrice {
       });
       return;
     }
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'Internal server error',
+    (async () => {
+      const { rows } = await pool.query(checkCar, [req.params.id]);
+      const car = rows[0];
+
+      if (!car) {
+        res.status(404).json({
+          status: 404,
+          error: 'car not found',
         });
         return;
       }
+      const decoded = req.userData;
+      if (decoded.id !== car.owner) {
+        res.status(403).json({
+          status: 403,
+          error: 'you can only update cars you posted',
+        });
+        return;
+      }
+      if (car.status !== 'sold') {
+        const value2 = [req.body.status, req.params.id];
+        const result2 = await pool.query(updateCarStatus, value2);
+        const car2 = result2.rows[0];
 
-      client.query(checkCar, [req.params.id], (queryError, results) => {
-        if (queryError) {
-          res.status(500).json({
-            status: 500,
-            error: 'Internal server error',
-          });
-          return;
-        }
-        const car = results.rows[0];
-
-        if (!car) {
-          res.status(404).json({
-            status: 404,
-            error: 'car not found',
-          });
-          return;
-        }
-
-        const decoded = req.userData;
-
-        if (decoded.id !== car.owner) {
-          res.status(403).json({
-            status: 403,
-            error: 'you can only update cars you posted',
-          });
-          return;
-        }
-        if (car.status !== 'sold') {
-          const value2 = [req.body.status, req.params.id];
-
-          client.query(updateCarStatus, value2, (queryError2, result2) => {
-            if (queryError2) {
-              res.status(500).json({
-                status: 500,
-                error: 'Internal server error',
-              });
-              return;
-            }
-            done();
-            const car2 = result2.rows[0];
-
-            res.status(200).json({
-              status: 200,
-              data: {
-                id: car2.id,
-                email: decoded.email,
-                created_on: car2.created_on,
-                manufacturer: car2.manufacturer,
-                model: car2.model,
-                price: car2.price,
-                state: car2.state,
-                status: car2.status,
-              },
-            });
-          });
-        } else {
-          res.status(403).json({
-            status: 403,
-            error: 'A car can only be updated when the status is available',
-          });
-        }
+        res.status(200).json({
+          status: 200,
+          data: {
+            id: car2.id,
+            email: decoded.email,
+            created_on: car2.created_on,
+            manufacturer: car2.manufacturer,
+            model: car2.model,
+            price: car2.price,
+            state: car2.state,
+            status: car2.status,
+          },
+        });
+      } else {
+        res.status(403).json({
+          status: 403,
+          error: 'This Car has Already Been Sold',
+        });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'Internal server error',
       });
     });
   }
