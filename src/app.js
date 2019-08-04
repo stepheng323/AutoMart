@@ -14,6 +14,7 @@ app.use('/api/v1/docs', swaggerUi.serve);
 app.get('/api/v1/docs', swaggerUi.setup(swaggerDocument));
 
 const port = process.env.PORT || 3000;
+// eslint-disable-next-line no-console
 app.listen(port, () => console.info(`Server running on port ${port}...`));
 
 export default app;
