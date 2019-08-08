@@ -38,7 +38,6 @@ describe('Auth', () => {
         password: 'biodun',
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res.body).to.have.status(200);
         expect(res.body).to.be.a('object');
         expect(res.body.data).to.have.a.property('token');
