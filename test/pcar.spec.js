@@ -64,7 +64,7 @@ describe('car ads', function () {
           .patch('/api/v1/car/10/price')
           .set('Authorization', bearerToken)
           .send({
-            price: 70000,
+            price: 90000,
           })
           .end((err2, res2) => {
             expect(res2.body).to.have.status(200);
