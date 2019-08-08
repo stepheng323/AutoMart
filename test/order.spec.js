@@ -16,9 +16,6 @@ describe('Order', () => {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -30,9 +27,6 @@ describe('Order', () => {
             amount: 50000,
           })
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             const { data } = res2.body;
             expect(res2.body).to.have.status(201);
             expect(data).to.have.a.property('id');
@@ -53,9 +47,6 @@ describe('Order', () => {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -66,9 +57,6 @@ describe('Order', () => {
             price: 70000,
           })
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');
             expect(res2.body.data).have.a.property('car_id');

@@ -20,9 +20,6 @@ describe('car ads', function () {
       .post('/api/v1/auth/signin')
       .send(validUser)
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -38,9 +35,6 @@ describe('car ads', function () {
           .field('body_type', 'car')
           .attach('image_url', fs.readFileSync('./image/new.jpg'), 'new.jpg')
           .end((err1, res1) => {
-            if (err1) {
-              throw err1.message;
-            }
             expect(res1.body).to.have.a.status(201);
             expect(res1.body.data).to.have.a.property('id');
             expect(res1.body.data).to.have.a.property('email');
@@ -63,9 +57,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -76,9 +67,6 @@ describe('car ads', function () {
             price: 70000,
           })
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');
             expect(res2.body.data).have.a.property('email');
@@ -100,9 +88,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -113,9 +98,6 @@ describe('car ads', function () {
             status: 'sold',
           })
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');
             expect(res2.body.data).have.a.property('email');
@@ -137,9 +119,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -147,9 +126,6 @@ describe('car ads', function () {
           .get('/api/v1/car/10')
           .set('Authorization', bearerToken)
           .end((err2, res2) => {
-            if (err2) {
-              throw err.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body.data).have.a.property('id');
             expect(res2.body.data).have.a.property('owner');
@@ -183,9 +159,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -213,9 +186,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -223,9 +193,6 @@ describe('car ads', function () {
           .get('/api/v1/car')
           .set('Authorization', bearerToken)
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body).to.be.a('object');
             expect(res2.body.data).to.be.an('array');
@@ -242,9 +209,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err.message;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -257,9 +221,6 @@ describe('car ads', function () {
           })
           .set('Authorization', bearerToken)
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             expect(res2.body).to.be.a('object');
             expect(res2.body.data).to.be.an('array');
@@ -276,9 +237,6 @@ describe('car ads', function () {
         password: 'biodun',
       })
       .end((err, res) => {
-        if (err) {
-          throw err;
-        }
         const { token } = res.body.data;
         const bearerToken = `Bearer ${token}`;
         chai
@@ -286,9 +244,6 @@ describe('car ads', function () {
           .delete('/api/v1/car/10')
           .set('Authorization', bearerToken)
           .end((err2, res2) => {
-            if (err2) {
-              throw err2.message;
-            }
             expect(res2.body).to.have.status(200);
             done();
           });
