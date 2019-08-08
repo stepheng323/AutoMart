@@ -12,7 +12,6 @@ dotenv.config();
 class Signup {
   createUser(req, res) {
     const result = Joi.validate(req.body, userSchema);
-
     if (result.error) {
       res.status(400).json({
         status: 400,

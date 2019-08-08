@@ -26,7 +26,7 @@ describe('Order', () => {
           .post('/api/v1/order')
           .set('Authorization', bearerToken)
           .send({
-            car_id: 12,
+            car_id: 10,
             amount: 50000,
           })
           .end((err2, res2) => {

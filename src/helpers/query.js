@@ -6,7 +6,7 @@ const newCarWithImage =	'INSERT INTO cars(owner, created_on, state, status, pric
 const newOrder =	'INSERT INTO orders(buyer, car_id, amount, status) VALUES ($1, $2, $3, $4) RETURNING *';
 const checkCar = 'SELECT * FROM cars WHERE id = $1';
 const checkOrder = 'SELECT * FROM orders WHERE id = $1';
-const orderExist = 'SELECT * FROMs orders where car_id = $1 AND buyer= $2';
+const orderExist = 'SELECT * FROM orders where car_id = $1 AND buyer= $2';
 const updateOrder = 'UPDATE orders SET amount = $1 WHERE id = $2 RETURNING *';
 const updateCarPrice = 'UPDATE cars SET price =$1 WHERE id = $2 RETURNING *';
 const updateCarStatus = 'UPDATE cars SET status =$1 WHERE id = $2 RETURNING *';
