@@ -46,7 +46,7 @@ class Signin {
         return;
       }
 
-      const verifiedPassword = await _bcrypt.default.compare(req.body.password, user.password);
+      const verifiedPassword = _bcrypt.default.compare(req.body.password, user.password);
 
       if (verifiedPassword) {
         const token = await _jsonwebtoken.default.sign({

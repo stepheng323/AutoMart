@@ -9,7 +9,6 @@ import { checkMail } from '../helpers/query';
 class Signin {
   signIn(req, res) {
     const result = Joi.validate(req.body, signinSchema);
-
     if (result.error) {
       res.status(400).json({
         status: 400,
@@ -17,16 +16,15 @@ class Signin {
       });
       return;
     }
-
     (async () => {
       const { rows } = await pool.query(checkMail, [req.body.email]);
       const user = rows[0];
       if (!user) {
-        res.status(400).json({
+        return res.status(400).json({
           status: 400,
           error: 'Invalid Email or Address Combination',
         });
-        return;
+        // return;
       }
       const verifiedPassword = bcrypt.compare(req.body.password, user.password);
       if (verifiedPassword) {
@@ -51,7 +49,7 @@ class Signin {
       } else {
         res.status(400).json({
           status: 400,
-          error: 'Invalid Email or Address Combination',
+          error: 'Invalid Email or Password Combination',
         });
       }
     })().catch(() => {
