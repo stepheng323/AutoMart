@@ -28,7 +28,7 @@ class Signin {
         });
         return;
       }
-      const verifiedPassword = await bcrypt.compare(req.body.password, user.password);
+      const verifiedPassword = bcrypt.compare(req.body.password, user.password);
       if (verifiedPassword) {
         const token = await jwt.sign(
           {
