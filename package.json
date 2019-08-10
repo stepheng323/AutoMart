@@ -4,7 +4,7 @@
 	"description": "API endpoints to power front end pages",
 	"main": "app.js",
 	"engines": {
-		"node": "10.16.0",
+		"node": "10.16.2",
 		"npm": "6.9.0"
 	},
 	"scripts": {

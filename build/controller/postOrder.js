@@ -3,107 +3,100 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _orders = require("../model/orders");
+var _orders = _interopRequireDefault(require("../model/orders"));
 
 var _config = _interopRequireDefault(require("../config"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _query = require("../helpers/query");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+/* eslint-disable class-methods-use-this */
+_dotenv.default.config();
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+class CreateOrders {
+  createOrder(req, res) {
+    const result = _joi.default.validate(req.body, _orders.default);
 
-_dotenv["default"].config();
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message
+      });
+      return;
+    }
 
-var CreateOrders =
-/*#__PURE__*/
-function () {
-  function CreateOrders() {
-    _classCallCheck(this, CreateOrders);
-  }
+    (async () => {
+      const {
+        rows
+      } = await _config.default.query(_query.checkCar, [req.body.car_id]);
+      const car = rows[0];
 
-  _createClass(CreateOrders, [{
-    key: "createOrder",
-    // eslint-disable-next-line class-methods-use-this
-    value: function createOrder(req, res) {
-      var result = _joi["default"].validate(req.body, _orders.orderSchema);
+      if (!car) {
+        res.status(404).json({
+          status: 404,
+          error: 'Car Not Found'
+        });
+        return;
+      } // check if car status is sold , we can not order sold cars right?
 
-      if (result.error) {
-        res.status(400).json({
-          status: 400,
-          error: result.error.details[0].message
+
+      if (car.status !== 'available') {
+        res.status(403).json({
+          status: 403,
+          error: 'You can only order available cars'
         });
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          // eslint-disable-next-line no-console
-          console.log('unable to connect to pool');
-          return;
-        }
+      const decoded = req.userData;
+      const querysResult = await _config.default.query(_query.orderExist, [req.body.car_id, decoded.id]);
+      const orderFilter = querysResult.rows[0]; // check if the user have already made an order of this same car
 
-        var decoded = req.userData;
-        var order = {
-          buyer: decoded.id,
-          car_id: req.body.car_id,
-          amount: req.body.amount,
-          status: 'pending'
-        };
-        var query = 'INSERT INTO orders(buyer, car_id, amount, status) VALUES ($1, $2, $3, $4) RETURNING *';
-        var value = [order.buyer, order.car_id, order.amount, order.status];
-        client.query(query, value, function (queryError, queryResult) {
-          if (queryError) {
-            res.status(400).json({
-              status: 400,
-              errorr: queryError.detail
-            });
-            return;
-          }
-
-          var dbResult = queryResult.rows[0];
-          var query2 = 'SELECT * FROM cars WHERE id = $1';
-          var id = [dbResult.car_id];
-          client.query(query2, id, function (queryError2, queryResult2) {
-            done();
-
-            if (queryError2) {
-              res.status(400).json({
-                status: 400,
-                error: queryError2.detail
-              });
-              return;
-            }
-
-            var dbResult2 = queryResult2.rows[0];
-            res.status(201).json({
-              status: 201,
-              data: {
-                id: dbResult.id,
-                car_id: dbResult.car_id,
-                created_on: dbResult2.created_on,
-                status: dbResult.status,
-                price: dbResult2.price,
-                price_offerd: dbResult.amount
-              }
-            });
-          });
+      if (orderFilter) {
+        res.status(409).json({
+          status: 409,
+          error: 'you already ordered this car'
         });
+        return;
+      }
+
+      const order = {
+        buyer: decoded.id,
+        car_id: req.body.car_id,
+        amount: req.body.amount,
+        status: 'pending'
+      };
+      const value = [order.buyer, order.car_id, order.amount, order.status];
+      const queryResult2 = await _config.default.query(_query.newOrder, value);
+      const dbOrder = queryResult2.rows[0];
+      res.status(201).json({
+        status: 201,
+        data: {
+          id: dbOrder.id,
+          car_id: car.id,
+          created_on: car.created_on,
+          status: dbOrder.status,
+          price: car.price,
+          price_offerd: dbOrder.amount
+        }
       });
-    }
-  }]);
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error'
+      });
+    });
+  }
 
-  return CreateOrders;
-}();
+}
 
-var createOrders = new CreateOrders();
+const createOrders = new CreateOrders();
 var _default = createOrders;
-exports["default"] = _default;
+exports.default = _default;

@@ -3,19 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _pg = _interopRequireDefault(require("pg"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var config;
+let config;
 
-_dotenv["default"].config();
+_dotenv.default.config();
 
-var production = {
+const production = {
   host: process.env.HEROKU_PG_HOST,
   user: process.env.HEROKU_PG_USER,
   database: process.env.HEROKU_PG_DATABASE,
@@ -24,7 +24,7 @@ var production = {
   max: 20,
   idleTimeoutMillis: 30000
 };
-var development = {
+const development = {
   user: process.env.DB_USER,
   database: process.env.DATABASE,
   password: process.env.DB_PASSWORD,
@@ -32,7 +32,7 @@ var development = {
   max: 20,
   idleTimeoutMillis: 30000
 };
-var travisLocal = {
+const travisLocal = {
   user: process.env.DB_USER,
   database: process.env.DATABASE,
   password: process.env.DB_PASSWORD,
@@ -49,10 +49,6 @@ if (process.env.NODE_ENV === 'production') {
   config = development;
 }
 
-var pool = new _pg["default"].Pool(config);
-pool.on('connect', function () {
-  // eslint-disable-next-line no-console
-  console.log("connected to the database ".concat(config.database));
-});
+const pool = new _pg.default.Pool(config);
 var _default = pool;
-exports["default"] = _default;
+exports.default = _default;

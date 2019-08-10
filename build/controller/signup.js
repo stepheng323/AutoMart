@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
@@ -17,99 +17,78 @@ var _users = require("../model/users");
 
 var _config = _interopRequireDefault(require("../config"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _query = require("../helpers/query");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+/* eslint-disable class-methods-use-this */
+_dotenv.default.config();
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+class Signup {
+  createUser(req, res) {
+    const result = _joi.default.validate(req.body, _users.userSchema);
 
-_dotenv["default"].config();
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message
+      });
+      return;
+    }
 
-var Signup =
-/*#__PURE__*/
-function () {
-  function Signup() {
-    _classCallCheck(this, Signup);
-  }
+    (async () => {
+      const queryResult = await _config.default.query(_query.checkMail, [req.body.email]);
 
-  _createClass(Signup, [{
-    key: "createUser",
-    value: function createUser(req, res) {
-      var result = _joi["default"].validate(req.body, _users.userSchema);
-
-      if (result.error) {
-        res.status(400).json({
-          status: 400,
-          error: result.error.details[0].message
+      if (queryResult.rows[0]) {
+        res.status(409).json({
+          status: 409,
+          error: 'Email Already Exist'
         });
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(400).json({
-            status: 400,
-            error: "could not connect to the database ".concat(err)
-          });
-          return;
-        }
+      const hash = await _bcrypt.default.hash(req.body.password, 10);
 
-        _bcrypt["default"].hash(req.body.password, 10, function (unhash, hash) {
-          if (unhash) {
-            res.status(500).json({
-              error: unhash
-            });
-            return;
-          }
+      if (hash) {
+        const user = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          email: req.body.email,
+          password: hash,
+          address: req.body.address,
+          is_admin: false
+        };
+        const value2 = [user.first_name, user.last_name, user.email, user.password, user.address, user.is_admin];
+        const queryResult2 = await _config.default.query(_query.newUser, value2);
 
-          var user = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: hash,
-            address: req.body.address,
-            is_admin: req.body.is_admin
-          };
-          var query = 'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-          var value = [user.first_name, user.last_name, user.email, user.password, user.address, user.is_admin];
-          client.query(query, value, function (queryErr, queryResult) {
-            done();
-
-            if (queryErr) {
-              return res.status(400).json({
-                status: 400,
-                error: queryErr.detail
-              });
-            }
-
-            var token = _jsonwebtoken["default"].sign({
-              email: queryResult.rows[0].email,
-              id: queryResult.rows[0].id
-            }, process.env.TOKEN_SECRET, {
-              expiresIn: '1hr'
-            });
-
-            return res.status(201).json({
-              status: 201,
-              data: {
-                token: token,
-                id: queryResult.rows[0].id,
-                first_name: queryResult.rows[0].first_name,
-                last_name: queryResult.rows[0].last_name,
-                email: queryResult.rows[0].email
-              }
-            });
-          });
+        const token = _jsonwebtoken.default.sign({
+          email: queryResult2.rows[0].email,
+          id: queryResult2.rows[0].id
+        }, process.env.TOKEN_SECRET, {
+          expiresIn: '1hr'
         });
+
+        res.status(201).json({
+          status: 201,
+          data: {
+            token,
+            id: queryResult2.rows[0].id,
+            first_name: queryResult2.rows[0].first_name,
+            last_name: queryResult2.rows[0].last_name,
+            email: queryResult2.rows[0].email
+          }
+        });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error'
       });
-    }
-  }]);
+    });
+  }
 
-  return Signup;
-}();
+}
 
-var signup = new Signup();
+const signup = new Signup();
 var _default = signup;
-exports["default"] = _default;
+exports.default = _default;

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
@@ -15,28 +15,17 @@ var _cars = require("../model/cars");
 
 var _config = _interopRequireDefault(require("../config"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _query = require("../helpers/query");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+/* eslint-disable class-methods-use-this */
+_dotenv.default.config();
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-_dotenv["default"].config();
-
-var CarsCreate =
-/*#__PURE__*/
-function () {
-  function CarsCreate() {
-    _classCallCheck(this, CarsCreate);
-  }
-
-  _createClass(CarsCreate, [{
-    key: "createCar",
-    // eslint-disable-next-line class-methods-use-this
-    value: function createCar(req, res) {
-      var result = _joi["default"].validate(req.body, _cars.carSchema);
+class CarsCreate {
+  createCar(req, res) {
+    (async () => {
+      const result = _joi.default.validate(req.body, _cars.carSchema);
 
       if (result.error) {
         res.status(400).json({
@@ -47,78 +36,84 @@ function () {
       }
 
       if (!req.file) {
-        res.status(400).json({
-          status: 400,
-          error: 'upload atleast one car image'
+        const decoded = req.userData;
+        const car = {
+          owner: decoded.id,
+          created_on: new Date(),
+          state: req.body.state,
+          status: 'available',
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          model: req.body.model,
+          body_type: req.body.body_type
+        };
+        const values = [car.owner, car.created_on, car.state, car.status, car.price, car.manufacturer, car.model, car.body_type];
+        const queryResult = await _config.default.query(_query.newCar, values);
+        const dbResult = queryResult.rows[0];
+        res.status(201).json({
+          status: 201,
+          data: {
+            id: dbResult.id,
+            email: decoded.email,
+            created_on: dbResult.created_on,
+            manufacturer: dbResult.manufacturer,
+            model: dbResult.model,
+            price: dbResult.price,
+            state: dbResult.state,
+            status: dbResult.status
+          }
         });
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          // eslint-disable-next-line no-console
-          console.log('unable to connect to pool');
-          return;
-        }
+      const results = await _cloudinary.default.uploader.upload(req.file.path);
 
-        _cloudinary["default"].uploader.upload(req.file.path, function (results) {
-          if (results.secure_url !== undefined) {
-            var decoded = req.userData;
-            var car = {
-              owner: decoded.id,
-              created_on: new Date(),
-              state: req.body.state,
-              status: 'available',
-              price: req.body.price,
-              manufacturer: req.body.manufacturer,
-              model: req.body.model,
-              body_type: req.body.body_type,
-              car_image: results.secure_url
-            };
-            var query = 'INSERT INTO cars(owner, created_on, state, status, price, manufacturer, model, body_type, car_image) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *';
-            var values = [car.owner, car.created_on, car.state, car.status, car.price, car.manufacturer, car.model, car.body_type, car.car_image];
-            client.query(query, values, function (queryError, queryResult) {
-              done();
-
-              if (queryError) {
-                res.status(400).json({
-                  status: 400,
-                  // eslint-disable-next-line no-console
-                  state: console.log(queryError)
-                });
-                return;
-              }
-
-              var dbResult = queryResult.rows[0];
-              res.status(201).json({
-                status: 201,
-                data: {
-                  id: dbResult.id,
-                  email: decoded.email,
-                  created_on: dbResult.created_on,
-                  manufacturer: dbResult.manufacturer,
-                  model: dbResult.model,
-                  price: dbResult.price,
-                  state: dbResult.state,
-                  status: dbResult.status,
-                  car_image: dbResult.car_image
-                }
-              });
-            });
-          } else {
-            res.status(500).json({
-              status: 500,
-              error: 'oops! upload failed, try again'
-            });
+      if (results.secure_url !== undefined) {
+        const decoded = req.userData;
+        const car = {
+          owner: decoded.id,
+          created_on: new Date(),
+          state: req.body.state,
+          status: 'available',
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          model: req.body.model,
+          body_type: req.body.body_type,
+          image_url: results.secure_url
+        };
+        const values = [car.owner, car.created_on, car.state, car.status, car.price, car.manufacturer, car.model, car.body_type, car.image_url];
+        const queryResult = await _config.default.query(_query.newCarWithImage, values);
+        const dbResult = queryResult.rows[0];
+        res.status(201).json({
+          status: 201,
+          data: {
+            id: dbResult.id,
+            email: decoded.email,
+            created_on: dbResult.created_on,
+            manufacturer: dbResult.manufacturer,
+            model: dbResult.model,
+            price: dbResult.price,
+            state: dbResult.state,
+            status: dbResult.status,
+            image_url: dbResult.image_url
           }
         });
+      } else {
+        res.status(500).json({
+          status: 500,
+          error: 'oops! upload failed, try again'
+        });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error'
       });
-    }
-  }]);
+    });
+  }
 
-  return CarsCreate;
-}();
+}
 
-var carscreate = new CarsCreate();
+const carscreate = new CarsCreate();
 var _default = carscreate;
-exports["default"] = _default;
+exports.default = _default;

@@ -7,21 +7,20 @@ exports.carSchema = exports.cars = void 0;
 
 var _joi = _interopRequireDefault(require("joi"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var carSchema = {
-  id: _joi["default"].number(),
-  owner: _joi["default"].number(),
-  created_on: _joi["default"].date(),
-  state: _joi["default"].string().required(),
-  status: _joi["default"].string().required(),
-  price: _joi["default"].number().required(),
-  manufacturer: _joi["default"].string().required(),
-  model: _joi["default"].string(),
-  body_type: _joi["default"].string()
+const carSchema = {
+  id: _joi.default.number(),
+  owner: _joi.default.number(),
+  created_on: _joi.default.date(),
+  state: _joi.default.string().required(),
+  price: _joi.default.number().required(),
+  manufacturer: _joi.default.string().required(),
+  model: _joi.default.string(),
+  body_type: _joi.default.string()
 };
 exports.carSchema = carSchema;
-var cars = [{
+const cars = [{
   id: 1,
   owner: 1,
   created_on: new Date(),
