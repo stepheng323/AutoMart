@@ -46,7 +46,7 @@ const errorDisplay = (message) => {
 };
 
 const getCars = async () => {
-  const url = 'http://localhost:3000/api/v1/car?status=available';
+  const url = 'https://automartendpoints.herokuapp.com/api/v1/car?status=available';
   const request = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',

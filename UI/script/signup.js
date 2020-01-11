@@ -5,7 +5,7 @@ const password = document.getElementById('password');
 const address = document.getElementById('address');
 const signUp = document.querySelector('.signupbtn');
 
-const url = 'http://localhost:3000/api/v1/auth/signup';
+const url = 'https://automartendpoints.herokuapp.com/api/v1/auth/signup';
 
 signUp.addEventListener('click', async (e) => {
   e.preventDefault();
