@@ -1,0 +1,154 @@
+body {
+	font: 16px/1.5 Arial, Helvetica, sans-serif;
+	padding: 0px;
+	margin: 0px;
+	background: #f1f1f1;
+}
+* {
+	box-sizing: border-box;
+}
+.top-logo {
+	font-weight: bold;
+	background: #f1f1f1;
+	width: 100%;
+	margin: auto;
+	color: #1f272c;
+	text-align: center;
+	overflow: hidden;
+	font-size: 1.2em;
+	padding-bottom: 1em;
+	font-family: 'Open Sans', sans-serif;
+}
+.top-logo h1 {
+	margin: 0;
+	margin-top: 0.4em;
+	margin-bottom: 0.8em;
+}
+.top-logo a {
+	text-decoration: none;
+	color: #1f272c;
+}
+.highlight {
+	color: orange;
+}
+.heading {
+	color: #1f272c;
+	background: #ffffff;
+	width: 30%;
+	margin: auto;
+	padding: 0.9em;
+	border-bottom: 1px solid #eee;
+	border-radius: 5px 5px 0px 0px;
+	box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+}
+.heading h1 {
+	margin: 0;
+	font-size: 1.7em;
+	text-align: center;
+	color: #1f272c;
+}
+.mcontainer {
+	color: #35424a;
+	box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
+	width: 30%;
+	margin: auto;
+	border-radius: 0 0 5px 5px;
+	margin-bottom: 2em;
+	padding: 1em;
+	background: #fff;
+}
+.mcontainer h2 {
+	color: #35424a;
+	padding: 2em;
+	padding-left: 0.2em;
+}
+.input p {
+	display: inline;
+	font-weight: bold;
+}
+.input a {
+	float: right;
+	font-size: 12px;
+	text-decoration: underline;
+}
+.mcontainer p {
+	padding: 0.1em;
+}
+
+input[type='email'],
+input[type='password'] {
+	width: 100%;
+	padding: 1em;
+	margin: 8px 0 22px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+input[type='email']:focus,
+input[type='password']:focus {
+	outline: none;
+}
+.signinbtn {
+	color: #ffffff;
+	padding: 0.6em 0.5em;
+	width: 100%;
+	font-size: 1em;
+	outline: none;
+	background: orange;
+	cursor: pointer;
+	border-radius: 4px;
+	border: 0px;
+	margin-bottom: 1.5em;
+	text-decoration: none;
+	font-weight: bold;
+}
+.signinbtn:hover {
+	background: rgb(243, 182, 68);
+}
+.new-user {
+	text-align: center;
+	font-size: 12px;
+}
+.signup-btn {
+	font-size: 1.3em;
+}
+.new-user a {
+	color: #35424a;
+	display: block;
+	padding: 0.5em;
+	margin-top: 0.6em;
+	border-radius: 4px;
+	text-decoration: none;
+	border: 1px solid #1f272c;
+	font-weight: bold;
+}
+.new-user a:hover {
+	background: #1f272c;
+	color: #fff;
+}
+.warning {
+	font-size: 13px;
+	color: red;
+	margin: -0.5em 0 0.5em 0;
+	text-align: center;
+}
+
+@media (max-width: 768px) {
+	header .branding {
+		padding: 0.5em;
+		margin-top: 10px;
+		float: none;
+		text-align: center;
+		width: 100%;
+	}
+	header nav {
+		padding-bottom: 20px;
+		margin: auto;
+		float: none;
+		text-align: center;
+	}
+	.mcontainer,
+	.heading {
+		width: 60%;
+	}
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link rel="stylesheet" href="./css/viewall.css" />
+		<title>AutoMart|Listed cars</title>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="branding">
+					<h1>
+						<a href="index.html"><span class="highlight">Auto</span>Mart</a>
+					</h1>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li id="sellCar"><a href="postad.html">Sell Car</a></li>
+						<li id="buyCar"><a href="search.html">Buy car</a></li>
+						<li id="signIn">
+							<a href="signin.html"><i class="fas fa-user"></i> Log in</a>
+						</li>
+						<li id="signUp"><a href="signup.html">Join</a></li>
+
+						<li><a href="contact.html">Contact Us</a></li>
+						<li id="logOut"><a href="#">Logout</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<nav class="product-filter">
+			<h1>Cars</h1>
+			<div class="sort">
+				<div class="collection-sort">
+					<label>Filter by:</label>
+					<select>
+						<option value="/">All Cars</option>
+					</select>
+				</div>
+
+				<div class="collection-sort">
+					<label>Sort by:</label>
+					<select>
+						<option value="/">Featured</option>
+					</select>
+				</div>
+			</div>
+		</nav>
+		<div id=loader-container>
+			<div id="loader"></div>
+		</div>
+		<section id="products"></section>
+		<section id="message"></section>
+		<footer class="footer">
+			<div class="fcontainer">
+				<div class="one">
+					<h3>HELP AND SUPPORT</h3>
+					<p>
+						<i class="far fa-clock fa-1x"></i> Mon-Fri: 8am-5pm <br /><span
+							class="pad"
+							>Sat: 10am-5pm</span
+						>
+					</p>
+					<i class="fas fa-phone fa-1x"></i> +2348162511023<br /><span
+						class="pad"
+					>
+						+2348067892221</span
+					>
+				</div>
+				<div class="two">
+					<h3>MORE INFO</h3>
+					<ul>
+						<li><a href="index.html">Privacy Statement</a></li>
+						<li><a href="contact.html">Terms & Conditions</a></li>
+						<li><a href="#">Career</a></li>
+						<li><a href="dealer.html">Become a Dealer</a></li>
+					</ul>
+				</div>
+				<div class="three">
+					<h3>ABOUT AUTOMART</h3>
+					<ul>
+						<li><a href="index.html">About Us</a></li>
+						<li><a href="contact.html">Contact Us</a></li>
+						<li><a href="safetips">Safe Buiying Tips</a></li>
+						<li><a href="#">Blog</a></li>
+					</ul>
+				</div>
+				<div class="social">
+					<h3>SOCIAL MEDIA</h3>
+					<p>
+						<a href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
+					</p>
+					<p>
+						<a href="#"><i class="fab fa-twitter-square"></i> Twitter</a>
+					</p>
+					<p>
+						<a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+					</p>
+				</div>
+			</div>
+			<p class="copy">2019 &copy; All rights reserved</p>
+		</footer>
+		<script type=module src="./script/index.js"></script>
+		<script src="./script/cars.js"></script>
+	</body>
+</html>

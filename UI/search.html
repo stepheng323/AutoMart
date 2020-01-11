@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Post car sale advertisement</title>
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+			integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="./css/search.css" />
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<div class="branding">
+					<h1>
+						<a href="index.html"><span class="highlight">Auto</span>Mart</a>
+					</h1>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li id="sellCar"><a href="postad.html">Sell Car</a></li>
+						<li id="buyCar"><a href="search.html">Buy car</a></li>
+						<li id="signIn">
+							<a href="signin.html"><i class="fas fa-user"></i> Log in</a>
+						</li>
+						<li id="signUp"><a href="signup.html">Join</a></li>
+
+						<li><a href="contact.html">Contact Us</a></li>
+						<li id="logOut"><a href="#">Logout</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<section class="main">
+			<div class="main-container">
+				<div class="mform">
+					<form id="searchForm">
+						<h2>Lets find your Car</h2>
+						<div>
+							<label><p>Manufacturer <span class="red">*</span></p></label>
+							<select id="manufacturer" required class="select-css">
+								<option value="">Please Select</option>
+							</select>
+						</div>
+
+						<div>
+							<label><p>Model <span class="red">*</span></p></label>
+							<select id="model" required class="select-css">
+								<option value="">Please Select</option>
+								<option value="camry">Camry</option>
+							</select>
+						</div>
+
+						<div>
+							<label class="label-year"><p>Year <span class="red">*</span></p></label>
+							<select id="startYear" required class="select-css year year-min">
+								<option value="">From</option>
+								<option value="2000">2000</option>
+							</select>
+							<select id="stopYear" required class="select-css year year-max">
+								<option value="">To</option>
+								<option value="2019">2019</option>
+							</select>
+						</div>
+
+						<div>
+							<label><p>Condition <span class="red">*</span></p></label>
+							<select id="state" required class="select-css">
+								<option value="">Please Select </option>
+								<option value="new">New</option>
+								<option value="used">Used</option>
+							</select>
+						</div>
+
+						<div>
+							<label><p>Price <span class="red">*</span></p></label>
+							<input required
+							id="minPrice"
+								type="text"
+								class="select-css price price-min"
+								placeholder="MIN"
+							/>
+							<input required
+							id="maxPrice"
+								type="number"
+								class="select-css price price-max"
+								placeholder="MAX"
+							/>
+						</div>
+						<input type="submit" class="search-btn"></input>
+					</form>
+				</div>
+				<div class="bigtext">
+					<h1>
+						We Make Finding
+						<div>Your Next Car</div>
+						An Easy <span class="red">Job</span>
+					</h1>
+				</div>
+			</div>
+		</section>
+
+		<section id="boxes">
+				<div class="boxes-container">
+				</div>
+		</section>
+
+		
+		<footer class="footer">
+				<div class="fcontainer">
+	
+					<div class="one">
+						<h3>HELP AND SUPPORT</h3>
+						<p>
+							<i class="far fa-clock fa-1x"></i> Mon-Fri: 8am-5pm <br />
+							<i class="far fa-clock fa-1x"></i> Sat: 10am-5pm</span>
+						</p>
+						<i class="fas fa-phone fa-1x"></i> +2348162511023<br /><span>
+						<i class="fas fa-phone fa-1x"></i> +2348067892221</span>
+					</div>
+	
+					<div class="two">
+						<h3>MORE INFO</h3>
+						<ul>
+							<li><a href="index.html">Privacy Statement</a></li>
+							<li><a href="contact.html">Terms & Conditions</a></li>
+							<li><a href="#">Career</a></li>
+							<li><a href="dealer.html">Become a Dealer</a></li>
+						</ul>
+					</div>
+					<div class="three">
+						<h3>ABOUT AUTOMART</h3>
+						<ul>
+							<li><a href="index.html">About Us</a></li>
+							<li><a href="contact.html">Contact Us</a></li>
+							<li><a href="safetips">Safe Buiying Tips</a></li>
+							<li><a href="#">Blog</a></li>
+						</ul>
+					</div>
+					<div class="social">
+						<h3>SOCIAL MEDIA</h3>
+						<p>
+							<a href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
+						</p>
+						<p>
+							<a href="#"><i class="fab fa-twitter-square"></i> Twitter</a>
+						</p>
+						<p>
+							<a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+						</p>
+					</div>
+				</div>
+				<P class="copy">2019 &copy; All rights reserved</P>
+			</footer>
+			<script type="module" src="./script/search.js"></script>
+	</body>
+</html>
