@@ -5,9 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _joi = _interopRequireDefault(require("joi"));
+
 var _config = _interopRequireDefault(require("../config"));
 
+var _query = require("../helpers/query");
+
+var _priceRange = _interopRequireDefault(require("../model/priceRange"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,279 +34,327 @@ function () {
 
   _createClass(View, [{
     key: "specific",
-    // eslint-disable-next-line class-methods-use-this
     value: function specific(req, res, next) {
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: "could not connect ".concat(err)
-          });
-          return;
-        }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _ref2, rows, data;
 
-        var query = 'SELECT * FROM cars WHERE id = $1';
-        var value = [req.params.id];
-        client.query(query, value, function (error, results) {
-          if (error) {
-            res.status(400).json({
-              status: 400,
-              error: "".concat(error)
-            });
-            return;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _config["default"].query(_query.checkCar, [req.params.id]);
+
+              case 2:
+                _ref2 = _context.sent;
+                rows = _ref2.rows;
+                data = rows[0];
+
+                if (data) {
+                  _context.next = 8;
+                  break;
+                }
+
+                res.status(404).json({
+                  status: 404,
+                  error: 'car with the specified id not found'
+                });
+                return _context.abrupt("return");
+
+              case 8:
+                res.status(200).json({
+                  status: 200,
+                  data: data
+                });
+                next();
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
           }
-
-          done();
-          var data = results.rows[0];
-
-          if (!data) {
-            res.status(404).json({
-              status: 404,
-              error: 'car with the specified id not found'
-            });
-            return;
-          }
-
-          res.status(200).json({
-            status: 200,
-            data: data
-          });
-          next();
+        }, _callee);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'Internal Server Error'
         });
       });
-    } // eslint-disable-next-line class-methods-use-this
-
+    }
   }, {
     key: "soldOrAvailable",
     value: function soldOrAvailable(req, res, next) {
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: "could not connect ".concat(err)
-          });
-          return;
-        }
+      var decoded = req.userData;
 
-        var decoded = req.userData;
-        var query = 'SELECT * FROM users WHERE id = $1';
-        var value = [decoded.id];
-        client.query(query, value, function (error, results) {
-          if (error) {
-            res.status(400).json({
-              status: 400,
-              error: "".concat(error)
-            });
-            return;
-          }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        var _ref4, rows, user, results2, availableOrSold;
 
-          var user = results.rows[0];
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _config["default"].query(_query.checkUser, [decoded.id]);
 
-          if (!user) {
-            res.status(403).json({
-              status: 403,
-              error: 'you must be logged in'
-            });
-            return;
-          }
+              case 2:
+                _ref4 = _context2.sent;
+                rows = _ref4.rows;
+                user = rows[0];
 
-          var query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
-          var value2 = ['available', 'sold'];
+                if (user.is_admin) {
+                  _context2.next = 8;
+                  break;
+                }
 
-          if (!user.is_admin) {
-            next();
-            return;
-          }
+                next();
+                return _context2.abrupt("return");
 
-          if (req.query.status === 'available') {
-            next();
-            return;
-          }
+              case 8:
+                if (!(req.query.status === 'available')) {
+                  _context2.next = 11;
+                  break;
+                }
 
-          if (req.query.min_price && req.query.max_price) {
-            next();
-            return;
-          }
+                next();
+                return _context2.abrupt("return");
 
-          client.query(query2, value2, function (queryError2, results2) {
-            done();
+              case 11:
+                if (!(req.query.min_price && req.query.max_price)) {
+                  _context2.next = 14;
+                  break;
+                }
 
-            if (queryError2) {
-              res.status(400).json({
-                status: 400,
-                error: "".concat(error)
-              });
-              return;
+                next();
+                return _context2.abrupt("return");
+
+              case 14:
+                _context2.next = 16;
+                return _config["default"].query(_query.checkCarStatus2, ['available', 'sold']);
+
+              case 16:
+                results2 = _context2.sent;
+                availableOrSold = results2.rows;
+
+                if (availableOrSold) {
+                  _context2.next = 21;
+                  break;
+                }
+
+                res.status(404).json({
+                  status: 404,
+                  erorr: 'no car found'
+                });
+                return _context2.abrupt("return");
+
+              case 21:
+                res.status(200).json({
+                  status: 200,
+                  data: availableOrSold
+                });
+
+              case 22:
+              case "end":
+                return _context2.stop();
             }
-
-            var availableOrSold = results2.rows;
-
-            if (!availableOrSold) {
-              res.status(404).json({
-                status: 404,
-                error: 'no cars found'
-              });
-              return;
-            }
-
-            res.status(200).json({
-              status: 200,
-              data: availableOrSold
-            });
-          });
+          }
+        }, _callee2);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'internal server error'
         });
       });
-    } // eslint-disable-next-line class-methods-use-this
-
+    }
   }, {
     key: "unsold",
     value: function unsold(req, res, next) {
-      if (req.query.min_price && req.query.max_price) {
-        next();
-        return;
-      }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3() {
+        var _ref6, available;
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: 'could not connect to the pool'
-          });
-          return;
-        }
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!(req.query.min_price && req.query.max_price)) {
+                  _context3.next = 3;
+                  break;
+                }
 
-        var query3 = 'SELECT * FROM cars WHERE status = $1';
-        var value3 = [req.query.status];
-        client.query(query3, value3, function (error, results) {
-          if (error) {
-            res.status(400).json({
-              status: 400,
-              error: "".concat(error)
-            });
-            return;
+                next();
+                return _context3.abrupt("return");
+
+              case 3:
+                _context3.next = 5;
+                return _config["default"].query(_query.checkCarStatus, [req.query.status]);
+
+              case 5:
+                _ref6 = _context3.sent;
+                available = _ref6.rows;
+
+                if (available) {
+                  _context3.next = 10;
+                  break;
+                }
+
+                res.status(404).json({
+                  status: 404,
+                  error: 'no cars found'
+                });
+                return _context3.abrupt("return");
+
+              case 10:
+                res.status(200).json({
+                  status: 200,
+                  data: available
+                });
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
           }
-
-          done();
-          var available = results.rows;
-
-          if (!available) {
-            res.status(404).json({
-              status: 404,
-              error: 'no cars found'
-            });
-            return;
-          }
-
-          res.status(200).json({
-            status: 200,
-            data: available
-          });
+        }, _callee3);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'internal server error'
         });
       });
-    } // eslint-disable-next-line class-methods-use-this
-
+    }
   }, {
     key: "priceRange",
     value: function priceRange(req, res) {
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: 'could not connect to the pool'
-          });
-          return;
-        }
+      var result = _joi["default"].validate(req.query, _priceRange["default"]);
 
-        var query4 = 'SELECT * FROM cars WHERE status = $1 AND price >= $2 AND price <= $3';
-        var value4 = [req.query.status, req.query.min_price, req.query.max_price];
-        client.query(query4, value4, function (error, results) {
-          done();
+      if (result.error) {
+        res.status(400).json({
+          status: 400,
+          error: result.error.details[0].message
+        });
+        return;
+      }
 
-          if (error) {
-            res.status(500).json({
-              status: 500,
-              error: "".concat(error)
-            });
-            return;
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4() {
+        var value4, _ref8, rows, filtered;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                value4 = [req.query.status, req.query.min_price, req.query.max_price, req.query.start_year, req.query.stop_year, req.query.state, req.query.manufacturer, req.query.model];
+                _context4.next = 3;
+                return _config["default"].query(_query.checkPriceRange, value4);
+
+              case 3:
+                _ref8 = _context4.sent;
+                rows = _ref8.rows;
+                filtered = rows;
+
+                if (!(filtered.length < 1)) {
+                  _context4.next = 9;
+                  break;
+                }
+
+                res.status(404).json({
+                  status: 404,
+                  error: 'no cars found'
+                });
+                return _context4.abrupt("return");
+
+              case 9:
+                res.status(200).json({
+                  status: 200,
+                  data: filtered
+                });
+
+              case 10:
+              case "end":
+                return _context4.stop();
+            }
           }
-
-          var filtered = results.rows;
-
-          if (!filtered) {
-            res.status(404).json({
-              status: 404,
-              error: 'no cars found'
-            });
-            return;
-          }
-
-          res.status(200).json({
-            status: 200,
-            data: filtered
-          });
+        }, _callee4);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'internal server error'
         });
       });
-    } // eslint-disable-next-line class-methods-use-this
-
+    }
   }, {
     key: "deleteCar",
     value: function deleteCar(req, res) {
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: 'could not connect to the pool'
-          });
-          return;
-        }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5() {
+        var decoded, _ref10, rows, user, results;
 
-        var decoded = req.userData;
-        var query5 = 'SELECT is_admin FROM users WHERE id = $1';
-        var value5 = [decoded.id];
-        client.query(query5, value5, function (error, results) {
-          if (error) {
-            res.status(500).json({
-              status: 500,
-              error: "".concat(error)
-            });
-            return;
-          }
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                decoded = req.userData;
+                _context5.next = 3;
+                return _config["default"].query(_query.checkAdmin, [decoded.id]);
 
-          var user = results.rows[0];
+              case 3:
+                _ref10 = _context5.sent;
+                rows = _ref10.rows;
+                user = rows[0];
 
-          if (user.is_admin) {
-            var query = 'DELETE FROM cars WHERE id = $1 RETURNING *';
-            var value = [req.params.car_id];
-            client.query(query, value, function (queryError, queryResults) {
-              done();
+                if (!user.is_admin) {
+                  _context5.next = 16;
+                  break;
+                }
 
-              if (queryError) {
-                res.status(500).json({
-                  status: 500,
-                  error: "".concat(queryError)
+                _context5.next = 9;
+                return _config["default"].query(_query.deleteCar, [req.params.car_id]);
+
+              case 9:
+                results = _context5.sent;
+
+                if (results.rows[0]) {
+                  _context5.next = 13;
+                  break;
+                }
+
+                res.status(404).json({
+                  status: 404,
+                  error: 'No Car Found'
                 });
-                return;
-              }
+                return _context5.abrupt("return");
 
-              if (!queryResults.rows[0]) {
-                res.status(400).json({
-                  status: 400,
-                  error: 'car not found'
+              case 13:
+                res.status(200).json({
+                  status: 200,
+                  data: 'car ad successfully deleted'
                 });
-                return;
-              }
+                _context5.next = 17;
+                break;
 
-              res.status(200).json({
-                status: 200,
-                data: 'Car ad succefully deleted'
-              });
-            });
-          } else {
-            res.status(403).json({
-              status: 403,
-              data: 'Only an admin can delete cars ad'
-            });
+              case 16:
+                res.status(403).json({
+                  status: 403,
+                  error: 'Only admin can delete a car'
+                });
+
+              case 17:
+              case "end":
+                return _context5.stop();
+            }
           }
+        }, _callee5);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'Internal Server Error'
         });
       });
     }

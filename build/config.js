@@ -50,9 +50,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 var pool = new _pg["default"].Pool(config);
-pool.on('connect', function () {
-  // eslint-disable-next-line no-console
-  console.log("connected to the database ".concat(config.database));
-});
 var _default = pool;
 exports["default"] = _default;

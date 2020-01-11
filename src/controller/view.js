@@ -1,254 +1,177 @@
+/* eslint-disable class-methods-use-this */
+import Joi from 'joi';
 import pool from '../config';
+import {
+  checkCar,
+  checkUser,
+  checkCarStatus,
+  checkCarStatus2,
+  checkPriceRange,
+  checkAdmin,
+  deleteCar,
+} from '../helpers/query';
+import priceRangeSchema from '../model/priceRange';
 
 class View {
-  // eslint-disable-next-line class-methods-use-this
   specific(req, res, next) {
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: `could not connect ${err}`,
+    (async () => {
+      const { rows } = await pool.query(checkCar, [req.params.id]);
+      const data = rows[0];
+      if (!data) {
+        res.status(404).json({
+          status: 404,
+          error: 'car with the specified id not found',
         });
         return;
       }
-      const query = 'SELECT * FROM cars WHERE id = $1';
-      const value = [req.params.id];
-
-      client.query(query, value, (error, results) => {
-        if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
-          });
-          return;
-        }
-        done();
-        const data = results.rows[0];
-        if (!data) {
-          res.status(404).json({
-            status: 404,
-            error: 'car with the specified id not found',
-          });
-          return;
-        }
-        res.status(200).json({
-          status: 200,
-          data,
-        });
-        next();
+      res.status(200).json({
+        status: 200,
+        data,
       });
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  soldOrAvailable(req, res, next) {
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: `could not connect ${err}`,
-        });
-        return;
-      }
-      const decoded = req.userData;
-      const query = 'SELECT * FROM users WHERE id = $1';
-      const value = [decoded.id];
-
-      client.query(query, value, (error, results) => {
-        if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
-          });
-          return;
-        }
-        const user = results.rows[0];
-
-        if (!user) {
-          res.status(403).json({
-            status: 403,
-            error: 'you must be logged in',
-          });
-          return;
-        }
-        if (!user.is_admin) {
-          next();
-          return;
-        }
-        if (req.query.status === 'available') {
-          next();
-          return;
-        }
-        if (req.query.min_price && req.query.max_price) {
-          next();
-          return;
-        }
-
-        const query2 = 'SELECT * FROM cars WHERE status IN($1, $2)';
-        const value2 = ['available', 'sold'];
-
-        client.query(query2, value2, (queryError2, results2) => {
-          done();
-          if (queryError2) {
-            res.status(400).json({
-              status: 400,
-              error: `${error}`,
-            });
-            return;
-          }
-          const availableOrSold = results2.rows;
-          if (!availableOrSold) {
-            res.status(404).json({
-              status: 404,
-              error: 'no cars found',
-            });
-            return;
-          }
-          res.status(200).json({
-            status: 200,
-            data: availableOrSold,
-          });
-        });
-      });
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  unsold(req, res, next) {
-    if (req.query.min_price && req.query.max_price) {
       next();
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'Internal Server Error',
+      });
+    });
+  }
+
+  soldOrAvailable(req, res, next) {
+    const decoded = req.userData;
+    (async () => {
+      const { rows } = await pool.query(checkUser, [decoded.id]);
+      const user = rows[0];
+      if (!user.is_admin) {
+        next();
+        return;
+      }
+      if (req.query.status === 'available') {
+        next();
+        return;
+      }
+      if (req.query.min_price && req.query.max_price) {
+        next();
+        return;
+      }
+      const results2 = await pool.query(checkCarStatus2, ['available', 'sold']);
+      const availableOrSold = results2.rows;
+      if (!availableOrSold) {
+        res.status(404).json({
+          status: 404,
+          erorr: 'no car found',
+        });
+        return;
+      }
+      res.status(200).json({
+        status: 200,
+        data: availableOrSold,
+      });
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error',
+      });
+    });
+  }
+
+  unsold(req, res, next) {
+    (async () => {
+      if (req.query.min_price && req.query.max_price) {
+        next();
+        return;
+      }
+      const { rows: available } = await pool.query(checkCarStatus, [req.query.status]);
+      if (!available) {
+        res.status(404).json({
+          status: 404,
+          error: 'no cars found',
+        });
+        return;
+      }
+      res.status(200).json({
+        status: 200,
+        data: available,
+      });
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error',
+      });
+    });
+  }
+
+  priceRange(req, res) {
+    const result = Joi.validate(req.query, priceRangeSchema);
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
       return;
     }
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'could not connect to the pool',
+
+    (async () => {
+      const value4 = [
+        req.query.status,
+        req.query.min_price,
+        req.query.max_price,
+        req.query.start_year,
+        req.query.stop_year,
+        req.query.state,
+        req.query.manufacturer,
+        req.query.model,
+      ];
+      const { rows } = await pool.query(checkPriceRange, value4);
+      const filtered = rows;
+      if (filtered.length < 1) {
+        res.status(404).json({
+          status: 404,
+          error: 'no cars found',
         });
         return;
       }
-      // if (req.query.status === 'available') {
-      const query3 = 'SELECT * FROM cars WHERE status = $1';
-      const value3 = ['available'];
-
-      client.query(query3, value3, (error, results) => {
-        if (error) {
-          res.status(400).json({
-            status: 400,
-            error: `${error}`,
-          });
-          return;
-        }
-        done();
-        const available = results.rows;
-        if (!available) {
-          res.status(404).json({
-            status: 404,
-            error: 'no cars found',
-          });
-          return;
-        }
-        res.status(200).json({
-          status: 200,
-          data: available,
-        });
+      res.status(200).json({
+        status: 200,
+        data: filtered,
       });
-      // }
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  priceRange(req, res) {
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'could not connect to the pool',
-        });
-        return;
-      }
-      const query4 = 'SELECT * FROM cars WHERE status = $1 AND price >= $2 AND price <= $3';
-      const value4 = [req.query.status, req.query.min_price, req.query.max_price];
-      client.query(query4, value4, (error, results) => {
-        done();
-        if (error) {
-          res.status(500).json({
-            status: 500,
-            error: `${error}`,
-          });
-          return;
-        }
-        const filtered = results.rows;
-        if (!filtered) {
-          res.status(404).json({
-            status: 404,
-            error: 'no cars found',
-          });
-          return;
-        }
-        res.status(200).json({
-          status: 200,
-          data: filtered,
-        });
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error',
       });
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   deleteCar(req, res) {
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(500).json({
-          status: 500,
-          error: 'could not connect to the pool',
-        });
-        return;
-      }
+    (async () => {
       const decoded = req.userData;
-      const query5 = 'SELECT is_admin FROM users WHERE id = $1';
-      const value5 = [decoded.id];
+      const { rows } = await pool.query(checkAdmin, [decoded.id]);
+      const user = rows[0];
+      if (user.is_admin) {
+        const results = await pool.query(deleteCar, [req.params.car_id]);
 
-      client.query(query5, value5, (error, results) => {
-        if (error) {
-          res.status(500).json({
-            status: 500,
-            error: `${error}`,
+        if (!results.rows[0]) {
+          res.status(404).json({
+            status: 404,
+            error: 'No Car Found',
           });
           return;
         }
-        const user = results.rows[0];
-        if (user.is_admin) {
-          const query = 'DELETE FROM cars WHERE id = $1 RETURNING *';
-          const value = [req.params.car_id];
-
-          client.query(query, value, (queryError, queryResults) => {
-            done();
-            if (queryError) {
-              res.status(500).json({
-                status: 500,
-                error: `${queryError}`,
-              });
-              return;
-            }
-            if (!queryResults.rows[0]) {
-              res.status(400).json({
-                status: 400,
-                error: 'car not found',
-              });
-              return;
-            }
-
-            res.status(200).json({
-              status: 200,
-              data: 'Car ad succefully deleted',
-            });
-          });
-        } else {
-          res.status(403).json({
-            status: 403,
-            data: 'Only an admin can delete cars ad',
-          });
-        }
+        res.status(200).json({
+          status: 200,
+          data: 'car ad successfully deleted',
+        });
+      } else {
+        res.status(403).json({
+          status: 403,
+          error: 'Only admin can delete a car',
+        });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'Internal Server Error',
       });
     });
   }

@@ -17,7 +17,13 @@ var _users = require("../model/users");
 
 var _config = _interopRequireDefault(require("../config"));
 
+var _query = require("../helpers/query");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -47,61 +53,84 @@ function () {
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(400).json({
-            status: 400,
-            error: "could not connect to the database ".concat(err)
-          });
-          return;
-        }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var queryResult, hash, user, value2, queryResult2, token;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _config["default"].query(_query.checkMail, [req.body.email]);
 
-        _bcrypt["default"].hash(req.body.password, 10, function (unhash, hash) {
-          if (unhash) {
-            res.status(500).json({
-              error: unhash
-            });
-            return;
-          }
+              case 2:
+                queryResult = _context.sent;
 
-          var user = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: hash,
-            address: req.body.address,
-            is_admin: req.body.is_admin
-          };
-          var query = 'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-          var value = [user.first_name, user.last_name, user.email, user.password, user.address, user.is_admin];
-          client.query(query, value, function (queryErr, queryResult) {
-            done();
+                if (!queryResult.rows[0]) {
+                  _context.next = 6;
+                  break;
+                }
 
-            if (queryErr) {
-              return res.status(400).json({
-                status: 400,
-                error: queryErr.detail
-              });
+                res.status(409).json({
+                  status: 409,
+                  error: 'Email Already Exist'
+                });
+                return _context.abrupt("return");
+
+              case 6:
+                _context.next = 8;
+                return _bcrypt["default"].hash(req.body.password, 10);
+
+              case 8:
+                hash = _context.sent;
+
+                if (!hash) {
+                  _context.next = 17;
+                  break;
+                }
+
+                user = {
+                  first_name: req.body.first_name,
+                  last_name: req.body.last_name,
+                  email: req.body.email,
+                  password: hash,
+                  address: req.body.address,
+                  is_admin: false
+                };
+                value2 = [user.first_name, user.last_name, user.email, user.password, user.address, user.is_admin];
+                _context.next = 14;
+                return _config["default"].query(_query.newUser, value2);
+
+              case 14:
+                queryResult2 = _context.sent;
+                token = _jsonwebtoken["default"].sign({
+                  email: queryResult2.rows[0].email,
+                  id: queryResult2.rows[0].id
+                }, process.env.TOKEN_SECRET, {
+                  expiresIn: '7hr'
+                });
+                res.status(201).json({
+                  status: 201,
+                  data: {
+                    token: token,
+                    id: queryResult2.rows[0].id,
+                    first_name: queryResult2.rows[0].first_name,
+                    last_name: queryResult2.rows[0].last_name,
+                    email: queryResult2.rows[0].email
+                  }
+                });
+
+              case 17:
+              case "end":
+                return _context.stop();
             }
-
-            var token = _jsonwebtoken["default"].sign({
-              email: queryResult.rows[0].email,
-              id: queryResult.rows[0].id
-            }, process.env.TOKEN_SECRET, {
-              expiresIn: '1hr'
-            });
-
-            return res.status(201).json({
-              status: 201,
-              data: {
-                token: token,
-                id: queryResult.rows[0].id,
-                first_name: queryResult.rows[0].first_name,
-                last_name: queryResult.rows[0].last_name,
-                email: queryResult.rows[0].email
-              }
-            });
-          });
+          }
+        }, _callee);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'internal server error'
         });
       });
     }

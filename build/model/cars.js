@@ -14,11 +14,13 @@ var carSchema = {
   owner: _joi["default"].number(),
   created_on: _joi["default"].date(),
   state: _joi["default"].string().required(),
-  status: _joi["default"].string().required(),
   price: _joi["default"].number().required(),
   manufacturer: _joi["default"].string().required(),
   model: _joi["default"].string(),
-  body_type: _joi["default"].string()
+  body_type: _joi["default"].string(),
+  color: _joi["default"].string(),
+  year: _joi["default"].number(),
+  description: _joi["default"].string()
 };
 exports.carSchema = carSchema;
 var cars = [{

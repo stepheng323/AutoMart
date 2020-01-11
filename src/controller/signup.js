@@ -1,40 +1,37 @@
 /* eslint-disable class-methods-use-this */
-// import Joi from 'joi';
+import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-// import { userSchema } from '../model/users';
+import { userSchema } from '../model/users';
 import pool from '../config';
+import { checkMail, newUser } from '../helpers/query';
 
 dotenv.config();
 
 class Signup {
   createUser(req, res) {
-   // const result = Joi.validate(req.body, userSchema);
+    const result = Joi.validate(req.body, userSchema);
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
 
-   // if (result.error) {
-   // res.status(400).json({
-   // status: 400,
-   // error: result.error.details[0].message,
-   // });
-   // return;
-   // }
-    pool.connect((err, client, done) => {
-      if (err) {
-        res.status(400).json({
-          status: 400,
-          error: `could not connect to the database ${err}`,
+    (async () => {
+      const queryResult = await pool.query(checkMail, [req.body.email]);
+      if (queryResult.rows[0]) {
+        res.status(409).json({
+          status: 409,
+          error: 'Email Already Exist',
         });
         return;
       }
-      bcrypt.hash(req.body.password, 10, (unhash, hash) => {
-        if (unhash) {
-          res.status(500).json({
-            error: unhash,
-          });
-          return;
-        }
+      const hash = await bcrypt.hash(req.body.password, 10);
 
+      if (hash) {
         const user = {
           first_name: req.body.first_name,
           last_name: req.body.last_name,
@@ -43,8 +40,8 @@ class Signup {
           address: req.body.address,
           is_admin: false,
         };
-        const query =					'INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-        const value = [
+
+        const value2 = [
           user.first_name,
           user.last_name,
           user.email,
@@ -53,34 +50,30 @@ class Signup {
           user.is_admin,
         ];
 
-        client.query(query, value, (queryErr, queryResult) => {
-          done();
-          if (queryErr) {
-            return res.status(409).json({
-              status: 409,
-              error: queryErr.detail,
-            });
-          }
-
-          const token = jwt.sign(
-            {
-              email: queryResult.rows[0].email,
-              id: queryResult.rows[0].id,
-            },
-            process.env.TOKEN_SECRET,
-            { expiresIn: '7hr' },
-          );
-          return res.status(201).json({
-            status: 201,
-            data: {
-              token,
-              id: queryResult.rows[0].id,
-              first_name: queryResult.rows[0].first_name,
-              last_name: queryResult.rows[0].last_name,
-              email: queryResult.rows[0].email,
-            },
-          });
+        const queryResult2 = await pool.query(newUser, value2);
+        const token = jwt.sign(
+          {
+            email: queryResult2.rows[0].email,
+            id: queryResult2.rows[0].id,
+          },
+          process.env.TOKEN_SECRET,
+          { expiresIn: '7hr' },
+        );
+        res.status(201).json({
+          status: 201,
+          data: {
+            token,
+            id: queryResult2.rows[0].id,
+            first_name: queryResult2.rows[0].first_name,
+            last_name: queryResult2.rows[0].last_name,
+            email: queryResult2.rows[0].email,
+          },
         });
+      }
+    })().catch(() => {
+      res.status(500).json({
+        status: 500,
+        error: 'internal server error',
       });
     });
   }

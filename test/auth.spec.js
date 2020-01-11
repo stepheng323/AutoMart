@@ -11,12 +11,11 @@ describe('Auth', () => {
       .request(app)
       .post('/api/v1/auth/signup')
       .send({
-        email: 'henyhart52@swellview.com',
+        email: 'henyhart582@swellview.com',
         first_name: 'henry',
         last_name: 'hart',
         password: 'captainman',
         address: '2345 avenue mancave swellview',
-        is_admin: false,
       })
       .end((err, res) => {
         expect(res.body).to.have.status(201);

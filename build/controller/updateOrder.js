@@ -9,7 +9,13 @@ var _joi = _interopRequireDefault(require("joi"));
 
 var _config = _interopRequireDefault(require("../config"));
 
+var _query = require("../helpers/query");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26,11 +32,9 @@ function () {
 
   _createClass(UpdateOrders, [{
     key: "updateOrders",
-    // eslint-disable-next-line class-methods-use-this
     value: function updateOrders(req, res) {
-      // validate users input
       var schema = {
-        new_price_offered: _joi["default"].number().required()
+        price: _joi["default"].number().required()
       };
 
       var result = _joi["default"].validate(req.body, schema);
@@ -43,77 +47,89 @@ function () {
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(400).json({
-            status: 400,
-            error: 'could not connect to the pool'
-          });
-          return;
-        }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _ref2, rows, decoded, order, value2, queryResult, order2;
 
-        var query = 'SELECT * FROM orders WHERE id = $1';
-        var value = [req.params.id];
-        client.query(query, value, function (queryError, results) {
-          if (queryError) {
-            res.status(400).json({
-              status: 400,
-              error: "".concat(queryError)
-            });
-            return;
-          }
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _config["default"].query(_query.checkOrder, [req.params.id]);
 
-          var decoded = req.userData;
-          var order = results.rows[0];
+              case 2:
+                _ref2 = _context.sent;
+                rows = _ref2.rows;
+                decoded = req.userData;
+                order = rows[0];
 
-          if (!order) {
-            res.status(404).json({
-              status: 404,
-              error: 'order not found'
-            });
-            return;
-          }
-
-          if (decoded.id !== order.buyer) {
-            res.status(403).json({
-              status: 403,
-              error: 'you can only update orders you posted'
-            });
-            return;
-          }
-
-          if (order.status === 'pending') {
-            var query2 = 'UPDATE orders SET amount = $1 WHERE id = $2 RETURNING *';
-            var value2 = [req.body.new_price_offered, req.params.id];
-            client.query(query2, value2, function (queryError2, queryResult2) {
-              var order2 = queryResult2.rows[0];
-
-              if (queryError2) {
-                res.status(400).json({
-                  status: 400,
-                  error: "".concat(queryError2)
-                });
-                return;
-              }
-
-              done();
-              res.status(200).json({
-                status: 200,
-                data: {
-                  id: order.id,
-                  car_id: order.car_id,
-                  status: order.status,
-                  old_price_offered: order.amount,
-                  new_price_offered: order2.amount
+                if (order) {
+                  _context.next = 9;
+                  break;
                 }
-              });
-            });
-          } else {
-            res.status(403).json({
-              status: 403,
-              error: 'you can only update pending order'
-            });
+
+                res.status(404).json({
+                  status: 404,
+                  error: 'order not found'
+                });
+                return _context.abrupt("return");
+
+              case 9:
+                if (!(decoded.id !== order.buyer)) {
+                  _context.next = 12;
+                  break;
+                }
+
+                res.status(403).json({
+                  status: 403,
+                  error: 'you can only update orders you posted'
+                });
+                return _context.abrupt("return");
+
+              case 12:
+                if (!(order.status === 'pending')) {
+                  _context.next = 21;
+                  break;
+                }
+
+                value2 = [req.body.price, req.params.id];
+                _context.next = 16;
+                return _config["default"].query(_query.updateOrder, value2);
+
+              case 16:
+                queryResult = _context.sent;
+                order2 = queryResult.rows[0];
+                res.status(200).json({
+                  status: 200,
+                  data: {
+                    id: order.id,
+                    car_id: order.car_id,
+                    status: order.status,
+                    old_price_offered: order.amount,
+                    new_price_offered: order2.amount
+                  }
+                });
+                _context.next = 22;
+                break;
+
+              case 21:
+                res.status(409).json({
+                  status: 409,
+                  error: 'you can only update pending order'
+                });
+
+              case 22:
+              case "end":
+                return _context.stop();
+            }
           }
+        }, _callee);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'Internal server error'
         });
       });
     }

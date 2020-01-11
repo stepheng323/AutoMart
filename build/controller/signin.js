@@ -15,7 +15,13 @@ var _config = _interopRequireDefault(require("../config"));
 
 var _users = require("../model/users");
 
+var _query = require("../helpers/query");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43,55 +49,55 @@ function () {
         return;
       }
 
-      _config["default"].connect(function (err, client, done) {
-        if (err) {
-          res.status(500).json({
-            status: 500,
-            error: 'could not connect to the pool'
-          });
-          return;
-        }
+      _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var _ref2, rows, user, verifiedPassword, token;
 
-        var query = 'SELECT * FROM users WHERE email = $1';
-        var value = [req.body.email];
-        client.query(query, value, function (queryError, queryResult) {
-          if (queryError) {
-            res.status(400).json({
-              status: 400,
-              error: queryError
-            });
-            return;
-          }
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _config["default"].query(_query.checkMail, [req.body.email]);
 
-          var user = queryResult.rows[0];
+              case 2:
+                _ref2 = _context.sent;
+                rows = _ref2.rows;
+                user = rows[0];
 
-          if (!user) {
-            res.status(400).json({
-              status: 400,
-              error: 'invalid email or address'
-            });
-          }
+                if (user) {
+                  _context.next = 7;
+                  break;
+                }
 
-          done();
+                return _context.abrupt("return", res.status(400).json({
+                  status: 400,
+                  error: 'Invalid Email or Address Combination'
+                }));
 
-          if (queryResult.rows[0]) {
-            _bcrypt["default"].compare(req.body.password, user.password, function (bcryptErr, correct) {
-              if (bcryptErr) {
-                res.status(401).json({
-                  status: 401,
-                  message: 'invalid email or password'
-                });
-                return;
-              }
+              case 7:
+                _context.next = 9;
+                return _bcrypt["default"].compare(req.body.password, user.password);
 
-              if (correct) {
-                var token = _jsonwebtoken["default"].sign({
+              case 9:
+                verifiedPassword = _context.sent;
+
+                if (!verifiedPassword) {
+                  _context.next = 17;
+                  break;
+                }
+
+                _context.next = 13;
+                return _jsonwebtoken["default"].sign({
                   email: user.email,
                   id: user.id
                 }, process.env.TOKEN_SECRET, {
-                  expiresIn: '1hr'
+                  expiresIn: '7hr'
                 });
 
+              case 13:
+                token = _context.sent;
                 res.status(200).json({
                   status: 200,
                   data: {
@@ -102,14 +108,25 @@ function () {
                     email: user.email
                   }
                 });
-              } else {
+                _context.next = 18;
+                break;
+
+              case 17:
                 res.status(400).json({
                   status: 400,
-                  error: 'please, login with a valid email'
+                  error: 'Invalid Email or Password Combination'
                 });
-              }
-            });
+
+              case 18:
+              case "end":
+                return _context.stop();
+            }
           }
+        }, _callee);
+      }))()["catch"](function () {
+        res.status(500).json({
+          status: 500,
+          error: 'Internal Server Error'
         });
       });
     }
