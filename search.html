@@ -24,14 +24,15 @@
 				<nav>
 					<ul>
 						<li><a href="index.html">Home</a></li>
-						<li><a href="postad.html">Sell Car</a></li>
-						<li><a href="search.html">Buy car</a></li>
-						<li>
+						<li id="sellCar"><a href="postad.html">Sell Car</a></li>
+						<li id="buyCar"><a href="search.html">Buy car</a></li>
+						<li id="signIn">
 							<a href="signin.html"><i class="fas fa-user"></i> Log in</a>
 						</li>
-						<li><a href="signup.html">Join</a></li>
+						<li id="signUp"><a href="signup.html">Join</a></li>
 
 						<li><a href="contact.html">Contact Us</a></li>
+						<li id="logOut"><a href="#">Logout</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -39,62 +40,67 @@
 		<section class="main">
 			<div class="main-container">
 				<div class="mform">
-					<form>
+					<form id="searchForm">
 						<h2>Lets find your Car</h2>
 						<div>
 							<label><p>Manufacturer <span class="red">*</span></p></label>
-							<select id="manufacturer" class="select-css">
+							<select id="manufacturer" required class="select-css">
 								<option value="">Please Select</option>
 							</select>
 						</div>
 
 						<div>
 							<label><p>Model <span class="red">*</span></p></label>
-							<select id="model" class="select-css">
+							<select id="model" required class="select-css">
 								<option value="">Please Select</option>
+								<option value="camry">Camry</option>
 							</select>
 						</div>
 
 						<div>
-							<label class="label-year"><p>Model <span class="red">*</span></p></label>
-							<select id="year" class="select-css year year-min">
-								<option value="" required="required">From</option>
+							<label class="label-year"><p>Year <span class="red">*</span></p></label>
+							<select id="startYear" required class="select-css year year-min">
+								<option value="">From</option>
+								<option value="2000">2000</option>
 							</select>
-							<select id="year" class="select-css year year-max">
-								<option value="" required="required">To</option>
+							<select id="stopYear" required class="select-css year year-max">
+								<option value="">To</option>
+								<option value="2019">2019</option>
 							</select>
 						</div>
 
 						<div>
 							<label><p>Condition <span class="red">*</span></p></label>
-							<select id="condition" class="select-css">
-								<option value="new">Please Select</option>
-								<option value="new">Please Select</option>
+							<select id="state" required class="select-css">
+								<option value="">Please Select </option>
+								<option value="new">New</option>
+								<option value="used">Used</option>
 							</select>
 						</div>
 
 						<div>
 							<label><p>Price <span class="red">*</span></p></label>
-							<input
-								type="number"
+							<input required
+							id="minPrice"
+								type="text"
 								class="select-css price price-min"
 								placeholder="MIN"
 							/>
-							<input
+							<input required
+							id="maxPrice"
 								type="number"
 								class="select-css price price-max"
 								placeholder="MAX"
 							/>
 						</div>
-
-						<input type="submit" class="select-css" value="Search" />
+						<input type="submit" class="search-btn"></input>
 					</form>
 				</div>
 				<div class="bigtext">
 					<h1>
 						We Make Finding
 						<div>Your Next Car</div>
-						An Easy Job
+						An Easy <span class="red">Job</span>
 					</h1>
 				</div>
 			</div>
@@ -102,66 +108,6 @@
 
 		<section id="boxes">
 				<div class="boxes-container">
-					
-					<div class="product-card">
-						<div class="product-image">
-							<img src="./img/showcase4.png" />
-						</div>
-						<div class="product-info">
-							<a href="./details.html">
-								<h5>Toyota Camry-2019-LE 2.0 automatic transmision (New)</h5>
-								<p class="bold">$10000.00</p>
-							</a>
-						</div>
-						<div class="view-btn bold">
-							<a href="./details.html">View</a>
-						</div>
-					</div>
-	
-					<div class="product-card">
-						<div class="product-image">
-							<img src="./img/showcase5.png" />
-						</div>
-						<div class="product-info">
-							<a href="./details.html">
-								<h5>Toyota Camry-2019-LE 2.0 automatic transmision (New)</h5>
-								<p class="bold">$10000.00</p>
-							</a>
-						</div>
-						<div class="view-btn bold">
-							<a href="./details.html">View</a>
-						</div>
-					</div>
-	
-					<div class="product-card">
-						<div class="product-image">
-							<img src="./img/showcasemain.png" />
-						</div>
-						<div class="product-info">
-							<a href="./details.html">
-								<h5>Toyota Camry-2019-LE 2.0 automatic transmision (New)</h5>
-								<p class="bold">$10000.00</p>
-							</a>
-						</div>
-						<div class="view-btn bold">
-							<a href="./details.html">View</a>
-						</div>
-					</div>
-	
-					<div class="product-card">
-						<div class="product-image">
-							<img src="./img/showcase2.jpg" />
-						</div>
-						<div class="product-info">
-							<a href="./details.html">
-								<h5>Toyota Camry-2019-LE 2.0 automatic transmision (New)</h5>
-								<p class="bold">$10000.00</p>
-							</a>
-						</div>
-						<div class="view-btn bold">
-							<a href="./details.html">View</a>
-						</div>
-					</div>
 				</div>
 		</section>
 
@@ -212,5 +158,6 @@
 				</div>
 				<P class="copy">2019 &copy; All rights reserved</P>
 			</footer>
+			<script type="module" src="./script/search.js"></script>
 	</body>
 </html>

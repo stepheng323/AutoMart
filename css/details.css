@@ -79,6 +79,10 @@ header nav {
 	padding: 1em;
 	color: #35424a;
 }
+#image{
+	width: 100%;
+	min-height:500px;
+}
 .overview {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;

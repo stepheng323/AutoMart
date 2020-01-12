@@ -126,6 +126,12 @@ input[type='password']:focus {
 	background: #1f272c;
 	color: #fff;
 }
+.warning {
+	font-size: 13px;
+	color: red;
+	margin: -0.5em 0 0.5em 0;
+	text-align: center;
+}
 
 @media (max-width: 768px) {
 	header .branding {

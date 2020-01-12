@@ -24,14 +24,15 @@
 				<nav>
 					<ul>
 						<li><a href="index.html">Home</a></li>
-						<li><a href="postad.html">Sell Car</a></li>
-						<li><a href="search.html">Buy car</a></li>
-						<li>
+						<li id="sellCar"><a href="postad.html">Sell Car</a></li>
+						<li id="buyCar"><a href="search.html">Buy car</a></li>
+						<li id="signIn">
 							<a href="signin.html"><i class="fas fa-user"></i> Log in</a>
 						</li>
-						<li><a href="signup.html">Join</a></li>
+						<li id="signUp"><a href="signup.html">Join</a></li>
 
 						<li><a href="contact.html">Contact Us</a></li>
+						<li id="logOut"><a href="#">Logout</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -42,41 +43,39 @@
 					<div class="heading">
 						<div>
 							<div>
-								<h2>Toyota Camry</h2>
-								<p>2016, petrol, automatic</p>
+								<h2 id="title"></h2>
+								<p>2016, petrol, automatic</p id>
 							</div>
 						</div>
 						<div>
-							<h2>100,000</h2>
+							<h2 id="price"></h2>
 							<p>Negotiable</p>
 						</div>
 					</div>
-					<img src="./img/showcase2.jpg" />
+					<img id="image" src="" />
 					<div class="description">
 						<h4>Description</h4>
-						<p>
-							Full option Fabrics Interior Clean Exterior DVD Alloy wheel Power
-							windows Super sound system Chilling Air Conditioning Buy and drive
-						</p>
+						<p id="description">
+						</p >
 					</div>
 					<div>
 						<h4>Overview</h4>
 						<div class="overview">
 							<div>
 								<h5>Condition</h5>
-								<p>Used</p>
+								<p id="state" ></p id=>
 							</div>
 							<div>
 								<h5>Transmision</h5>
 								<P>Automatic</P>
 							</div>
 							<div>
-								<h5>Year</h5>
-								<p>2018</p>
+								<h5 >Year</h5>
+								<p id="year"></p>
 							</div>
 							<div>
 								<h5>Color</h5>
-								<p>Black</p>
+								<p id="color"></p>
 							</div>
 							<div></div>
 						</div>
@@ -176,5 +175,7 @@
 			</div>
 			<P class="copy">2019 &copy; All rights reserved</P>
 		</footer>
+		<script src="./script/singleCar.js"></script>
+		<!-- <script>getSingleCar()</script> -->
 	</body>
 </html>

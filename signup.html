@@ -11,7 +11,10 @@
 			integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
 			crossorigin="anonymous"
 		/>
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+		<link
+			href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="stylesheet" href="./css/signup.css" />
 	</head>
 	<body>
@@ -21,36 +24,55 @@
 			</h1>
 		</div>
 		<main>
-
 			<div class="heading">
 				<h1>Create An Account</h1>
 			</div>
 
 			<div class="main-container">
-				<form>
+				<form id="userForm">
 					<div class="input">
 						<label> <p>First Name</p></label>
-						<input type="text" placeholder="Enter First Name" required />
+						<input
+							id="firstName"
+							type="text"
+							placeholder="Enter First Name"
+							required
+						/>
 					</div>
 
 					<div class="input">
 						<label> <p>Last Name</p></label>
-						<input type="text" placeholder="Enter Last Name" required />
+						<input
+							id="lastName"
+							type="text"
+							placeholder="Enter Last Name"
+							required
+						/>
 					</div>
 
 					<div class="input">
 						<label> <p>Email</p></label>
-						<input type="email" placeholder="Enter Email" required />
+						<input id="email" type="email" placeholder="Enter Email" required />
 					</div>
 
 					<div class="input">
 						<label> <p>Address</p></label>
-						<input type="text" placeholder="Enter Address" required />
+						<input
+							id="address"
+							type="text"
+							placeholder="Enter Address"
+							required
+						/>
 					</div>
 
 					<div class="input">
 						<label> <p>Password</p></label>
-						<input type="password" placeholder="Enter your Password" required />
+						<input
+							id="password"
+							type="password"
+							placeholder="Enter your Password"
+							required
+						/>
 					</div>
 
 					<button class="signupbtn">Sign Up</button>
@@ -62,10 +84,9 @@
 					<div class="already-user">
 						Already a user? <a href="./signin.html">Login</a>
 					</div>
-
 				</form>
-				</div>
-
+			</div>
 		</main>
+		<script src="./script/signup.js"></script>
 	</body>
 </html>
