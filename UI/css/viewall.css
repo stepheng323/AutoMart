@@ -1,12 +1,14 @@
 body {
 	font: 16px/1.5 Arial, Helvetica, sans-serif;
-	padding: 0px;
-	margin: 0px;
 	background: #f1f1f1;
+	margin: 0;
+	padding: 0;
 }
 * {
 	box-sizing: border-box;
-}
+	margin: none;
+	padding: none;
+} 
 .container {
 	width: 90%;
 	margin: auto;
@@ -46,6 +48,7 @@ header nav {
 }
 .product-filter {
 	padding: 1em;
+	display: none;
 }
 nav h1 {
 	font-weight: bold;
@@ -58,57 +61,92 @@ nav h1 {
 }
 .highlight {
 	font-weight: bold;
-	color: red;
+	color:orange;
 }
-.products {
-	box-sizing: border-box;
-	display: grid;
-	width: 95%;
+#loader-container {
+	display: flex;
+	height: 90vh;
+	
+}
+#loader {
+	border: 2px solid #b5bcc0;
+	border-top: 2px solid orange;
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	animation: spin 1.5s linear infinite;
 	margin: auto;
-	grid-template-columns: repeat(5, 1fr);
-	grid-gap: 1em;
-}
-.product-info a {
-	text-decoration: none;
-	color: #35424a;
-}
-.product-info a:hover {
-	text-decoration: underline;
-	color: orange;
+	/* display: none; */
+	
 }
 
-.product-info h5,
-.product-info p {
-	text-align: center;
-	margin: 0;
-	line-height: 1.8em;
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
-.view-btn a {
-	display: block;
-	width: 40%;
-	padding: 2px 2px;
-	border-radius: 4px;
-	background: #35424a;
-	color: #fff;
-	text-decoration: none;
+
+#products {
+	box-sizing: border-box;
+	display: grid;
+	width: 90%;
 	margin: auto;
-	margin-bottom: 1em;
-	margin-top: 1em;
-	text-align: center;
-	transition-duration: 0.4s;
-	border: 1px solid #1f272c;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 1em;
+	min-height: 52vh;
+	display: none;
 }
-.bold {
+.product-info h3, .product-info h4 {
+margin: 0;
+}
+.product-info h3 {
+	text-align: left;
+	text-transform: capitalize;
+}
+.product-info p {
+	line-height: 1.8em;
+	font-size: 12px;
+	padding: 0 1em;
+}
+
+#price {
+	font-weight: bolder;
+	text-align: left;
+	font-size: 15px;
+	color: #282b2e;
+	line-height: 1.5em;
+	margin-bottom: 0.2em;
+}
+.state {
+	font-size: 13px;
+	color: orange;
+	text-align: left;
+	text-transform: capitalize;
+	/* background: orange;
+	width: 3em;
+	padding: 0.1em;
+	border-radius: 2px;
+	margin-bottom: 0.1em; */
+}
+.properties {
+	font-size: 13px;
+	text-align: left;
+	font-weight: unset;
+	color: #282b2e;
+	text-transform: capitalize;
+}
+.dark {
+	color: #35424a;
 	font-weight: bold;
 }
-.view-btn a:hover {
-	color: orange;
-	background: #fff;
-}
-.products .product-info {
+#products .product-info {
 	text-align: center;
+	padding: 0 0.6em;
 }
-.products .product-card {
+#products .product-card {
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 6px 0 rgba(0, 0, 0, 0.19);
 	margin: auto;
 	border-radius: 4px;
@@ -116,22 +154,35 @@ nav h1 {
 	padding: 0.2em;
 	margin-bottom: 2em;
 	border: 1px solid transparent;
+	width: 250px;
+	min-height: 350px;
+	cursor: pointer;
 }
-.products .product-card img {
+#products .product-card img {
 	width: 100%;
-	object-fit: contain;
+	height: 200px;
+	object-fit: cover;
 }
-.products .product-card:hover {
+#products .product-card:hover {
 	border: 1px solid orange;
-
 }
-
+.product-card a {
+	text-decoration: none;
+	color: #35424a;
+}
+.center {
+	justify-content: center;
+	padding: 15%;
+	background-image: url('../img/showcase5.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
 .fcontainer {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	background-color: #1f272c;
 	color: #ccc;
-	font-size:13px;
+	font-size: 13px;
 	justify-items: center;
 	padding-left: 3.5em;
 }
@@ -139,27 +190,29 @@ nav h1 {
 .fcontainer ul {
 	list-style-type: none;
 	padding: 0px;
-
 }
 .fcontainer ul li a {
 	text-decoration: none;
 	display: inline-block;
 	padding: 0.4em 0.1em 0.1em 0.1em;
-	color:#ccc;
+	color: #ccc;
 	overflow: hidden;
 }
 .fcontainer h3,
 .fcontainer p {
 	margin-top: 1.3em;
 }
-.one h3, .two h3, .three h3,.social h3{
+.one h3,
+.two h3,
+.three h3,
+.social h3 {
 	font-size: 1.2em;
 }
 .fcontainer .pad {
 	margin-left: 6%;
 }
 .social a {
-	color:#ccc;
+	color: #ccc;
 	text-decoration: none;
 }
 .copy {
@@ -167,5 +220,5 @@ nav h1 {
 	background: #1f272c;
 	color: #fff;
 	font-size: 14px;
-	padding:0.8em 6em;
+	padding: 0.8em 6em;
 }

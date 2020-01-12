@@ -39,21 +39,20 @@ class Signin {
       const user = rows[0];
 
       if (!user) {
-        res.status(400).json({
+        return res.status(400).json({
           status: 400,
           error: 'Invalid Email or Address Combination'
-        });
-        return;
+        }); // return;
       }
 
-      const verifiedPassword = _bcrypt.default.compare(req.body.password, user.password);
+      const verifiedPassword = await _bcrypt.default.compare(req.body.password, user.password);
 
       if (verifiedPassword) {
         const token = await _jsonwebtoken.default.sign({
           email: user.email,
           id: user.id
         }, process.env.TOKEN_SECRET, {
-          expiresIn: '1hr'
+          expiresIn: '7hr'
         });
         res.status(200).json({
           status: 200,
@@ -68,7 +67,7 @@ class Signin {
       } else {
         res.status(400).json({
           status: 400,
-          error: 'Invalid Email or Address Combination'
+          error: 'Invalid Email or Password Combination'
         });
       }
     })().catch(() => {

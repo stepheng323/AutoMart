@@ -17,7 +17,10 @@ const carSchema = {
   price: _joi.default.number().required(),
   manufacturer: _joi.default.string().required(),
   model: _joi.default.string(),
-  body_type: _joi.default.string()
+  body_type: _joi.default.string(),
+  color: _joi.default.string(),
+  year: _joi.default.number(),
+  description: _joi.default.string()
 };
 exports.carSchema = carSchema;
 const cars = [{

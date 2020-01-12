@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import Joi from 'joi';
 import pool from '../config';
 import {
   checkCar,
@@ -9,6 +10,7 @@ import {
   checkAdmin,
   deleteCar,
 } from '../helpers/query';
+import priceRangeSchema from '../model/priceRange';
 
 class View {
   specific(req, res, next) {
@@ -57,7 +59,7 @@ class View {
       if (!availableOrSold) {
         res.status(404).json({
           status: 404,
-          error: 'no car found',
+          erorr: 'no car found',
         });
         return;
       }
@@ -79,8 +81,7 @@ class View {
         next();
         return;
       }
-      const { rows } = await pool.query(checkCarStatus, [req.query.status]);
-      const available = rows;
+      const { rows: available } = await pool.query(checkCarStatus, [req.query.status]);
       if (!available) {
         res.status(404).json({
           status: 404,
@@ -101,11 +102,29 @@ class View {
   }
 
   priceRange(req, res) {
+    const result = Joi.validate(req.query, priceRangeSchema);
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message,
+      });
+      return;
+    }
+
     (async () => {
-      const value4 = [req.query.status, req.query.min_price, req.query.max_price];
+      const value4 = [
+        req.query.status,
+        req.query.min_price,
+        req.query.max_price,
+        req.query.start_year,
+        req.query.stop_year,
+        req.query.state,
+        req.query.manufacturer,
+        req.query.model,
+      ];
       const { rows } = await pool.query(checkPriceRange, value4);
       const filtered = rows;
-      if (!filtered) {
+      if (filtered.length < 1) {
         res.status(404).json({
           status: 404,
           error: 'no cars found',

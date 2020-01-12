@@ -30,6 +30,9 @@ class CarsCreate {
           manufacturer: req.body.manufacturer,
           model: req.body.model,
           body_type: req.body.body_type,
+          color: req.body.color,
+          year: req.body.year,
+          description: req.body.description,
         };
         const values = [
           car.owner,
@@ -40,6 +43,9 @@ class CarsCreate {
           car.manufacturer,
           car.model,
           car.body_type,
+          car.color,
+          car.year,
+          car.description,
         ];
         const queryResult = await pool.query(newCar, values);
         const dbResult = queryResult.rows[0];
@@ -55,6 +61,9 @@ class CarsCreate {
             price: dbResult.price,
             state: dbResult.state,
             status: dbResult.status,
+            color: dbResult.color,
+            year: dbResult.year,
+            description: dbResult.description,
           },
         });
         return;
@@ -72,6 +81,9 @@ class CarsCreate {
           model: req.body.model,
           body_type: req.body.body_type,
           image_url: results.secure_url,
+          color: req.body.color,
+          year: req.body.year,
+          description: req.body.description,
         };
         const values = [
           car.owner,
@@ -83,6 +95,9 @@ class CarsCreate {
           car.model,
           car.body_type,
           car.image_url,
+          car.color,
+          car.year,
+          car.description,
         ];
         const queryResult = await pool.query(newCarWithImage, values);
         const dbResult = queryResult.rows[0];
@@ -99,6 +114,9 @@ class CarsCreate {
             state: dbResult.state,
             status: dbResult.status,
             image_url: dbResult.image_url,
+            color: dbResult.color,
+            year: dbResult.year,
+            description: dbResult.description,
           },
         });
       } else {

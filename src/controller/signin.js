@@ -26,7 +26,10 @@ class Signin {
         });
         // return;
       }
-      const verifiedPassword = bcrypt.compare(req.body.password, user.password);
+      const verifiedPassword = await bcrypt.compare(
+        req.body.password,
+        user.password,
+      );
       if (verifiedPassword) {
         const token = await jwt.sign(
           {
@@ -34,7 +37,7 @@ class Signin {
             id: user.id,
           },
           process.env.TOKEN_SECRET,
-          { expiresIn: '1hr' },
+          { expiresIn: '7hr' },
         );
         res.status(200).json({
           status: 200,

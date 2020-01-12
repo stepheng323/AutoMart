@@ -23,8 +23,8 @@ const auth = (req, res, next) => {
 
   _jsonwebtoken.default.verify(token, process.env.TOKEN_SECRET, (err, data) => {
     if (err) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(401).json({
+        status: 401,
         error: 'Invalid Token'
       });
     }

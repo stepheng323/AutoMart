@@ -5,9 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _joi = _interopRequireDefault(require("joi"));
+
 var _config = _interopRequireDefault(require("../config"));
 
 var _query = require("../helpers/query");
+
+var _priceRange = _interopRequireDefault(require("../model/priceRange"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70,7 +74,7 @@ class View {
       if (!availableOrSold) {
         res.status(404).json({
           status: 404,
-          error: 'no car found'
+          erorr: 'no car found'
         });
         return;
       }
@@ -95,9 +99,8 @@ class View {
       }
 
       const {
-        rows
+        rows: available
       } = await _config.default.query(_query.checkCarStatus, [req.query.status]);
-      const available = rows;
 
       if (!available) {
         res.status(404).json({
@@ -120,14 +123,24 @@ class View {
   }
 
   priceRange(req, res) {
+    const result = _joi.default.validate(req.query, _priceRange.default);
+
+    if (result.error) {
+      res.status(400).json({
+        status: 400,
+        error: result.error.details[0].message
+      });
+      return;
+    }
+
     (async () => {
-      const value4 = [req.query.status, req.query.min_price, req.query.max_price];
+      const value4 = [req.query.status, req.query.min_price, req.query.max_price, req.query.start_year, req.query.stop_year, req.query.state, req.query.manufacturer, req.query.model];
       const {
         rows
       } = await _config.default.query(_query.checkPriceRange, value4);
       const filtered = rows;
 
-      if (!filtered) {
+      if (filtered.length < 1) {
         res.status(404).json({
           status: 404,
           error: 'no cars found'

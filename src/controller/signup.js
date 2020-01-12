@@ -57,7 +57,7 @@ class Signup {
             id: queryResult2.rows[0].id,
           },
           process.env.TOKEN_SECRET,
-          { expiresIn: '1hr' },
+          { expiresIn: '7hr' },
         );
         res.status(201).json({
           status: 201,

@@ -26,16 +26,26 @@
 			</div>
 
 			<div class="mcontainer">
-				<form>
+				<form id="loginForm">
 					<div class="input">
 						<label> <p>Email</p></label>
-						<input type="email" placeholder="Enter your Email" required />
+						<input
+							id="email"
+							type="email"
+							placeholder="Enter your Email"
+							required
+						/>
 					</div>
 
 					<div class="input">
 						<label><p>Password</p></label>
 						<a href="#">Forgot Password?</a>
-						<input type="password" placeholder="Enter your Password" required />
+						<input
+							id="pwd"
+							type="password"
+							placeholder="Enter your Password"
+							required
+						/>
 					</div>
 					<button class="signinbtn">Login</button>
 
@@ -54,5 +64,6 @@
 				</form>
 			</div>
 		</main>
+		<script src="./script/login.js"></script>
 	</body>
 </html>
