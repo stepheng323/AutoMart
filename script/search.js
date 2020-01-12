@@ -49,7 +49,7 @@ searchForm.addEventListener('submit', (e) => {
   const state = document.getElementById('state').value;
   const minPrice = document.getElementById('minPrice').value;
   const maxPrice = document.getElementById('maxPrice').value;
-  const url = `http://localhost:3000/api/v1/car?status=available&min_price=${minPrice}&max_price=${maxPrice}&start_year=${startYear}&stop_year=${stopYear}&state=${state}&manufacturer=${make}&model=${model}`;
+  const url = `https://automartendpoints.herokuapp.com/api/v1/car?status=available&min_price=${minPrice}&max_price=${maxPrice}&start_year=${startYear}&stop_year=${stopYear}&state=${state}&manufacturer=${make}&model=${model}`;
 
   const searchCars = async () => {  
     const request = await fetch(url, {

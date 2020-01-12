@@ -2,7 +2,7 @@ const email = document.getElementById('email');
 const password = document.getElementById('pwd');
 const signinBtn = document.querySelector('.signinbtn');
 
-const url = 'http://localhost:3000/api/v1/auth/signin';
+const url = 'https://automartendpoints.herokuapp.com/api/v1/auth/signin';
 
 signinBtn.addEventListener('click', async (e) => {
   e.preventDefault();

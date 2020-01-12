@@ -9,7 +9,7 @@ const carDescription = document.getElementById('description');
 
 const carId = JSON.parse(sessionStorage.getItem('carId'));
 const token = JSON.parse(localStorage.getItem('anceledos'));
-const url = `http://localhost:3000/api/v1/car/${carId}`;
+const url = `https://automartendpoints.herokuapp.com/api/v1/car/${carId}`;
 
 const buyCar = document.getElementById('buyCar');
 const sellCar = document.getElementById('sellCar');
